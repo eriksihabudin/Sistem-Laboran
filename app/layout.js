@@ -1,16 +1,17 @@
-import './globals.css'
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Next.js MongoDB Template',
-  description: 'A simple template with App Router, MongoDB, and shadcn/ui',
-}
+  title: 'Sistem Laboran DKV',
+  description: 'Sistem manajemen inventaris dan peminjaman barang laboran DKV',
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        {children}
-      </body>
+    <html lang="id">
+      <body className={inter.className}>{children}</body>
     </html>
-  )
+  );
 }
