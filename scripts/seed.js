@@ -1,8 +1,21 @@
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
-require('dotenv').config({ path: '.env' });
+const fs = require('fs');
+const path = require('path');
 
-const uri = process.env.MONGO_URL;
+// Read .env file manually
+const envPath = path.join(__dirname, '..', '.env');
+const envContent = fs.readFileSync(envPath, 'utf-8');
+const envLines = envContent.split('\n');
+let mongoUrl = '';
+
+envLines.forEach(line => {
+  if (line.startsWith('MONGO_URL=')) {
+    mongoUrl = line.split('=')[1].trim();
+  }
+});
+
+const uri = mongoUrl;
 
 async function seed() {
   const client = new MongoClient(uri);
