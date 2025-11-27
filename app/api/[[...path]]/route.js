@@ -257,7 +257,7 @@ export async function POST(request) {
         await db.collection('barang').updateOne(
           { _id: new ObjectId(barangId) },
           { 
-            $set: { statusPeminjaman: 'dipinjam', updatedAt: new Date() }
+            $set: { statusPeminjaman: 'dipinjam', updatedAt: getJakartaTime() }
           }
         );
       }
