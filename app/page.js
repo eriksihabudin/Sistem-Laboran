@@ -322,24 +322,62 @@ export default function App() {
   };
 
   const getFilteredLaporanData = () => {
-    if (!laporanSearch) return laporanData;
+    let filtered = laporanData;
     
-    const searchLower = laporanSearch.toLowerCase();
-    
-    if (laporanType === 'Peminjaman Bulanan') {
-      return laporanData.filter(item => 
-        item.namaPeminjam?.toLowerCase().includes(searchLower) ||
-        item.kelasjabatan?.toLowerCase().includes(searchLower) ||
-        item.catatan?.toLowerCase().includes(searchLower)
-      );
-    } else {
-      return laporanData.filter(item => 
-        item.nama?.toLowerCase().includes(searchLower) ||
-        item.kategori?.toLowerCase().includes(searchLower) ||
-        item.serial?.toLowerCase().includes(searchLower) ||
-        item.lokasi?.toLowerCase().includes(searchLower)
-      );
+    // Filter by search
+    if (laporanSearch) {
+      const searchLower = laporanSearch.toLowerCase();
+      
+      if (laporanType === 'Peminjaman Bulanan') {
+        filtered = filtered.filter(item => 
+          item.namaPeminjam?.toLowerCase().includes(searchLower) ||
+          item.kelasjabatan?.toLowerCase().includes(searchLower) ||
+          item.catatan?.toLowerCase().includes(searchLower)
+        );
+      } else {
+        filtered = filtered.filter(item => 
+          item.nama?.toLowerCase().includes(searchLower) ||
+          item.kategori?.toLowerCase().includes(searchLower) ||
+          item.serial?.toLowerCase().includes(searchLower) ||
+          item.lokasi?.toLowerCase().includes(searchLower)
+        );
+      }
     }
+    
+    // Filter by date for Peminjaman
+    if (laporanType === 'Peminjaman Bulanan') {
+      filtered = filtered.filter(item => {
+        const tanggalPinjam = new Date(item.tanggalPinjam);
+        
+        // Filter by tanggal (specific date)
+        if (filterTanggal) {
+          const selectedDate = new Date(filterTanggal);
+          if (tanggalPinjam.toDateString() !== selectedDate.toDateString()) {
+            return false;
+          }
+        }
+        
+        // Filter by bulan
+        if (filterBulan) {
+          const bulan = parseInt(filterBulan);
+          if (tanggalPinjam.getMonth() + 1 !== bulan) {
+            return false;
+          }
+        }
+        
+        // Filter by tahun
+        if (filterTahun) {
+          const tahun = parseInt(filterTahun);
+          if (tanggalPinjam.getFullYear() !== tahun) {
+            return false;
+          }
+        }
+        
+        return true;
+      });
+    }
+    
+    return filtered;
   };
 
   const handlePrintLaporan = () => {
