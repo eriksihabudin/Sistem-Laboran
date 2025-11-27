@@ -262,6 +262,18 @@ frontend:
         agent: "main"
         comment: "✅ Jam real-time berhasil ditambahkan di header aplikasi. Menampilkan tanggal lengkap dan waktu dengan format Asia/Jakarta (UTC+7). Update setiap detik menggunakan setInterval. Tested dan working dengan screenshot."
 
+  - task: "Tombol Edit dan Hapus User"
+    implemented: true
+    working: true
+    file: "app/app/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "✅ Berhasil menambahkan tombol Edit dan Hapus di menu Users. Fitur Edit user: dapat mengubah nama, role, kelas, jabatan, dan password (optional). Username tidak bisa diubah. Fitur Hapus user: dengan konfirmasi dialog. Tested dengan admin - user berhasil diedit dan dihapus. Backend API sudah support PUT dan DELETE untuk users."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
