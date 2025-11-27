@@ -712,15 +712,19 @@ export async function PUT(request) {
     if (pathname === '/peminjaman/return') {
       const { peminjamanId, kondisiBarang, catatan } = await request.json();
       
+      const now = new Date();
+      const jamDikembalikan = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+      
       await db.collection('peminjaman').updateOne(
         { _id: new ObjectId(peminjamanId) },
         { 
           $set: { 
             status: 'dikembalikan',
-            tanggalDikembalikan: new Date(),
+            tanggalDikembalikan: now,
+            jamDikembalikan: jamDikembalikan,
             kondisiPengembalian: kondisiBarang,
             catatanPengembalian: catatan,
-            updatedAt: new Date()
+            updatedAt: now
           }
         }
       );
