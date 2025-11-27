@@ -590,6 +590,40 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // === BARANG KONDISI UPDATE === (Check this BEFORE /barang/:id)
+    if (pathname === '/barang/kondisi') {
+      const { barangId, kondisi, deskripsi, foto } = await request.json();
+      
+      const updateData = {
+        kondisi,
+        updatedAt: new Date()
+      };
+      
+      if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
+        const kerusakan = {
+          tanggal: new Date(),
+          deskripsi,
+          foto,
+          oleh: userData.nama
+        };
+        
+        await db.collection('barang').updateOne(
+          { _id: new ObjectId(barangId) },
+          { 
+            $set: updateData,
+            $push: { riwayatKerusakan: kerusakan }
+          }
+        );
+      } else {
+        await db.collection('barang').updateOne(
+          { _id: new ObjectId(barangId) },
+          { $set: updateData }
+        );
+      }
+      
+      return NextResponse.json({ message: 'Kondisi barang berhasil diupdate' });
+    }
+
     // === BARANG UPDATE ===
     if (pathname.startsWith('/barang/')) {
       const id = pathname.split('/').pop();
