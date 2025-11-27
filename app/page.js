@@ -419,6 +419,69 @@ export default function App() {
     return info.length > 0 ? ` (${info.join(', ')})` : '';
   };
 
+  const handleEditKategori = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const formData = new FormData(e.target);
+      const data = {
+        nama: formData.get('nama'),
+        deskripsi: formData.get('deskripsi')
+      };
+
+      const response = await apiCall(`/kategori/${selectedKategori._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Gagal update kategori');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Kategori berhasil diupdate!');
+      setTimeout(() => setSuccess(''), 3000);
+      setShowKategoriEditDialog(false);
+      setSelectedKategori(null);
+      loadKategori();
+    } catch (err) {
+      setError('Terjadi kesalahan saat update kategori');
+    }
+    setLoading(false);
+  };
+
+  const handleDeleteKategori = async (id) => {
+    if (!confirm('Yakin ingin menghapus kategori ini?')) return;
+
+    setLoading(true);
+    try {
+      const response = await apiCall(`/kategori/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Gagal menghapus kategori');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Kategori berhasil dihapus!');
+      setTimeout(() => setSuccess(''), 3000);
+      loadKategori();
+    } catch (err) {
+      setError('Terjadi kesalahan');
+    }
+    setLoading(false);
+  };
+
   const handleAddBarang = async (e) => {
     e.preventDefault();
     setLoading(true);
