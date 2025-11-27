@@ -66,6 +66,7 @@ export default function App() {
   const [peminjaman, setPeminjaman] = useState([]);
   const [selectedPeminjaman, setSelectedPeminjaman] = useState(null);
   const [filterStatusPeminjaman, setFilterStatusPeminjaman] = useState('');
+  const [searchBarangPeminjaman, setSearchBarangPeminjaman] = useState('');
 
   // Kategori state
   const [kategori, setKategori] = useState([]);
