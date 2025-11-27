@@ -139,3 +139,79 @@ code {
     @apply bg-background text-foreground;
     }
 }
+
+/* Print Styles */
+@media print {
+  /* Hide elements that shouldn't be printed */
+  .print\:hidden,
+  nav,
+  header,
+  aside,
+  button:not(.print-show),
+  [role="tablist"] {
+    display: none !important;
+  }
+
+  /* Show only the content */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Optimize table for printing */
+  table {
+    page-break-inside: auto;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  /* Better borders for print */
+  table, th, td {
+    border: 1px solid #000 !important;
+  }
+
+  th {
+    background-color: #f3f4f6 !important;
+    font-weight: bold;
+    padding: 8px;
+  }
+
+  td {
+    padding: 8px;
+  }
+
+  /* Ensure images print at reasonable size */
+  img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  /* Remove box shadows and unnecessary styling */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 1cm;
+  }
+
+  /* Add title before table */
+  .card-title::before {
+    content: "";
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}
