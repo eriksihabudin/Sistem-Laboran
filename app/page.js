@@ -78,6 +78,7 @@ export default function App() {
   // Laporan state
   const [laporanType, setLaporanType] = useState('Barang Normal');
   const [laporanData, setLaporanData] = useState([]);
+  const [laporanSearch, setLaporanSearch] = useState('');
 
   // Dialogs
   const [showBarangDialog, setShowBarangDialog] = useState(false);
