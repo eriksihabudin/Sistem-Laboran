@@ -1658,30 +1658,78 @@ export default function App() {
                     </div>
                     <div className="space-y-2">
                       <Label>Barang yang Dipinjam *</Label>
+                      <Input
+                        placeholder="Cari barang..."
+                        value={searchBarangPeminjaman}
+                        onChange={(e) => setSearchBarangPeminjaman(e.target.value)}
+                        className="mb-2"
+                      />
                       <ScrollArea className="h-48 border rounded p-2">
-                        {barang.filter(b => b.kondisi !== 'rusak').map((item) => (
-                          <label key={item._id} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              value={item._id}
-                              onChange={(e) => {
-                                const checkbox = e.target;
-                                const barangIdsInput = document.getElementById('barangIdsHidden');
-                                let ids = barangIdsInput.value ? JSON.parse(barangIdsInput.value) : [];
-                                if (checkbox.checked) {
-                                  ids.push(item._id);
-                                } else {
-                                  ids = ids.filter(id => id !== item._id);
-                                }
-                                barangIdsInput.value = JSON.stringify(ids);
-                              }}
-                            />
-                            {item.foto && <img src={item.foto} className="w-8 h-8 object-cover rounded" />}
-                            <span className="text-sm">{item.nama} - {item.kategori}</span>
-                          </label>
-                        ))}
+                        {getAvailableBarang().length > 0 ? (
+                          getAvailableBarang().map((item) => {
+                            const disabled = isBarangDisabled(item._id);
+                            return (
+                              <label 
+                                key={item._id} 
+                                className={`flex items-center gap-2 p-2 rounded ${
+                                  disabled 
+                                    ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+                                    : 'hover:bg-gray-50 cursor-pointer'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  value={item._id}
+                                  disabled={disabled}
+                                  onChange={(e) => {
+                                    const checkbox = e.target;
+                                    const barangIdsInput = document.getElementById('barangIdsHidden');
+                                    let ids = barangIdsInput.value ? JSON.parse(barangIdsInput.value) : [];
+                                    if (checkbox.checked) {
+                                      ids.push(item._id);
+                                    } else {
+                                      ids = ids.filter(id => id !== item._id);
+                                    }
+                                    barangIdsInput.value = JSON.stringify(ids);
+                                  }}
+                                />
+                                {item.foto && <img src={item.foto} className="w-8 h-8 object-cover rounded" />}
+                                <div className="flex-1">
+                                  <span className="text-sm font-medium">{item.nama}</span>
+                                  <div className="flex gap-2 items-center text-xs text-gray-600">
+                                    <span>{item.kategori}</span>
+                                    <span>•</span>
+                                    <span>Stok: {item.jumlah}</span>
+                                    {item.kondisi === 'rusak_bisa_dipakai' && (
+                                      <>
+                                        <span>•</span>
+                                        <Badge className="bg-yellow-500 h-4 text-xs">Rusak Bisa Dipakai</Badge>
+                                      </>
+                                    )}
+                                    {item.statusPeminjaman === 'dipinjam' && (
+                                      <>
+                                        <span>•</span>
+                                        <Badge className="bg-orange-500 h-4 text-xs">Sedang Dipinjam</Badge>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                                {disabled && (
+                                  <span className="text-xs text-red-500 font-medium">Tidak Tersedia</span>
+                                )}
+                              </label>
+                            );
+                          })
+                        ) : (
+                          <div className="text-center py-8 text-gray-500">
+                            <p className="text-sm">Tidak ada barang yang tersedia</p>
+                          </div>
+                        )}
                       </ScrollArea>
                       <input type="hidden" id="barangIdsHidden" name="barangIds" defaultValue="[]" />
+                      <p className="text-xs text-gray-600 mt-1">
+                        Menampilkan {getAvailableBarang().filter(b => !isBarangDisabled(b._id)).length} barang tersedia
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="catatan">Catatan</Label>
