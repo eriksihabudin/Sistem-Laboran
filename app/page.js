@@ -133,6 +133,12 @@ export default function App() {
     }
   }, [laporanType]);
 
+  useEffect(() => {
+    if (user && token && activeTab === 'dashboard') {
+      loadDashboard();
+    }
+  }, [chartYear]);
+
   const apiCall = async (endpoint, options = {}) => {
     const headers = {
       'Authorization': `Bearer ${token}`,
