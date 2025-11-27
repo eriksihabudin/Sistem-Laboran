@@ -214,6 +214,18 @@ export default function App() {
     }
   };
 
+  const openEditBarang = async (id) => {
+    try {
+      const response = await apiCall(`/barang/${id}`);
+      const data = await response.json();
+      setSelectedBarang(data);
+      setShowBarangEditDialog(true);
+    } catch (err) {
+      console.error('Error loading barang for edit:', err);
+      setError('Gagal memuat data barang');
+    }
+  };
+
   const loadPeminjaman = async () => {
     try {
       let url = '/peminjaman?';
