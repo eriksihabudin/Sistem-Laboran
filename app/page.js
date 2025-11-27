@@ -189,19 +189,22 @@ export default function App() {
 
   const loadDashboard = async () => {
     try {
-      const [statsRes, chartPeminjamanRes, chartKerusakanRes] = await Promise.all([
+      const [statsRes, chartPeminjamanRes, chartKerusakanRes, peminjamanTerbaruRes] = await Promise.all([
         apiCall('/dashboard/stats'),
         apiCall(`/dashboard/chart/peminjaman?year=${chartYear}`),
-        apiCall('/dashboard/chart/kerusakan')
+        apiCall('/dashboard/chart/kerusakan'),
+        apiCall('/dashboard/peminjaman-terbaru')
       ]);
 
       const statsData = await statsRes.json();
       const chartPeminjamanData = await chartPeminjamanRes.json();
       const chartKerusakanData = await chartKerusakanRes.json();
+      const peminjamanTerbaruData = await peminjamanTerbaruRes.json();
 
       setStats(statsData);
       setChartPeminjaman(chartPeminjamanData);
       setChartKerusakan(chartKerusakanData);
+      setPeminjamanTerbaru(peminjamanTerbaruData);
     } catch (err) {
       console.error('Error loading dashboard:', err);
     }
