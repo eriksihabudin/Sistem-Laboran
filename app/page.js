@@ -1529,8 +1529,24 @@ export default function App() {
                 {laporanData.length > 0 ? (
                   <Card>
                     <CardHeader>
-                      <CardTitle>Laporan Barang Rusak</CardTitle>
-                      <CardDescription>Total: {laporanData.length} barang</CardDescription>
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                          <CardTitle>Laporan Barang Rusak</CardTitle>
+                          <CardDescription>Total: {getFilteredLaporanData().length} dari {laporanData.length} barang</CardDescription>
+                        </div>
+                        <div className="flex gap-2 print:hidden">
+                          <Input
+                            placeholder="Cari barang..."
+                            value={laporanSearch}
+                            onChange={(e) => setLaporanSearch(e.target.value)}
+                            className="w-64"
+                          />
+                          <Button onClick={handlePrintLaporan}>
+                            <Download className="h-4 w-4 mr-2" />
+                            Print
+                          </Button>
+                        </div>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       <div className="overflow-x-auto">
