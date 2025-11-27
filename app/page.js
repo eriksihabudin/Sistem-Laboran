@@ -559,13 +559,24 @@ export default function App() {
   };
 
   const handleUpdateKondisi = async (barangId, kondisi) => {
+    // Jika kondisi rusak atau rusak_bisa_dipakai, buka dialog untuk catatan
+    if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
+      setKerusakanBarang({ id: barangId, kondisi });
+      setShowKerusakanDialog(true);
+    } else {
+      // Jika normal, langsung update tanpa catatan
+      await submitUpdateKondisi(barangId, kondisi, 'Dikembalikan ke kondisi normal');
+    }
+  };
+
+  const submitUpdateKondisi = async (barangId, kondisi, deskripsi) => {
     setLoading(true);
     setError('');
     try {
       const body = JSON.stringify({
         barangId,
         kondisi,
-        deskripsi: 'Update kondisi barang'
+        deskripsi
       });
 
       const response = await fetch('/api/barang/kondisi', {
@@ -587,6 +598,8 @@ export default function App() {
 
       setSuccess('Kondisi berhasil diupdate!');
       setTimeout(() => setSuccess(''), 3000);
+      setShowKerusakanDialog(false);
+      setKerusakanBarang(null);
       loadBarang();
     } catch (err) {
       console.error('Error updating kondisi:', err);
