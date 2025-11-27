@@ -75,6 +75,10 @@ export default function App() {
   // Setting state
   const [setting, setSetting] = useState({});
 
+  // Laporan state
+  const [laporanType, setLaporanType] = useState('');
+  const [laporanData, setLaporanData] = useState([]);
+
   // Dialogs
   const [showBarangDialog, setShowBarangDialog] = useState(false);
   const [showBarangEditDialog, setShowBarangEditDialog] = useState(false);
