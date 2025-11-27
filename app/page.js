@@ -1749,7 +1749,10 @@ export default function App() {
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                           <div>
                             <CardTitle>Laporan Peminjaman Bulanan</CardTitle>
-                            <CardDescription>Total: {getFilteredLaporanData().length} dari {laporanData.length} peminjaman</CardDescription>
+                            <CardDescription>
+                              Total: {getFilteredLaporanData().length} dari {laporanData.length} peminjaman
+                              {getFilterInfo()}
+                            </CardDescription>
                           </div>
                           <div className="flex gap-2 print:hidden">
                             <Input
