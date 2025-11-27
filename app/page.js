@@ -2240,10 +2240,13 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">No</th>
                               <th className="text-left p-3 font-semibold">Nama Peminjam</th>
                               <th className="text-left p-3 font-semibold">Kelas/Jabatan</th>
+                              <th className="text-left p-3 font-semibold">Barang Dipinjam</th>
                               <th className="text-left p-3 font-semibold">Tanggal Pinjam</th>
-                              <th className="text-left p-3 font-semibold">Jam</th>
+                              <th className="text-left p-3 font-semibold">Jam Pinjam</th>
+                              <th className="text-left p-3 font-semibold">Tanggal Kembali</th>
+                              <th className="text-left p-3 font-semibold">Jam Kembali</th>
                               <th className="text-left p-3 font-semibold">Status</th>
-                              <th className="text-left p-3 font-semibold">Jumlah Barang</th>
+                              <th className="text-left p-3 font-semibold">Kondisi Pengembalian</th>
                               <th className="text-left p-3 font-semibold">Catatan</th>
                             </tr>
                           </thead>
@@ -2253,8 +2256,31 @@ export default function App() {
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3 font-medium">{item.namaPeminjam}</td>
                                 <td className="p-3">{item.kelasjabatan}</td>
+                                <td className="p-3">
+                                  {item.barangData && item.barangData.length > 0 ? (
+                                    <div className="space-y-1">
+                                      {item.barangData.map((b, i) => (
+                                        <div key={i} className="text-sm">
+                                          {i + 1}. {b.nama}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
                                 <td className="p-3">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</td>
                                 <td className="p-3">{item.jamPinjam}</td>
+                                <td className="p-3">
+                                  {item.tanggalDikembalikan ? (
+                                    new Date(item.tanggalDikembalikan).toLocaleDateString('id-ID')
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+                                <td className="p-3">
+                                  {item.jamDikembalikan || <span className="text-gray-400">-</span>}
+                                </td>
                                 <td className="p-3">
                                   {item.status === 'dipinjam' ? (
                                     <Badge className="bg-orange-500">Dipinjam</Badge>
@@ -2262,8 +2288,26 @@ export default function App() {
                                     <Badge className="bg-green-500">Dikembalikan</Badge>
                                   )}
                                 </td>
-                                <td className="p-3">{item.barang?.length || 0} item</td>
-                                <td className="p-3">{item.catatan || '-'}</td>
+                                <td className="p-3">
+                                  {item.kondisiPengembalian ? (
+                                    <span className={`text-sm ${
+                                      item.kondisiPengembalian === 'baik' ? 'text-green-600' :
+                                      item.kondisiPengembalian === 'rusak_ringan' ? 'text-yellow-600' :
+                                      'text-red-600'
+                                    }`}>
+                                      {item.kondisiPengembalian === 'baik' ? 'Baik' :
+                                       item.kondisiPengembalian === 'rusak_ringan' ? 'Rusak Ringan' :
+                                       'Rusak Berat'}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+                                <td className="p-3 max-w-xs">
+                                  <div className="text-sm">
+                                    {item.catatanPengembalian || item.catatan || '-'}
+                                  </div>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
