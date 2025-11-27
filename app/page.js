@@ -273,6 +273,38 @@ export default function App() {
     }
   };
 
+  const loadLaporan = async (type) => {
+    setLaporanType(type);
+    setLoading(true);
+    
+    try {
+      if (type === 'Barang Normal' || type === 'Barang Rusak' || type === 'Barang Rusak Bisa Dipakai') {
+        const kondisiMap = {
+          'Barang Normal': 'normal',
+          'Barang Rusak': 'rusak',
+          'Barang Rusak Bisa Dipakai': 'rusak_bisa_dipakai'
+        };
+        
+        const response = await apiCall(`/barang?kondisi=${kondisiMap[type]}`);
+        const data = await response.json();
+        setLaporanData(data);
+      } else if (type === 'Peminjaman Bulanan') {
+        const response = await apiCall('/peminjaman');
+        const data = await response.json();
+        setLaporanData(data);
+      } else if (type === 'Inventaris Lengkap') {
+        const response = await apiCall('/barang');
+        const data = await response.json();
+        setLaporanData(data);
+      }
+    } catch (err) {
+      console.error('Error loading laporan:', err);
+      setError('Gagal memuat data laporan');
+    }
+    
+    setLoading(false);
+  };
+
   const handleAddBarang = async (e) => {
     e.preventDefault();
     setLoading(true);
