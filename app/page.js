@@ -845,7 +845,7 @@ export default function App() {
                       <p>Jumlah: {item.jumlah || 0} unit</p>
                     </div>
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button size="sm" variant="outline" className="flex-1" onClick={() => loadBarangDetail(item._id)}>
                         <Eye className="h-3 w-3 mr-1" />
                         Detail
                       </Button>
