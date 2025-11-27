@@ -40,8 +40,8 @@ function verifyToken(request) {
 function getJakartaTime() {
   const now = new Date();
   
-  // Convert to Jakarta timezone string
-  const jakartaString = now.toLocaleString('en-US', { 
+  // Get local time in Jakarta timezone as string
+  const jakartaString = now.toLocaleString('en-CA', { 
     timeZone: 'Asia/Jakarta',
     year: 'numeric',
     month: '2-digit',
@@ -52,23 +52,11 @@ function getJakartaTime() {
     hour12: false
   });
   
-  // Parse: "MM/DD/YYYY, HH:mm:ss" format
+  // en-CA format: "YYYY-MM-DD, HH:mm:ss"
   const [datePart, timePart] = jakartaString.split(', ');
-  const [month, day, year] = datePart.split('/');
-  const [hours, minutes, seconds] = timePart.split(':');
+  const isoString = `${datePart}T${timePart}.000+07:00`;  // Add timezone offset
   
-  // Create date in UTC that represents Jakarta time
-  // Subtract 7 hours to get the UTC time that corresponds to Jakarta time
-  const jakartaDate = new Date(Date.UTC(
-    parseInt(year),
-    parseInt(month) - 1,
-    parseInt(day),
-    parseInt(hours) - 7,  // Subtract 7 hours for UTC
-    parseInt(minutes),
-    parseInt(seconds)
-  ));
-  
-  return jakartaDate;
+  return new Date(isoString);
 }
 
 // Helper untuk upload file
