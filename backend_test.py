@@ -11,7 +11,7 @@ from datetime import datetime
 import tempfile
 
 # Get base URL from environment
-BASE_URL = "https://inventaris-dkv.preview.emergentagent.com/api"
+BASE_URL = "https://dkvlab.preview.emergentagent.com/api"
 
 class DKVAPITester:
     def __init__(self):
