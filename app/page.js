@@ -77,6 +77,7 @@ export default function App() {
 
   // Dialogs
   const [showBarangDialog, setShowBarangDialog] = useState(false);
+  const [showBarangDetailDialog, setShowBarangDetailDialog] = useState(false);
   const [showPeminjamanDialog, setShowPeminjamanDialog] = useState(false);
   const [showUserDialog, setShowUserDialog] = useState(false);
   const [showKategoriDialog, setShowKategoriDialog] = useState(false);
