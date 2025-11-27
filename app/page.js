@@ -985,6 +985,81 @@ export default function App() {
               </DialogContent>
             </Dialog>
 
+            {/* Edit Barang Dialog */}
+            <Dialog open={showBarangEditDialog} onOpenChange={setShowBarangEditDialog}>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Edit Barang</DialogTitle>
+                </DialogHeader>
+                {selectedBarang && (
+                  <form onSubmit={handleEditBarang} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-nama">Nama Barang *</Label>
+                        <Input id="edit-nama" name="nama" defaultValue={selectedBarang.nama} required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-kategori">Kategori</Label>
+                        <Input id="edit-kategori" name="kategori" defaultValue={selectedBarang.kategori} placeholder="Kamera, Tripod, dll" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-serial">Serial/Code</Label>
+                        <Input id="edit-serial" name="serial" defaultValue={selectedBarang.serial} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-kondisi">Kondisi</Label>
+                        <Select name="kondisi" defaultValue={selectedBarang.kondisi}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="rusak">Rusak</SelectItem>
+                            <SelectItem value="rusak_bisa_dipakai">Rusak Bisa Dipakai</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-lokasi">Lokasi Penyimpanan</Label>
+                        <Input id="edit-lokasi" name="lokasi" defaultValue={selectedBarang.lokasi} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-jumlah">Jumlah Unit *</Label>
+                        <Input id="edit-jumlah" name="jumlah" type="number" defaultValue={selectedBarang.jumlah} required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-tahunPembelian">Tahun Pembelian</Label>
+                        <Input id="edit-tahunPembelian" name="tahunPembelian" type="number" defaultValue={selectedBarang.tahunPembelian} placeholder="2024" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-foto">Foto Barang (Kosongkan jika tidak ingin diubah)</Label>
+                        <Input id="edit-foto" name="foto" type="file" accept="image/*" />
+                        {selectedBarang.foto && (
+                          <div className="mt-2">
+                            <p className="text-xs text-gray-600 mb-1">Foto saat ini:</p>
+                            <img src={selectedBarang.foto} alt="Current" className="w-20 h-20 object-cover rounded border" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-spesifikasi">Spesifikasi</Label>
+                      <Textarea id="edit-spesifikasi" name="spesifikasi" rows={3} defaultValue={selectedBarang.spesifikasi} />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <Button type="button" variant="outline" onClick={() => {
+                        setShowBarangEditDialog(false);
+                        setSelectedBarang(null);
+                      }}>Batal</Button>
+                      <Button type="submit" disabled={loading}>
+                        {loading ? 'Menyimpan...' : 'Update Barang'}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </DialogContent>
+            </Dialog>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {barang.map((item) => (
                 <Card key={item._id} className="overflow-hidden">
