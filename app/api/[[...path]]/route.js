@@ -39,9 +39,10 @@ function verifyToken(request) {
 // Helper untuk mendapatkan waktu Jakarta (UTC+7)
 function getJakartaTime() {
   const now = new Date();
-  // Konversi ke UTC+7 dengan menambahkan offset 7 jam
-  const utcTime = now.getTime();
-  const jakartaOffset = 7 * 60 * 60 * 1000; // 7 jam dalam milliseconds
+  // Get UTC time in milliseconds
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+  // Add Jakarta offset (UTC+7 = 7 hours)
+  const jakartaOffset = 7 * 60 * 60 * 1000;
   return new Date(utcTime + jakartaOffset);
 }
 
