@@ -219,9 +219,9 @@ export async function POST(request) {
       const suratFile = formData.get('surat');
       
       // Auto-generate tanggal dan jam pinjam (saat ini) - UTC+7 Jakarta
+      const jakartaTime = getJakartaTime();
       const now = new Date();
-      const jakartaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
-      const jamPinjam = jakartaTime.toLocaleTimeString('id-ID', { 
+      const jamPinjam = now.toLocaleTimeString('id-ID', { 
         hour: '2-digit', 
         minute: '2-digit', 
         hour12: false,
