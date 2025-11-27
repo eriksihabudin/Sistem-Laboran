@@ -79,6 +79,11 @@ export default function App() {
   const [laporanType, setLaporanType] = useState('Barang Normal');
   const [laporanData, setLaporanData] = useState([]);
   const [laporanSearch, setLaporanSearch] = useState('');
+  
+  // Filter peminjaman
+  const [filterTanggal, setFilterTanggal] = useState('');
+  const [filterBulan, setFilterBulan] = useState('');
+  const [filterTahun, setFilterTahun] = useState(new Date().getFullYear().toString());
 
   // Dialogs
   const [showBarangDialog, setShowBarangDialog] = useState(false);
