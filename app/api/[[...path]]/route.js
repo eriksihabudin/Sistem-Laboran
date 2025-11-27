@@ -670,7 +670,7 @@ export async function PUT(request) {
       
       if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
         const kerusakan = {
-          tanggal: new Date(),
+          tanggal: getJakartaTime(),
           deskripsi,
           foto,
           oleh: userData.username || 'System'
