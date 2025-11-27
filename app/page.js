@@ -93,6 +93,8 @@ export default function App() {
   const [showPeminjamanDialog, setShowPeminjamanDialog] = useState(false);
   const [showUserDialog, setShowUserDialog] = useState(false);
   const [showKategoriDialog, setShowKategoriDialog] = useState(false);
+  const [showKerusakanDialog, setShowKerusakanDialog] = useState(false);
+  const [kerusakanBarang, setKerusakanBarang] = useState(null);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
