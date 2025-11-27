@@ -1415,198 +1415,311 @@ export default function App() {
 
           {/* Laporan Tab */}
           <TabsContent value="laporan" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className={laporanType === 'Barang Normal' ? 'border-blue-500 border-2' : ''}>
-                <CardHeader>
-                  <CardTitle>Laporan Barang Normal</CardTitle>
-                  <CardDescription>Lihat dan download laporan barang normal</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full" variant="outline" onClick={() => loadLaporan('Barang Normal')}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Tampilkan Data
-                  </Button>
-                  <Button className="w-full" onClick={() => downloadPDF('Barang Normal')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </Button>
-                </CardContent>
-              </Card>
+            <Tabs value={laporanType} onValueChange={setLaporanType}>
+              <TabsList className="grid grid-cols-5 w-full">
+                <TabsTrigger value="Barang Normal">Barang Normal</TabsTrigger>
+                <TabsTrigger value="Barang Rusak">Barang Rusak</TabsTrigger>
+                <TabsTrigger value="Barang Rusak Bisa Dipakai">Rusak Bisa Dipakai</TabsTrigger>
+                <TabsTrigger value="Peminjaman Bulanan">Peminjaman</TabsTrigger>
+                <TabsTrigger value="Inventaris Lengkap">Inventaris Lengkap</TabsTrigger>
+              </TabsList>
 
-              <Card className={laporanType === 'Barang Rusak' ? 'border-blue-500 border-2' : ''}>
-                <CardHeader>
-                  <CardTitle>Laporan Barang Rusak</CardTitle>
-                  <CardDescription>Lihat dan download laporan barang rusak</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full" variant="outline" onClick={() => loadLaporan('Barang Rusak')}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Tampilkan Data
-                  </Button>
-                  <Button className="w-full" onClick={() => downloadPDF('Barang Rusak')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className={laporanType === 'Barang Rusak Bisa Dipakai' ? 'border-blue-500 border-2' : ''}>
-                <CardHeader>
-                  <CardTitle>Laporan Rusak Bisa Dipakai</CardTitle>
-                  <CardDescription>Lihat dan download laporan rusak bisa dipakai</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full" variant="outline" onClick={() => loadLaporan('Barang Rusak Bisa Dipakai')}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Tampilkan Data
-                  </Button>
-                  <Button className="w-full" onClick={() => downloadPDF('Barang Rusak Bisa Dipakai')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className={laporanType === 'Peminjaman Bulanan' ? 'border-blue-500 border-2' : ''}>
-                <CardHeader>
-                  <CardTitle>Laporan Peminjaman Bulanan</CardTitle>
-                  <CardDescription>Lihat dan download laporan peminjaman</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full" variant="outline" onClick={() => loadLaporan('Peminjaman Bulanan')}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Tampilkan Data
-                  </Button>
-                  <Button className="w-full" onClick={() => downloadPDF('Peminjaman Bulanan')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className={laporanType === 'Inventaris Lengkap' ? 'border-blue-500 border-2' : ''}>
-                <CardHeader>
-                  <CardTitle>Laporan Inventaris Lengkap</CardTitle>
-                  <CardDescription>Lihat dan download laporan inventaris lengkap</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full" variant="outline" onClick={() => loadLaporan('Inventaris Lengkap')}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Tampilkan Data
-                  </Button>
-                  <Button className="w-full" onClick={() => downloadPDF('Inventaris Lengkap')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Tabel Data Laporan */}
-            {laporanType && laporanData.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle>{laporanType}</CardTitle>
-                      <CardDescription>Total: {laporanData.length} data</CardDescription>
-                    </div>
-                    <Button variant="outline" onClick={() => { setLaporanType(''); setLaporanData([]); }}>
-                      Tutup
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    {(laporanType === 'Barang Normal' || laporanType === 'Barang Rusak' || laporanType === 'Barang Rusak Bisa Dipakai' || laporanType === 'Inventaris Lengkap') && (
-                      <table className="w-full border-collapse">
-                        <thead>
-                          <tr className="border-b bg-gray-50">
-                            <th className="text-left p-3 font-semibold">No</th>
-                            <th className="text-left p-3 font-semibold">Foto</th>
-                            <th className="text-left p-3 font-semibold">Nama Barang</th>
-                            <th className="text-left p-3 font-semibold">Kategori</th>
-                            <th className="text-left p-3 font-semibold">Serial</th>
-                            <th className="text-left p-3 font-semibold">Kondisi</th>
-                            <th className="text-left p-3 font-semibold">Lokasi</th>
-                            <th className="text-left p-3 font-semibold">Jumlah</th>
-                            <th className="text-left p-3 font-semibold">Tahun</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {laporanData.map((item, idx) => (
-                            <tr key={item._id} className="border-b hover:bg-gray-50">
-                              <td className="p-3">{idx + 1}</td>
-                              <td className="p-3">
-                                {item.foto ? (
-                                  <img src={item.foto} alt={item.nama} className="w-12 h-12 object-cover rounded" />
-                                ) : (
-                                  <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
-                                    <Camera className="h-6 w-6 text-gray-400" />
-                                  </div>
-                                )}
-                              </td>
-                              <td className="p-3 font-medium">{item.nama}</td>
-                              <td className="p-3">{item.kategori || '-'}</td>
-                              <td className="p-3">{item.serial || '-'}</td>
-                              <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                              <td className="p-3">{item.lokasi || '-'}</td>
-                              <td className="p-3">{item.jumlah || 0}</td>
-                              <td className="p-3">{item.tahunPembelian || '-'}</td>
+              {/* Barang Normal */}
+              <TabsContent value="Barang Normal">
+                {laporanData.length > 0 ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Laporan Barang Normal</CardTitle>
+                      <CardDescription>Total: {laporanData.length} barang</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b bg-gray-50">
+                              <th className="text-left p-3 font-semibold">No</th>
+                              <th className="text-left p-3 font-semibold">Foto</th>
+                              <th className="text-left p-3 font-semibold">Nama Barang</th>
+                              <th className="text-left p-3 font-semibold">Kategori</th>
+                              <th className="text-left p-3 font-semibold">Serial</th>
+                              <th className="text-left p-3 font-semibold">Kondisi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Jumlah</th>
+                              <th className="text-left p-3 font-semibold">Tahun</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
+                          </thead>
+                          <tbody>
+                            {laporanData.map((item, idx) => (
+                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                <td className="p-3">{idx + 1}</td>
+                                <td className="p-3">
+                                  {item.foto ? (
+                                    <img src={item.foto} alt={item.nama} className="w-12 h-12 object-cover rounded" />
+                                  ) : (
+                                    <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+                                      <Camera className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="p-3 font-medium">{item.nama}</td>
+                                <td className="p-3">{item.kategori || '-'}</td>
+                                <td className="p-3">{item.serial || '-'}</td>
+                                <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.jumlah || 0}</td>
+                                <td className="p-3">{item.tahunPembelian || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-gray-500">Tidak ada data barang normal</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
 
-                    {laporanType === 'Peminjaman Bulanan' && (
-                      <table className="w-full border-collapse">
-                        <thead>
-                          <tr className="border-b bg-gray-50">
-                            <th className="text-left p-3 font-semibold">No</th>
-                            <th className="text-left p-3 font-semibold">Nama Peminjam</th>
-                            <th className="text-left p-3 font-semibold">Kelas/Jabatan</th>
-                            <th className="text-left p-3 font-semibold">Tanggal Pinjam</th>
-                            <th className="text-left p-3 font-semibold">Jam</th>
-                            <th className="text-left p-3 font-semibold">Status</th>
-                            <th className="text-left p-3 font-semibold">Jumlah Barang</th>
-                            <th className="text-left p-3 font-semibold">Catatan</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {laporanData.map((item, idx) => (
-                            <tr key={item._id} className="border-b hover:bg-gray-50">
-                              <td className="p-3">{idx + 1}</td>
-                              <td className="p-3 font-medium">{item.namaPeminjam}</td>
-                              <td className="p-3">{item.kelasjabatan}</td>
-                              <td className="p-3">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</td>
-                              <td className="p-3">{item.jamPinjam}</td>
-                              <td className="p-3">
-                                {item.status === 'dipinjam' ? (
-                                  <Badge className="bg-orange-500">Dipinjam</Badge>
-                                ) : (
-                                  <Badge className="bg-green-500">Dikembalikan</Badge>
-                                )}
-                              </td>
-                              <td className="p-3">{item.barang?.length || 0} item</td>
-                              <td className="p-3">{item.catatan || '-'}</td>
+              {/* Barang Rusak */}
+              <TabsContent value="Barang Rusak">
+                {laporanData.length > 0 ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Laporan Barang Rusak</CardTitle>
+                      <CardDescription>Total: {laporanData.length} barang</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b bg-gray-50">
+                              <th className="text-left p-3 font-semibold">No</th>
+                              <th className="text-left p-3 font-semibold">Foto</th>
+                              <th className="text-left p-3 font-semibold">Nama Barang</th>
+                              <th className="text-left p-3 font-semibold">Kategori</th>
+                              <th className="text-left p-3 font-semibold">Serial</th>
+                              <th className="text-left p-3 font-semibold">Kondisi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Jumlah</th>
+                              <th className="text-left p-3 font-semibold">Tahun</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                          </thead>
+                          <tbody>
+                            {laporanData.map((item, idx) => (
+                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                <td className="p-3">{idx + 1}</td>
+                                <td className="p-3">
+                                  {item.foto ? (
+                                    <img src={item.foto} alt={item.nama} className="w-12 h-12 object-cover rounded" />
+                                  ) : (
+                                    <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+                                      <Camera className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="p-3 font-medium">{item.nama}</td>
+                                <td className="p-3">{item.kategori || '-'}</td>
+                                <td className="p-3">{item.serial || '-'}</td>
+                                <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.jumlah || 0}</td>
+                                <td className="p-3">{item.tahunPembelian || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-gray-500">Tidak ada data barang rusak</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
 
-            {laporanType && laporanData.length === 0 && !loading && (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-gray-500">Tidak ada data untuk ditampilkan</p>
-                </CardContent>
-              </Card>
-            )}
+              {/* Barang Rusak Bisa Dipakai */}
+              <TabsContent value="Barang Rusak Bisa Dipakai">
+                {laporanData.length > 0 ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Laporan Barang Rusak Bisa Dipakai</CardTitle>
+                      <CardDescription>Total: {laporanData.length} barang</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b bg-gray-50">
+                              <th className="text-left p-3 font-semibold">No</th>
+                              <th className="text-left p-3 font-semibold">Foto</th>
+                              <th className="text-left p-3 font-semibold">Nama Barang</th>
+                              <th className="text-left p-3 font-semibold">Kategori</th>
+                              <th className="text-left p-3 font-semibold">Serial</th>
+                              <th className="text-left p-3 font-semibold">Kondisi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Jumlah</th>
+                              <th className="text-left p-3 font-semibold">Tahun</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {laporanData.map((item, idx) => (
+                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                <td className="p-3">{idx + 1}</td>
+                                <td className="p-3">
+                                  {item.foto ? (
+                                    <img src={item.foto} alt={item.nama} className="w-12 h-12 object-cover rounded" />
+                                  ) : (
+                                    <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+                                      <Camera className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="p-3 font-medium">{item.nama}</td>
+                                <td className="p-3">{item.kategori || '-'}</td>
+                                <td className="p-3">{item.serial || '-'}</td>
+                                <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.jumlah || 0}</td>
+                                <td className="p-3">{item.tahunPembelian || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-gray-500">Tidak ada data barang rusak bisa dipakai</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              {/* Peminjaman Bulanan */}
+              <TabsContent value="Peminjaman Bulanan">
+                {laporanData.length > 0 ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Laporan Peminjaman Bulanan</CardTitle>
+                      <CardDescription>Total: {laporanData.length} peminjaman</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b bg-gray-50">
+                              <th className="text-left p-3 font-semibold">No</th>
+                              <th className="text-left p-3 font-semibold">Nama Peminjam</th>
+                              <th className="text-left p-3 font-semibold">Kelas/Jabatan</th>
+                              <th className="text-left p-3 font-semibold">Tanggal Pinjam</th>
+                              <th className="text-left p-3 font-semibold">Jam</th>
+                              <th className="text-left p-3 font-semibold">Status</th>
+                              <th className="text-left p-3 font-semibold">Jumlah Barang</th>
+                              <th className="text-left p-3 font-semibold">Catatan</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {laporanData.map((item, idx) => (
+                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                <td className="p-3">{idx + 1}</td>
+                                <td className="p-3 font-medium">{item.namaPeminjam}</td>
+                                <td className="p-3">{item.kelasjabatan}</td>
+                                <td className="p-3">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</td>
+                                <td className="p-3">{item.jamPinjam}</td>
+                                <td className="p-3">
+                                  {item.status === 'dipinjam' ? (
+                                    <Badge className="bg-orange-500">Dipinjam</Badge>
+                                  ) : (
+                                    <Badge className="bg-green-500">Dikembalikan</Badge>
+                                  )}
+                                </td>
+                                <td className="p-3">{item.barang?.length || 0} item</td>
+                                <td className="p-3">{item.catatan || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-gray-500">Tidak ada data peminjaman</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              {/* Inventaris Lengkap */}
+              <TabsContent value="Inventaris Lengkap">
+                {laporanData.length > 0 ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Laporan Inventaris Lengkap</CardTitle>
+                      <CardDescription>Total: {laporanData.length} barang</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b bg-gray-50">
+                              <th className="text-left p-3 font-semibold">No</th>
+                              <th className="text-left p-3 font-semibold">Foto</th>
+                              <th className="text-left p-3 font-semibold">Nama Barang</th>
+                              <th className="text-left p-3 font-semibold">Kategori</th>
+                              <th className="text-left p-3 font-semibold">Serial</th>
+                              <th className="text-left p-3 font-semibold">Kondisi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Jumlah</th>
+                              <th className="text-left p-3 font-semibold">Tahun</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {laporanData.map((item, idx) => (
+                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                <td className="p-3">{idx + 1}</td>
+                                <td className="p-3">
+                                  {item.foto ? (
+                                    <img src={item.foto} alt={item.nama} className="w-12 h-12 object-cover rounded" />
+                                  ) : (
+                                    <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+                                      <Camera className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="p-3 font-medium">{item.nama}</td>
+                                <td className="p-3">{item.kategori || '-'}</td>
+                                <td className="p-3">{item.serial || '-'}</td>
+                                <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.jumlah || 0}</td>
+                                <td className="p-3">{item.tahunPembelian || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-gray-500">Tidak ada data inventaris</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+            </Tabs>
           </TabsContent>
 
           {/* Users Tab */}
