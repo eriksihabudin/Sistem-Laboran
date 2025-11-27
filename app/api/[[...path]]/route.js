@@ -665,7 +665,7 @@ export async function PUT(request) {
       
       const updateData = {
         kondisi,
-        updatedAt: new Date()
+        updatedAt: getJakartaTime()
       };
       
       if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
