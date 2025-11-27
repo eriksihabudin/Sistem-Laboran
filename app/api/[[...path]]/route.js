@@ -420,7 +420,12 @@ export async function GET(request) {
       }
 
       const barangCollection = db.collection('barang');
+      const kategoriCollection = db.collection('kategori');
       
+      // Get all kategori dari database
+      const allKategori = await kategoriCollection.find().toArray();
+      
+      // Aggregate data kerusakan per kategori
       const kerusakanData = await barangCollection.aggregate([
         {
           $group: {
@@ -438,12 +443,32 @@ export async function GET(request) {
         }
       ]).toArray();
       
-      return NextResponse.json(kerusakanData.map(k => ({
-        kategori: k._id || 'Lainnya',
-        rusak: k.rusak,
-        rusakBisaDipakai: k.rusakBisaDipakai,
-        normal: k.normal
-      })));
+      // Create result array dengan semua kategori dari database
+      const result = allKategori.map(k => {
+        const data = kerusakanData.find(kd => kd._id === k.nama);
+        return {
+          kategori: k.nama,
+          rusak: data?.rusak || 0,
+          rusakBisaDipakai: data?.rusakBisaDipakai || 0,
+          normal: data?.normal || 0
+        };
+      });
+      
+      // Add kategori 'Lainnya' untuk barang tanpa kategori
+      const uncategorized = kerusakanData.find(kd => !kd._id || kd._id === '');
+      if (uncategorized) {
+        result.push({
+          kategori: 'Lainnya',
+          rusak: uncategorized.rusak || 0,
+          rusakBisaDipakai: uncategorized.rusakBisaDipakai || 0,
+          normal: uncategorized.normal || 0
+        });
+      }
+      
+      // Filter out kategori dengan total 0 barang
+      const filteredResult = result.filter(r => (r.rusak + r.rusakBisaDipakai + r.normal) > 0);
+      
+      return NextResponse.json(filteredResult);
     }
 
     // === BARANG ENDPOINTS ===
