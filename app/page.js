@@ -1836,7 +1836,7 @@ export default function App() {
                       </div>
                       <div className="flex items-center gap-2">
                         {item.status === 'dipinjam' && (
-                          <Button size="sm" onClick={() => handleReturnBarang(item._id)}>
+                          <Button size="sm" onClick={() => handleReturnBarang(item)}>
                             <CheckCircle className="h-4 w-4 mr-1" />
                             Tandai Kembali
                           </Button>
