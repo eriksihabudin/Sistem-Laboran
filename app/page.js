@@ -2563,7 +2563,7 @@ export default function App() {
                 {users.map((u) => (
                   <Card key={u._id}>
                     <CardContent className="p-6">
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <div className="flex justify-between items-start">
                           <div>
                             <p className="font-semibold text-lg">{u.nama}</p>
@@ -2573,6 +2573,24 @@ export default function App() {
                         </div>
                         {u.kelas && <p className="text-sm">Kelas: {u.kelas}</p>}
                         {u.jabatan && <p className="text-sm">Jabatan: {u.jabatan}</p>}
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openEditUser(u)}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => deleteUser(u._id, u.nama)}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Hapus
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
