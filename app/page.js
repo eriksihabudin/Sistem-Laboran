@@ -52,6 +52,7 @@ export default function App() {
   const [chartPeminjaman, setChartPeminjaman] = useState([]);
   const [chartKerusakan, setChartKerusakan] = useState([]);
   const [chartYear, setChartYear] = useState(new Date().getFullYear());
+  const [peminjamanTerbaru, setPeminjamanTerbaru] = useState([]);
 
   // Barang state
   const [barang, setBarang] = useState([]);
