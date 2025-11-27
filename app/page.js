@@ -104,8 +104,20 @@ export default function App() {
       if (activeTab === 'users') loadUsers();
       if (activeTab === 'kategori') loadKategori();
       if (activeTab === 'setting') loadSetting();
+      if (activeTab === 'laporan') {
+        // Default load laporan barang normal
+        if (!laporanType) {
+          loadLaporan('Barang Normal');
+        }
+      }
     }
   }, [user, token, activeTab]);
+
+  useEffect(() => {
+    if (user && token && activeTab === 'laporan' && laporanType) {
+      loadLaporan(laporanType);
+    }
+  }, [laporanType]);
 
   const apiCall = async (endpoint, options = {}) => {
     const headers = {
