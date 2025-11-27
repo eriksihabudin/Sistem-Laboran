@@ -926,6 +926,32 @@ export async function DELETE(request) {
       return NextResponse.json({ message: 'Kategori berhasil dihapus' });
     }
 
+    // === DATABASE CLEAR ===
+    if (pathname === '/database/clear') {
+      if (userData.role !== 'admin') {
+        return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 401 });
+      }
+
+      // Clear all data except admin user
+      const adminUsers = await db.collection('users').find({ role: 'admin' }).toArray();
+      
+      await db.collection('users').deleteMany({});
+      await db.collection('barang').deleteMany({});
+      await db.collection('peminjaman').deleteMany({});
+      await db.collection('kategori').deleteMany({});
+      await db.collection('setting').deleteMany({});
+
+      // Restore admin users
+      if (adminUsers.length > 0) {
+        await db.collection('users').insertMany(adminUsers);
+      }
+
+      return NextResponse.json({ 
+        message: 'Database berhasil dikosongkan (admin user dipertahankan)',
+        preserved_admins: adminUsers.length
+      });
+    }
+
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     
   } catch (error) {
