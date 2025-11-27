@@ -145,6 +145,15 @@ export default function App() {
     }
   }, [chartYear]);
 
+  // Update clock setiap detik dengan timezone Asia/Jakarta
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const apiCall = async (endpoint, options = {}) => {
     const headers = {
       'Authorization': `Bearer ${token}`,
