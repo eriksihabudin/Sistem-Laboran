@@ -360,15 +360,21 @@ export default function App() {
 
   const handleUpdateKondisi = async (barangId, kondisi) => {
     setLoading(true);
+    setError('');
     try {
-      const response = await apiCall('/barang/kondisi', {
+      const body = JSON.stringify({
+        barangId,
+        kondisi,
+        deskripsi: 'Update kondisi barang'
+      });
+
+      const response = await fetch('/api/barang/kondisi', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          barangId,
-          kondisi,
-          deskripsi: 'Update kondisi barang'
-        })
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: body
       });
 
       const data = await response.json();
@@ -380,9 +386,11 @@ export default function App() {
       }
 
       setSuccess('Kondisi berhasil diupdate!');
+      setTimeout(() => setSuccess(''), 3000);
       loadBarang();
     } catch (err) {
-      setError('Terjadi kesalahan');
+      console.error('Error updating kondisi:', err);
+      setError('Terjadi kesalahan: ' + err.message);
     }
     setLoading(false);
   };
