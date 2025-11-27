@@ -56,6 +56,7 @@ export default function App() {
   // Barang state
   const [barang, setBarang] = useState([]);
   const [selectedBarang, setSelectedBarang] = useState(null);
+  const [barangDetail, setBarangDetail] = useState(null);
   const [filterKondisi, setFilterKondisi] = useState('');
   const [filterKategori, setFilterKategori] = useState('');
   const [searchBarang, setSearchBarang] = useState('');
