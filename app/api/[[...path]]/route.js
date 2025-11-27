@@ -356,6 +356,34 @@ export async function GET(request) {
       });
     }
 
+    if (pathname === '/dashboard/peminjaman-terbaru') {
+      const userData = verifyToken(request);
+      if (!userData) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const peminjamanCollection = db.collection('peminjaman');
+      
+      // Get 10 peminjaman terbaru
+      const peminjaman = await peminjamanCollection
+        .find()
+        .sort({ tanggalPinjam: -1 })
+        .limit(10)
+        .toArray();
+      
+      // Populate barang data
+      for (let p of peminjaman) {
+        const barangData = [];
+        for (let barangId of p.barang) {
+          const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
+          if (b) barangData.push(b);
+        }
+        p.barangData = barangData;
+      }
+      
+      return NextResponse.json(peminjaman);
+    }
+
     if (pathname === '/dashboard/chart/peminjaman') {
       const userData = verifyToken(request);
       if (!userData) {
