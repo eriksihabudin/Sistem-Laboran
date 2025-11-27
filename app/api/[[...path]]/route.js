@@ -206,11 +206,14 @@ export async function POST(request) {
       const namaPeminjam = formData.get('namaPeminjam');
       const kelasjabatan = formData.get('kelasjabatan');
       const barangIds = formData.get('barangIds');
-      const tanggalPinjam = formData.get('tanggalPinjam');
-      const jamPinjam = formData.get('jamPinjam');
       const tanggalKembali = formData.get('tanggalKembali');
+      const jamKembali = formData.get('jamKembali');
       const catatan = formData.get('catatan');
       const suratFile = formData.get('surat');
+      
+      // Auto-generate tanggal dan jam pinjam (saat ini)
+      const now = new Date();
+      const jamPinjam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
       
       let suratUrl = null;
       if (suratFile && suratFile.size > 0) {
@@ -223,15 +226,16 @@ export async function POST(request) {
         namaPeminjam,
         kelasjabatan,
         barang: barangList,
-        tanggalPinjam: new Date(tanggalPinjam),
+        tanggalPinjam: now,
         jamPinjam,
-        tanggalKembali: tanggalKembali ? new Date(tanggalKembali) : null,
+        tanggalKembaliRencana: tanggalKembali ? new Date(tanggalKembali) : null,
+        jamKembaliRencana: jamKembali || null,
         status: 'dipinjam',
         surat: suratUrl,
         catatan,
         createdBy: userData.id,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: now,
+        updatedAt: now
       };
       
       const result = await db.collection('peminjaman').insertOne(peminjaman);
