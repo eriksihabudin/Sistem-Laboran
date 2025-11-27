@@ -2596,6 +2596,98 @@ export default function App() {
                   </Card>
                 ))}
               </div>
+
+              {/* Dialog Edit User */}
+              <Dialog open={showUserEditDialog} onOpenChange={setShowUserEditDialog}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Edit User</DialogTitle>
+                  </DialogHeader>
+                  {selectedUser && (
+                    <form onSubmit={async (e) => {
+                      e.preventDefault();
+                      setLoading(true);
+                      const formData = new FormData(e.target);
+                      const data = {
+                        nama: formData.get('nama'),
+                        role: formData.get('role'),
+                        kelas: formData.get('kelas'),
+                        jabatan: formData.get('jabatan')
+                      };
+                      
+                      // Only include password if it's provided
+                      const password = formData.get('password');
+                      if (password && password.trim() !== '') {
+                        data.password = password;
+                      }
+                      
+                      try {
+                        const response = await apiCall(`/users/${selectedUser._id}`, {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(data)
+                        });
+                        const result = await response.json();
+                        if (response.ok) {
+                          setSuccess('User berhasil diupdate!');
+                          setShowUserEditDialog(false);
+                          setSelectedUser(null);
+                          loadUsers();
+                        } else {
+                          setError(result.error);
+                        }
+                      } catch (err) {
+                        setError('Terjadi kesalahan');
+                      }
+                      setLoading(false);
+                    }} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Username</Label>
+                        <Input value={selectedUser.username} disabled className="bg-gray-100" />
+                        <p className="text-xs text-gray-500">Username tidak bisa diubah</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-password">Password Baru</Label>
+                        <Input id="edit-password" name="password" type="password" placeholder="Kosongkan jika tidak ingin mengubah password" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-nama">Nama Lengkap *</Label>
+                        <Input id="edit-nama" name="nama" defaultValue={selectedUser.nama} required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-role">Role *</Label>
+                        <Select name="role" defaultValue={selectedUser.role}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="laboran">Laboran</SelectItem>
+                            <SelectItem value="waka_sarpras">Waka Sarpras</SelectItem>
+                            <SelectItem value="guru">Guru</SelectItem>
+                            <SelectItem value="staff">Staff</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-kelas">Kelas (untuk siswa)</Label>
+                        <Input id="edit-kelas" name="kelas" defaultValue={selectedUser.kelas || ''} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-jabatan">Jabatan (untuk guru/staff)</Label>
+                        <Input id="edit-jabatan" name="jabatan" defaultValue={selectedUser.jabatan || ''} />
+                      </div>
+                      <div className="flex gap-2 justify-end">
+                        <Button type="button" variant="outline" onClick={() => {
+                          setShowUserEditDialog(false);
+                          setSelectedUser(null);
+                        }}>Batal</Button>
+                        <Button type="submit" disabled={loading}>Simpan Perubahan</Button>
+                      </div>
+                    </form>
+                  )}
+                </DialogContent>
+              </Dialog>
             </TabsContent>
           )}
 
