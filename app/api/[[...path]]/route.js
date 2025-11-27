@@ -737,11 +737,11 @@ export async function PUT(request) {
         { 
           $set: { 
             status: 'dikembalikan',
-            tanggalDikembalikan: now,
+            tanggalDikembalikan: jakartaTime,
             jamDikembalikan: jamDikembalikan,
             kondisiPengembalian: kondisiBarang,
             catatanPengembalian: catatan,
-            updatedAt: now
+            updatedAt: jakartaTime
           }
         }
       );
