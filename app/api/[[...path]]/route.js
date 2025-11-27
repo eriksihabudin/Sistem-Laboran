@@ -758,7 +758,7 @@ export async function PUT(request) {
         await db.collection('barang').updateOne(
           { _id: new ObjectId(barangId) },
           { 
-            $set: { statusPeminjaman: 'tersedia', updatedAt: new Date() }
+            $set: { statusPeminjaman: 'tersedia', updatedAt: getJakartaTime() }
           }
         );
       }
