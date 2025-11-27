@@ -743,6 +743,19 @@ export async function PUT(request) {
       return NextResponse.json({ message: 'User berhasil diupdate' });
     }
 
+    // === KATEGORI UPDATE ===
+    if (pathname.startsWith('/kategori/')) {
+      const id = pathname.split('/').pop();
+      const { nama, deskripsi } = await request.json();
+      
+      await db.collection('kategori').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { nama, deskripsi, updatedAt: new Date() } }
+      );
+      
+      return NextResponse.json({ message: 'Kategori berhasil diupdate' });
+    }
+
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     
   } catch (error) {
