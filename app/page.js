@@ -201,6 +201,18 @@ export default function App() {
     }
   };
 
+  const loadBarangDetail = async (id) => {
+    try {
+      const response = await apiCall(`/barang/${id}`);
+      const data = await response.json();
+      setBarangDetail(data);
+      setShowBarangDetailDialog(true);
+    } catch (err) {
+      console.error('Error loading barang detail:', err);
+      setError('Gagal memuat detail barang');
+    }
+  };
+
   const loadPeminjaman = async () => {
     try {
       let url = '/peminjaman?';
