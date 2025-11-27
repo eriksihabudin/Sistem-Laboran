@@ -1489,7 +1489,7 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody>
-                            {laporanData.map((item, idx) => (
+                            {getFilteredLaporanData().map((item, idx) => (
                               <tr key={item._id} className="border-b hover:bg-gray-50">
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3">
@@ -1549,7 +1549,7 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody>
-                            {laporanData.map((item, idx) => (
+                            {getFilteredLaporanData().map((item, idx) => (
                               <tr key={item._id} className="border-b hover:bg-gray-50">
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3">
@@ -1609,7 +1609,7 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody>
-                            {laporanData.map((item, idx) => (
+                            {getFilteredLaporanData().map((item, idx) => (
                               <tr key={item._id} className="border-b hover:bg-gray-50">
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3">
@@ -1668,7 +1668,7 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody>
-                            {laporanData.map((item, idx) => (
+                            {getFilteredLaporanData().map((item, idx) => (
                               <tr key={item._id} className="border-b hover:bg-gray-50">
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3 font-medium">{item.namaPeminjam}</td>
@@ -1725,7 +1725,7 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody>
-                            {laporanData.map((item, idx) => (
+                            {getFilteredLaporanData().map((item, idx) => (
                               <tr key={item._id} className="border-b hover:bg-gray-50">
                                 <td className="p-3">{idx + 1}</td>
                                 <td className="p-3">
