@@ -166,8 +166,8 @@ export async function POST(request) {
         foto: fotoUrl,
         galeri: [],
         riwayatKerusakan: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: getJakartaTime(),
+        updatedAt: getJakartaTime()
       };
       
       const result = await db.collection('barang').insertOne(barang);
