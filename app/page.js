@@ -1611,6 +1611,63 @@ export default function App() {
 
           {/* Peminjaman Tab */}
           <TabsContent value="peminjaman" className="space-y-4">
+            {/* Dialog Pengembalian */}
+            <Dialog open={showPengembalianDialog} onOpenChange={setShowPengembalianDialog}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Pengembalian Barang</DialogTitle>
+                  <CardDescription>
+                    Catatan kondisi barang saat dikembalikan
+                  </CardDescription>
+                </DialogHeader>
+                {selectedPeminjamanReturn && (
+                  <form onSubmit={submitReturnBarang} className="space-y-4">
+                    <div className="p-3 bg-gray-50 rounded">
+                      <p className="text-sm font-semibold">Peminjam: {selectedPeminjamanReturn.namaPeminjam}</p>
+                      <p className="text-xs text-gray-600">Tanggal Pinjam: {new Date(selectedPeminjamanReturn.tanggalPinjam).toLocaleDateString('id-ID')}</p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="kondisiBarang">Kondisi Barang *</Label>
+                      <Select name="kondisiBarang" defaultValue="baik" required>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="baik">Baik (Normal)</SelectItem>
+                          <SelectItem value="rusak_ringan">Rusak Ringan</SelectItem>
+                          <SelectItem value="rusak_berat">Rusak Berat</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="catatan">Catatan Pengembalian *</Label>
+                      <Textarea
+                        id="catatan"
+                        name="catatan"
+                        placeholder="Jelaskan kondisi barang saat dikembalikan..."
+                        rows={3}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="flex gap-2 justify-end">
+                      <Button type="button" variant="outline" onClick={() => {
+                        setShowPengembalianDialog(false);
+                        setSelectedPeminjamanReturn(null);
+                      }}>
+                        Batal
+                      </Button>
+                      <Button type="submit" disabled={loading}>
+                        {loading ? 'Menyimpan...' : 'Tandai Dikembalikan'}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </DialogContent>
+            </Dialog>
+
             <div className="flex flex-wrap gap-2 justify-between">
               <div className="flex gap-2">
                 <Select value={filterStatusPeminjaman} onValueChange={setFilterStatusPeminjaman}>
