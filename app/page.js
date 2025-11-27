@@ -405,6 +405,44 @@ export default function App() {
     window.print();
   };
 
+  const getAvailableBarang = () => {
+    return barang.filter(item => {
+      // Filter pencarian
+      if (searchBarangPeminjaman) {
+        const searchLower = searchBarangPeminjaman.toLowerCase();
+        const matchSearch = 
+          item.nama?.toLowerCase().includes(searchLower) ||
+          item.kategori?.toLowerCase().includes(searchLower) ||
+          item.serial?.toLowerCase().includes(searchLower);
+        if (!matchSearch) return false;
+      }
+
+      // Filter kondisi - hanya normal dan rusak bisa dipakai yang bisa dipinjam
+      if (item.kondisi === 'rusak') return false;
+
+      // Check stok - jika jumlah <= 0, tidak bisa dipinjam
+      if (!item.jumlah || item.jumlah <= 0) return false;
+
+      return true;
+    });
+  };
+
+  const isBarangDisabled = (barangId) => {
+    const item = barang.find(b => b._id === barangId);
+    if (!item) return true;
+
+    // Disabled jika rusak
+    if (item.kondisi === 'rusak') return true;
+
+    // Disabled jika stok habis
+    if (!item.jumlah || item.jumlah <= 0) return true;
+
+    // Disabled jika sedang dipinjam dan stok = 1
+    if (item.statusPeminjaman === 'dipinjam' && item.jumlah <= 1) return true;
+
+    return false;
+  };
+
   const getFilterInfo = () => {
     const info = [];
     
