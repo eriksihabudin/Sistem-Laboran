@@ -191,7 +191,7 @@ export async function POST(request) {
           { _id: new ObjectId(barangId) },
           { 
             $push: { galeri: fotoUrl },
-            $set: { updatedAt: new Date() }
+            $set: { updatedAt: getJakartaTime() }
           }
         );
         
