@@ -307,3 +307,5 @@ agent_communication:
     message: "✅ PERBAIKAN TIMEZONE: Berhasil memperbaiki timezone pada saat simpan peminjaman dan tandai kembali. Backend menyimpan waktu UTC dan frontend menampilkan dengan timezone Asia/Jakarta. Semua timestamp baru sekarang konsisten dengan jam sistem di header (UTC+7)."
   - agent: "main"
     message: "✅ FITUR BARU: Tombol Edit dan Hapus User - Berhasil menambahkan fitur management user yang lengkap. Admin dapat edit user (nama, role, kelas, jabatan, password optional) dan hapus user dengan konfirmasi. Username tidak dapat diubah untuk menjaga konsistensi data. Tested dan working 100%."
+  - agent: "main"
+    message: "✅ FITUR CRITICAL: Database Management (Backup, Restore, Hapus) - Menambahkan fitur keamanan database di menu Setting. Backup: export semua data ke JSON file (download). Restore: import JSON file untuk recovery data. Hapus Database: clear semua data dengan konfirmasi ganda (admin user preserved). Backend API: GET /api/database/backup, POST /api/database/restore, DELETE /api/database/clear. Testing lengkap: Backup 13 barang → Clear → Restore → Data kembali 100%. Authorization: Admin only."
