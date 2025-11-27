@@ -106,9 +106,15 @@ export default function App() {
       ...options.headers
     };
 
+    // Don't add Content-Type header if body is FormData
+    const isFormData = options.body instanceof FormData;
+    if (!isFormData && options.headers && !options.headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const response = await fetch(`/api${endpoint}`, {
       ...options,
-      headers
+      headers: isFormData ? { 'Authorization': `Bearer ${token}` } : headers
     });
 
     if (response.status === 401) {
