@@ -36,6 +36,12 @@ function verifyToken(request) {
   }
 }
 
+// Helper untuk mendapatkan waktu Jakarta (UTC+7)
+function getJakartaTime() {
+  const now = new Date();
+  return new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+}
+
 // Helper untuk upload file
 async function saveFile(file, folder = 'barang') {
   try {
