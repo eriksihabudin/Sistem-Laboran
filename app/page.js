@@ -305,6 +305,33 @@ export default function App() {
     }
   };
 
+  const openEditUser = (userObj) => {
+    setSelectedUser(userObj);
+    setShowUserEditDialog(true);
+  };
+
+  const deleteUser = async (userId, username) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus user "${username}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await apiCall(`/users/${userId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        setSuccess('User berhasil dihapus!');
+        loadUsers();
+      } else {
+        const result = await response.json();
+        setError(result.error || 'Gagal menghapus user');
+      }
+    } catch (err) {
+      setError('Terjadi kesalahan saat menghapus user');
+    }
+  };
+
   const loadKategori = async () => {
     try {
       const response = await apiCall('/kategori');
