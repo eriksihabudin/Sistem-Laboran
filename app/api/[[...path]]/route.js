@@ -655,40 +655,6 @@ export async function PUT(request) {
       return NextResponse.json({ message: 'Barang berhasil diupdate' });
     }
 
-    // === BARANG KONDISI UPDATE ===
-    if (pathname === '/barang/kondisi') {
-      const { barangId, kondisi, deskripsi, foto } = await request.json();
-      
-      const updateData = {
-        kondisi,
-        updatedAt: new Date()
-      };
-      
-      if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
-        const kerusakan = {
-          tanggal: new Date(),
-          deskripsi,
-          foto,
-          oleh: userData.nama
-        };
-        
-        await db.collection('barang').updateOne(
-          { _id: new ObjectId(barangId) },
-          { 
-            $set: updateData,
-            $push: { riwayatKerusakan: kerusakan }
-          }
-        );
-      } else {
-        await db.collection('barang').updateOne(
-          { _id: new ObjectId(barangId) },
-          { $set: updateData }
-        );
-      }
-      
-      return NextResponse.json({ message: 'Kondisi barang berhasil diupdate' });
-    }
-
     // === PEMINJAMAN RETURN ===
     if (pathname === '/peminjaman/return') {
       const { peminjamanId, kondisiBarang, catatan } = await request.json();
