@@ -274,6 +274,18 @@ frontend:
         agent: "main"
         comment: "✅ Berhasil menambahkan tombol Edit dan Hapus di menu Users. Fitur Edit user: dapat mengubah nama, role, kelas, jabatan, dan password (optional). Username tidak bisa diubah. Fitur Hapus user: dengan konfirmasi dialog. Tested dengan admin - user berhasil diedit dan dihapus. Backend API sudah support PUT dan DELETE untuk users."
 
+  - task: "Fitur Backup, Restore, dan Hapus Database"
+    implemented: true
+    working: true
+    file: "app/app/page.js, app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "✅ Berhasil menambahkan fitur Database Management di menu Setting (Admin only). Backup: download semua data ke JSON (16KB). Restore: upload JSON dan restore semua data dengan stats report. Hapus Database: clear semua data dengan konfirmasi ganda, admin user tetap dipertahankan. Tested: Backup (13 barang) → Clear (0 barang) → Restore (13 barang kembali). Semua fitur working 100%!"
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
