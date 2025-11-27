@@ -1724,22 +1724,88 @@ export default function App() {
                 {laporanData.length > 0 ? (
                   <Card>
                     <CardHeader>
-                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div>
-                          <CardTitle>Laporan Peminjaman Bulanan</CardTitle>
-                          <CardDescription>Total: {getFilteredLaporanData().length} dari {laporanData.length} peminjaman</CardDescription>
+                      <div className="space-y-4">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                          <div>
+                            <CardTitle>Laporan Peminjaman Bulanan</CardTitle>
+                            <CardDescription>Total: {getFilteredLaporanData().length} dari {laporanData.length} peminjaman</CardDescription>
+                          </div>
+                          <div className="flex gap-2 print:hidden">
+                            <Input
+                              placeholder="Cari peminjam..."
+                              value={laporanSearch}
+                              onChange={(e) => setLaporanSearch(e.target.value)}
+                              className="w-64"
+                            />
+                            <Button onClick={handlePrintLaporan}>
+                              <Download className="h-4 w-4 mr-2" />
+                              Print
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex gap-2 print:hidden">
-                          <Input
-                            placeholder="Cari peminjam..."
-                            value={laporanSearch}
-                            onChange={(e) => setLaporanSearch(e.target.value)}
-                            className="w-64"
-                          />
-                          <Button onClick={handlePrintLaporan}>
-                            <Download className="h-4 w-4 mr-2" />
-                            Print
-                          </Button>
+                        
+                        {/* Filter Tanggal */}
+                        <div className="flex flex-wrap gap-3 print:hidden border-t pt-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs text-gray-600">Filter Tanggal Spesifik</Label>
+                            <Input
+                              type="date"
+                              value={filterTanggal}
+                              onChange={(e) => setFilterTanggal(e.target.value)}
+                              className="w-48"
+                            />
+                          </div>
+                          
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs text-gray-600">Filter Bulan</Label>
+                            <Select value={filterBulan} onValueChange={setFilterBulan}>
+                              <SelectTrigger className="w-40">
+                                <SelectValue placeholder="Semua Bulan" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value=" ">Semua Bulan</SelectItem>
+                                <SelectItem value="1">Januari</SelectItem>
+                                <SelectItem value="2">Februari</SelectItem>
+                                <SelectItem value="3">Maret</SelectItem>
+                                <SelectItem value="4">April</SelectItem>
+                                <SelectItem value="5">Mei</SelectItem>
+                                <SelectItem value="6">Juni</SelectItem>
+                                <SelectItem value="7">Juli</SelectItem>
+                                <SelectItem value="8">Agustus</SelectItem>
+                                <SelectItem value="9">September</SelectItem>
+                                <SelectItem value="10">Oktober</SelectItem>
+                                <SelectItem value="11">November</SelectItem>
+                                <SelectItem value="12">Desember</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs text-gray-600">Filter Tahun</Label>
+                            <Select value={filterTahun} onValueChange={setFilterTahun}>
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {[2020, 2021, 2022, 2023, 2024, 2025, 2026].map(year => (
+                                  <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="flex items-end">
+                            <Button 
+                              variant="outline" 
+                              onClick={() => {
+                                setFilterTanggal('');
+                                setFilterBulan('');
+                                setFilterTahun(new Date().getFullYear().toString());
+                              }}
+                            >
+                              Reset Filter
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </CardHeader>
