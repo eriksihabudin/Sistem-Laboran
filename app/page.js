@@ -1117,7 +1117,7 @@ export default function App() {
                               </div>
                               <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
                                 <Calendar className="h-4 w-4" />
-                                <span>{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</span>
+                                <span>{new Date(item.tanggalPinjam).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })}</span>
                                 <Clock className="h-4 w-4 ml-2" />
                                 <span>{item.jamPinjam}</span>
                               </div>
