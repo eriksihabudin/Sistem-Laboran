@@ -1746,6 +1746,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Lokasi</th>
                               <th className="text-left p-3 font-semibold">Jumlah</th>
                               <th className="text-left p-3 font-semibold">Tahun</th>
+                              <th className="text-left p-3 font-semibold">Catatan Kerusakan</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1768,6 +1769,20 @@ export default function App() {
                                 <td className="p-3">{item.lokasi || '-'}</td>
                                 <td className="p-3">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
+                                <td className="p-3">
+                                  {item.riwayatKerusakan && item.riwayatKerusakan.length > 0 ? (
+                                    <div className="max-w-xs">
+                                      <p className="text-sm text-gray-700 truncate" title={item.riwayatKerusakan[item.riwayatKerusakan.length - 1].deskripsi}>
+                                        {item.riwayatKerusakan[item.riwayatKerusakan.length - 1].deskripsi}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        {new Date(item.riwayatKerusakan[item.riwayatKerusakan.length - 1].tanggal).toLocaleDateString('id-ID')}
+                                      </p>
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
