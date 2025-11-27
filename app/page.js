@@ -286,6 +286,7 @@ export default function App() {
   const loadLaporan = async (type) => {
     setLaporanType(type);
     setLoading(true);
+    setLaporanSearch(''); // Reset search saat ganti tab
     
     try {
       if (type === 'Barang Normal' || type === 'Barang Rusak' || type === 'Barang Rusak Bisa Dipakai') {
@@ -313,6 +314,31 @@ export default function App() {
     }
     
     setLoading(false);
+  };
+
+  const getFilteredLaporanData = () => {
+    if (!laporanSearch) return laporanData;
+    
+    const searchLower = laporanSearch.toLowerCase();
+    
+    if (laporanType === 'Peminjaman Bulanan') {
+      return laporanData.filter(item => 
+        item.namaPeminjam?.toLowerCase().includes(searchLower) ||
+        item.kelasjabatan?.toLowerCase().includes(searchLower) ||
+        item.catatan?.toLowerCase().includes(searchLower)
+      );
+    } else {
+      return laporanData.filter(item => 
+        item.nama?.toLowerCase().includes(searchLower) ||
+        item.kategori?.toLowerCase().includes(searchLower) ||
+        item.serial?.toLowerCase().includes(searchLower) ||
+        item.lokasi?.toLowerCase().includes(searchLower)
+      );
+    }
+  };
+
+  const handlePrintLaporan = () => {
+    window.print();
   };
 
   const handleAddBarang = async (e) => {
