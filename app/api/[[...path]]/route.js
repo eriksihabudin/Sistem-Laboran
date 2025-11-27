@@ -295,7 +295,7 @@ export async function POST(request) {
       
       await db.collection('setting').updateOne(
         { key: 'sekolah' },
-        { $set: { ...data, updatedAt: new Date() } },
+        { $set: { ...data, updatedAt: getJakartaTime() } },
         { upsert: true }
       );
       
