@@ -38,14 +38,37 @@ function verifyToken(request) {
 
 // Helper untuk mendapatkan waktu Jakarta (UTC+7)
 function getJakartaTime() {
-  // Dapatkan waktu sekarang
   const now = new Date();
   
-  // Format ke string Jakarta timezone, kemudian parse kembali
-  const jakartaString = now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
+  // Convert to Jakarta timezone string
+  const jakartaString = now.toLocaleString('en-US', { 
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
   
-  // Parse string ke Date object
-  return new Date(jakartaString);
+  // Parse: "MM/DD/YYYY, HH:mm:ss" format
+  const [datePart, timePart] = jakartaString.split(', ');
+  const [month, day, year] = datePart.split('/');
+  const [hours, minutes, seconds] = timePart.split(':');
+  
+  // Create date in UTC that represents Jakarta time
+  // Subtract 7 hours to get the UTC time that corresponds to Jakarta time
+  const jakartaDate = new Date(Date.UTC(
+    parseInt(year),
+    parseInt(month) - 1,
+    parseInt(day),
+    parseInt(hours) - 7,  // Subtract 7 hours for UTC
+    parseInt(minutes),
+    parseInt(seconds)
+  ));
+  
+  return jakartaDate;
 }
 
 // Helper untuk upload file
