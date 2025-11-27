@@ -384,6 +384,27 @@ export default function App() {
     window.print();
   };
 
+  const getFilterInfo = () => {
+    const info = [];
+    
+    if (filterTanggal) {
+      const date = new Date(filterTanggal);
+      info.push(`Tanggal: ${date.toLocaleDateString('id-ID')}`);
+    }
+    
+    if (filterBulan) {
+      const bulanNames = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      info.push(`Bulan: ${bulanNames[parseInt(filterBulan)]}`);
+    }
+    
+    if (filterTahun) {
+      info.push(`Tahun: ${filterTahun}`);
+    }
+    
+    return info.length > 0 ? ` (${info.join(', ')})` : '';
+  };
+
   const handleAddBarang = async (e) => {
     e.preventDefault();
     setLoading(true);
