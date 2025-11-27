@@ -604,7 +604,7 @@ export async function PUT(request) {
           tanggal: new Date(),
           deskripsi,
           foto,
-          oleh: userData.nama
+          oleh: userData.username || 'System'
         };
         
         await db.collection('barang').updateOne(
