@@ -105,16 +105,13 @@ export default function App() {
       if (activeTab === 'kategori') loadKategori();
       if (activeTab === 'setting') loadSetting();
       if (activeTab === 'laporan') {
-        // Default load laporan barang normal
-        if (!laporanType) {
-          loadLaporan('Barang Normal');
-        }
+        loadLaporan(laporanType);
       }
     }
   }, [user, token, activeTab]);
 
   useEffect(() => {
-    if (user && token && activeTab === 'laporan' && laporanType) {
+    if (user && token && activeTab === 'laporan') {
       loadLaporan(laporanType);
     }
   }, [laporanType]);
