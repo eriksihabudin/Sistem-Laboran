@@ -37,26 +37,10 @@ function verifyToken(request) {
 }
 
 // Helper untuk mendapatkan waktu Jakarta (UTC+7)
+// Mengembalikan Date object yang merepresentasikan waktu saat ini
+// Date object disimpan sebagai UTC di MongoDB dan akan di-convert ke Jakarta timezone saat ditampilkan
 function getJakartaTime() {
-  const now = new Date();
-  
-  // Get local time in Jakarta timezone as string
-  const jakartaString = now.toLocaleString('en-CA', { 
-    timeZone: 'Asia/Jakarta',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
-  
-  // en-CA format: "YYYY-MM-DD, HH:mm:ss"
-  const [datePart, timePart] = jakartaString.split(', ');
-  const isoString = `${datePart}T${timePart}.000+07:00`;  // Add timezone offset
-  
-  return new Date(isoString);
+  return new Date();
 }
 
 // Helper untuk upload file
