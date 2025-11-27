@@ -1707,21 +1707,21 @@ export default function App() {
                         <Input id="kelasjabatan" name="kelasjabatan" required />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="tanggalPinjam">Tanggal Pinjam *</Label>
-                        <Input id="tanggalPinjam" name="tanggalPinjam" type="date" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="jamPinjam">Jam Pinjam *</Label>
-                        <Input id="jamPinjam" name="jamPinjam" type="time" required />
-                      </div>
-                      <div className="space-y-2">
                         <Label htmlFor="tanggalKembali">Tanggal Kembali (Rencana)</Label>
                         <Input id="tanggalKembali" name="tanggalKembali" type="date" />
                       </div>
                       <div className="space-y-2">
+                        <Label htmlFor="jamKembali">Jam Kembali (Rencana)</Label>
+                        <Input id="jamKembali" name="jamKembali" type="time" />
+                      </div>
+                      <div className="space-y-2 col-span-2">
                         <Label htmlFor="surat">Upload Surat Peminjaman</Label>
                         <Input id="surat" name="surat" type="file" accept=".pdf,.jpg,.jpeg,.png" />
                       </div>
+                    </div>
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-700">
+                      <p className="font-semibold">ℹ️ Informasi</p>
+                      <p>Tanggal dan jam peminjaman akan tercatat otomatis saat Anda menyimpan form ini.</p>
                     </div>
                     <div className="space-y-2">
                       <Label>Barang yang Dipinjam *</Label>
