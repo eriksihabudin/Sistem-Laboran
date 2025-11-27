@@ -821,6 +821,126 @@ export default function App() {
               </Dialog>
             </div>
 
+            {/* Detail Barang Dialog */}
+            <Dialog open={showBarangDetailDialog} onOpenChange={setShowBarangDetailDialog}>
+              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Detail Barang</DialogTitle>
+                </DialogHeader>
+                {barangDetail && (
+                  <div className="space-y-6">
+                    {/* Foto Utama */}
+                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                      {barangDetail.foto ? (
+                        <img src={barangDetail.foto} alt={barangDetail.nama} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Camera className="h-20 w-20 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Informasi Utama */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="text-2xl font-bold">{barangDetail.nama}</h3>
+                        <div className="mt-2">{getKondisiBadge(barangDetail.kondisi)}</div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-600">Serial/Code</p>
+                        <p className="font-semibold">{barangDetail.serial || '-'}</p>
+                      </div>
+                    </div>
+
+                    {/* Detail Informasi */}
+                    <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="text-sm text-gray-600">Kategori</p>
+                        <p className="font-semibold">{barangDetail.kategori || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Lokasi Penyimpanan</p>
+                        <p className="font-semibold">{barangDetail.lokasi || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Jumlah Unit</p>
+                        <p className="font-semibold">{barangDetail.jumlah || 0} unit</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Tahun Pembelian</p>
+                        <p className="font-semibold">{barangDetail.tahunPembelian || '-'}</p>
+                      </div>
+                    </div>
+
+                    {/* Spesifikasi */}
+                    {barangDetail.spesifikasi && (
+                      <div>
+                        <h4 className="font-semibold mb-2">Spesifikasi</h4>
+                        <p className="text-sm text-gray-700 whitespace-pre-line">{barangDetail.spesifikasi}</p>
+                      </div>
+                    )}
+
+                    {/* Galeri Foto */}
+                    {barangDetail.galeri && barangDetail.galeri.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold mb-2">Galeri Foto</h4>
+                        <div className="grid grid-cols-4 gap-2">
+                          {barangDetail.galeri.map((foto, idx) => (
+                            <img key={idx} src={foto} alt={`Galeri ${idx + 1}`} className="w-full aspect-square object-cover rounded" />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Riwayat Kerusakan */}
+                    {barangDetail.riwayatKerusakan && barangDetail.riwayatKerusakan.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold mb-2">Riwayat Kerusakan</h4>
+                        <div className="space-y-2">
+                          {barangDetail.riwayatKerusakan.map((riwayat, idx) => (
+                            <div key={idx} className="p-3 border border-red-200 rounded bg-red-50">
+                              <p className="text-sm text-gray-600">{new Date(riwayat.tanggal).toLocaleDateString('id-ID')}</p>
+                              <p className="text-sm">{riwayat.deskripsi}</p>
+                              <p className="text-xs text-gray-500 mt-1">Dicatat oleh: {riwayat.oleh}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Riwayat Peminjaman */}
+                    {barangDetail.riwayatPeminjaman && barangDetail.riwayatPeminjaman.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold mb-2">Riwayat Peminjaman (10 Terakhir)</h4>
+                        <div className="space-y-2">
+                          {barangDetail.riwayatPeminjaman.map((peminjaman) => (
+                            <div key={peminjaman._id} className="p-3 border rounded">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="font-semibold">{peminjaman.namaPeminjam}</p>
+                                  <p className="text-sm text-gray-600">{peminjaman.kelasjabatan}</p>
+                                </div>
+                                <Badge className={peminjaman.status === 'dipinjam' ? 'bg-orange-500' : 'bg-green-500'}>
+                                  {peminjaman.status === 'dipinjam' ? 'Dipinjam' : 'Dikembalikan'}
+                                </Badge>
+                              </div>
+                              <p className="text-xs text-gray-500 mt-1">
+                                {new Date(peminjaman.tanggalPinjam).toLocaleDateString('id-ID')} - {peminjaman.jamPinjam}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 justify-end pt-4 border-t">
+                      <Button variant="outline" onClick={() => setShowBarangDetailDialog(false)}>Tutup</Button>
+                    </div>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {barang.map((item) => (
                 <Card key={item._id} className="overflow-hidden">
