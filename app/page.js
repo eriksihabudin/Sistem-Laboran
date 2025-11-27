@@ -907,6 +907,65 @@ export default function App() {
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Peminjaman Terbaru */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Peminjaman Terbaru</CardTitle>
+                    <CardDescription>10 peminjaman terakhir</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {peminjamanTerbaru.length > 0 ? (
+                      <div className="space-y-3">
+                        {peminjamanTerbaru.map((item) => (
+                          <div key={item._id} className="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                            <div className="flex-shrink-0">
+                              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                <Users className="h-6 w-6 text-blue-600" />
+                              </div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-start gap-2">
+                                <div>
+                                  <p className="font-semibold text-gray-900">{item.namaPeminjam}</p>
+                                  <p className="text-sm text-gray-600">{item.kelasjabatan}</p>
+                                </div>
+                                <div className="flex-shrink-0">
+                                  {item.status === 'dipinjam' ? (
+                                    <Badge className="bg-orange-500">Dipinjam</Badge>
+                                  ) : (
+                                    <Badge className="bg-green-500">Dikembalikan</Badge>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
+                                <Calendar className="h-4 w-4" />
+                                <span>{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</span>
+                                <Clock className="h-4 w-4 ml-2" />
+                                <span>{item.jamPinjam}</span>
+                              </div>
+                              {item.barangData && item.barangData.length > 0 && (
+                                <div className="mt-2 flex flex-wrap gap-1">
+                                  {item.barangData.map((b, idx) => (
+                                    <span key={idx} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded text-xs">
+                                      <Package className="h-3 w-3" />
+                                      {b.nama}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-500">
+                        <ClipboardList className="h-12 w-12 mx-auto mb-2 text-gray-400" />
+                        <p>Belum ada data peminjaman</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </>
             )}
           </TabsContent>
