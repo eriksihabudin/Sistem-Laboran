@@ -211,9 +211,15 @@ export async function POST(request) {
       const catatan = formData.get('catatan');
       const suratFile = formData.get('surat');
       
-      // Auto-generate tanggal dan jam pinjam (saat ini)
+      // Auto-generate tanggal dan jam pinjam (saat ini) - UTC+7 Jakarta
       const now = new Date();
-      const jamPinjam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+      const jakartaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+      const jamPinjam = jakartaTime.toLocaleTimeString('id-ID', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false,
+        timeZone: 'Asia/Jakarta'
+      });
       
       let suratUrl = null;
       if (suratFile && suratFile.size > 0) {
