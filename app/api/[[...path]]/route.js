@@ -303,6 +303,56 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Setting berhasil disimpan' });
     }
 
+    // === DATABASE RESTORE ===
+    if (pathname === '/database/restore') {
+      const userData = verifyToken(request);
+      if (!userData || userData.role !== 'admin') {
+        return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 401 });
+      }
+
+      const backup = await request.json();
+      
+      // Validate backup structure
+      if (!backup.data || !backup.version) {
+        return NextResponse.json({ error: 'Format backup tidak valid' }, { status: 400 });
+      }
+
+      // Clear existing data
+      await db.collection('users').deleteMany({});
+      await db.collection('barang').deleteMany({});
+      await db.collection('peminjaman').deleteMany({});
+      await db.collection('kategori').deleteMany({});
+      await db.collection('setting').deleteMany({});
+
+      // Restore data
+      if (backup.data.users && backup.data.users.length > 0) {
+        await db.collection('users').insertMany(backup.data.users);
+      }
+      if (backup.data.barang && backup.data.barang.length > 0) {
+        await db.collection('barang').insertMany(backup.data.barang);
+      }
+      if (backup.data.peminjaman && backup.data.peminjaman.length > 0) {
+        await db.collection('peminjaman').insertMany(backup.data.peminjaman);
+      }
+      if (backup.data.kategori && backup.data.kategori.length > 0) {
+        await db.collection('kategori').insertMany(backup.data.kategori);
+      }
+      if (backup.data.setting && backup.data.setting.length > 0) {
+        await db.collection('setting').insertMany(backup.data.setting);
+      }
+
+      return NextResponse.json({ 
+        message: 'Database berhasil di-restore',
+        stats: {
+          users: backup.data.users?.length || 0,
+          barang: backup.data.barang?.length || 0,
+          peminjaman: backup.data.peminjaman?.length || 0,
+          kategori: backup.data.kategori?.length || 0,
+          setting: backup.data.setting?.length || 0
+        }
+      });
+    }
+
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     
   } catch (error) {
