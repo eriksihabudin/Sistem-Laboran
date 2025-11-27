@@ -2415,14 +2415,67 @@ export default function App() {
                     </DialogContent>
                   </Dialog>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {kategori.map((k) => (
-                      <div key={k._id} className="p-3 border rounded">
-                        <p className="font-semibold">{k.nama}</p>
-                        <p className="text-sm text-gray-600">{k.deskripsi}</p>
+                      <div key={k._id} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <p className="font-semibold text-lg">{k.nama}</p>
+                            <p className="text-sm text-gray-600 mt-1">{k.deskripsi}</p>
+                          </div>
+                          <div className="flex gap-2 ml-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => {
+                                setSelectedKategori(k);
+                                setShowKategoriEditDialog(true);
+                              }}
+                            >
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleDeleteKategori(k._id)}
+                            >
+                              <Trash2 className="h-3 w-3 text-red-500" />
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
+
+                  {/* Edit Kategori Dialog */}
+                  <Dialog open={showKategoriEditDialog} onOpenChange={setShowKategoriEditDialog}>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Kategori</DialogTitle>
+                      </DialogHeader>
+                      {selectedKategori && (
+                        <form onSubmit={handleEditKategori} className="space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="edit-kategori-nama">Nama Kategori *</Label>
+                            <Input id="edit-kategori-nama" name="nama" defaultValue={selectedKategori.nama} required />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="edit-kategori-deskripsi">Deskripsi</Label>
+                            <Textarea id="edit-kategori-deskripsi" name="deskripsi" rows={3} defaultValue={selectedKategori.deskripsi} />
+                          </div>
+                          <div className="flex gap-2 justify-end">
+                            <Button type="button" variant="outline" onClick={() => {
+                              setShowKategoriEditDialog(false);
+                              setSelectedKategori(null);
+                            }}>Batal</Button>
+                            <Button type="submit" disabled={loading}>
+                              {loading ? 'Menyimpan...' : 'Update Kategori'}
+                            </Button>
+                          </div>
+                        </form>
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
