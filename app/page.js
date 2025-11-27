@@ -1318,6 +1318,48 @@ export default function App() {
 
           {/* Kondisi Tab */}
           <TabsContent value="kondisi" className="space-y-4">
+            {/* Dialog Catatan Kerusakan */}
+            <Dialog open={showKerusakanDialog} onOpenChange={setShowKerusakanDialog}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Catatan Kerusakan</DialogTitle>
+                  <CardDescription>
+                    Tambahkan catatan kerusakan untuk barang ini
+                  </CardDescription>
+                </DialogHeader>
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target);
+                  const deskripsi = formData.get('deskripsi');
+                  if (kerusakanBarang) {
+                    submitUpdateKondisi(kerusakanBarang.id, kerusakanBarang.kondisi, deskripsi);
+                  }
+                }} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="deskripsi">Deskripsi Kerusakan *</Label>
+                    <Textarea
+                      id="deskripsi"
+                      name="deskripsi"
+                      placeholder="Jelaskan detail kerusakan barang..."
+                      rows={4}
+                      required
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button type="button" variant="outline" onClick={() => {
+                      setShowKerusakanDialog(false);
+                      setKerusakanBarang(null);
+                    }}>
+                      Batal
+                    </Button>
+                    <Button type="submit" disabled={loading}>
+                      {loading ? 'Menyimpan...' : 'Simpan'}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <Card>
                 <CardHeader>
