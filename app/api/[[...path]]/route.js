@@ -780,7 +780,7 @@ export async function PUT(request) {
         role: data.role,
         kelas: data.kelas,
         jabatan: data.jabatan,
-        updatedAt: new Date()
+        updatedAt: getJakartaTime()
       };
       
       if (data.password) {
