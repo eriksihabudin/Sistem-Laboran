@@ -620,18 +620,24 @@ export default function App() {
     setLoading(false);
   };
 
-  const handleReturnBarang = async (peminjamanId) => {
-    if (!confirm('Tandai barang sebagai dikembalikan?')) return;
+  const handleReturnBarang = async (peminjaman) => {
+    setSelectedPeminjamanReturn(peminjaman);
+    setShowPengembalianDialog(true);
+  };
 
+  const submitReturnBarang = async (e) => {
+    e.preventDefault();
     setLoading(true);
+    
     try {
+      const formData = new FormData(e.target);
       const response = await apiCall('/peminjaman/return', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          peminjamanId,
-          kondisiBarang: 'baik',
-          catatan: 'Dikembalikan'
+          peminjamanId: selectedPeminjamanReturn._id,
+          kondisiBarang: formData.get('kondisiBarang'),
+          catatan: formData.get('catatan')
         })
       });
 
@@ -644,6 +650,8 @@ export default function App() {
       }
 
       setSuccess('Barang berhasil dikembalikan!');
+      setShowPengembalianDialog(false);
+      setSelectedPeminjamanReturn(null);
       loadPeminjaman();
     } catch (err) {
       setError('Terjadi kesalahan');
