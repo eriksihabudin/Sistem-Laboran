@@ -908,10 +908,34 @@ export default function App() {
             <h1 className="text-2xl font-bold text-gray-900">Sistem Laboran DKV</h1>
             <p className="text-sm text-gray-600">Selamat datang, {user.nama} ({user.role})</p>
           </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Keluar
-          </Button>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 px-4 py-2 rounded-lg border">
+              <Clock className="h-5 w-5 text-blue-600" />
+              <div className="text-center">
+                <div className="text-xs font-medium text-gray-500">
+                  {currentTime.toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    timeZone: 'Asia/Jakarta'
+                  })}
+                </div>
+                <div className="text-lg font-bold">
+                  {currentTime.toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: 'Asia/Jakarta'
+                  })}
+                </div>
+              </div>
+            </div>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Keluar
+            </Button>
+          </div>
         </div>
       </div>
 
