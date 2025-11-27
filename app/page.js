@@ -81,6 +81,9 @@ export default function App() {
   const [laporanType, setLaporanType] = useState('Barang Normal');
   const [laporanData, setLaporanData] = useState([]);
   const [laporanSearch, setLaporanSearch] = useState('');
+
+  // Clock state
+  const [currentTime, setCurrentTime] = useState(new Date());
   
   // Filter peminjaman
   const [filterTanggal, setFilterTanggal] = useState('');
