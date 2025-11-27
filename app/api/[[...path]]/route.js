@@ -730,9 +730,9 @@ export async function PUT(request) {
       const { peminjamanId, kondisiBarang, catatan } = await request.json();
       
       // Auto-generate timestamp pengembalian - UTC+7 Jakarta
+      const jakartaTime = getJakartaTime();
       const now = new Date();
-      const jakartaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
-      const jamDikembalikan = jakartaTime.toLocaleTimeString('id-ID', { 
+      const jamDikembalikan = now.toLocaleTimeString('id-ID', { 
         hour: '2-digit', 
         minute: '2-digit', 
         hour12: false,
