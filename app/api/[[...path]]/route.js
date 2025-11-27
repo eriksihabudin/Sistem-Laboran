@@ -232,7 +232,7 @@ export async function POST(request) {
         namaPeminjam,
         kelasjabatan,
         barang: barangList,
-        tanggalPinjam: now,
+        tanggalPinjam: jakartaTime,
         jamPinjam,
         tanggalKembaliRencana: tanggalKembali ? new Date(tanggalKembali) : null,
         jamKembaliRencana: jamKembali || null,
@@ -240,8 +240,8 @@ export async function POST(request) {
         surat: suratUrl,
         catatan,
         createdBy: userData.id,
-        createdAt: now,
-        updatedAt: now
+        createdAt: jakartaTime,
+        updatedAt: jakartaTime
       };
       
       const result = await db.collection('peminjaman').insertOne(peminjaman);
