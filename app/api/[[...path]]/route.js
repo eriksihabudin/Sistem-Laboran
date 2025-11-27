@@ -642,6 +642,29 @@ export async function GET(request) {
       return NextResponse.json(setting || {});
     }
 
+    // === DATABASE BACKUP ===
+    if (pathname === '/database/backup') {
+      const userData = verifyToken(request);
+      if (!userData || userData.role !== 'admin') {
+        return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 401 });
+      }
+
+      // Export all collections
+      const backup = {
+        timestamp: new Date().toISOString(),
+        version: '1.0',
+        data: {
+          users: await db.collection('users').find().toArray(),
+          barang: await db.collection('barang').find().toArray(),
+          peminjaman: await db.collection('peminjaman').find().toArray(),
+          kategori: await db.collection('kategori').find().toArray(),
+          setting: await db.collection('setting').find().toArray()
+        }
+      };
+
+      return NextResponse.json(backup);
+    }
+
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     
   } catch (error) {
