@@ -802,7 +802,7 @@ export async function PUT(request) {
       
       await db.collection('kategori').updateOne(
         { _id: new ObjectId(id) },
-        { $set: { nama, deskripsi, updatedAt: new Date() } }
+        { $set: { nama, deskripsi, updatedAt: getJakartaTime() } }
       );
       
       return NextResponse.json({ message: 'Kategori berhasil diupdate' });
