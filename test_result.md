@@ -291,3 +291,7 @@ agent_communication:
     message: "✅ COMPREHENSIVE BACKEND TESTING COMPLETED - All 35 tests passed with 100% success rate. All requested APIs working perfectly: Authentication (login/token verification), Dashboard (stats/charts), Barang (CRUD with file upload), Peminjaman (CRUD with file upload), Kategori (read), Users (admin-only access), Settings (read), and Authorization system. System is production-ready for backend functionality."
   - agent: "main"
     message: "✅ FITUR BARU: Real-time Clock - Berhasil menambahkan jam real-time di header aplikasi. Jam menampilkan tanggal lengkap dalam bahasa Indonesia dan waktu dengan format HH:MM:SS. Timezone sudah dikonfigurasi ke Asia/Jakarta (UTC+7). Jam diupdate setiap detik menggunakan useEffect dengan setInterval. Styling menggunakan Tailwind dengan icon Clock dari lucide-react. Sudah tested dengan screenshot dan berfungsi dengan baik."
+  - agent: "main"
+    message: "✅ PERBAIKAN TIMEZONE: Berhasil memperbaiki timezone pada saat simpan peminjaman dan tandai kembali. Backend menyimpan waktu UTC dan frontend menampilkan dengan timezone Asia/Jakarta. Semua timestamp baru sekarang konsisten dengan jam sistem di header (UTC+7)."
+  - agent: "main"
+    message: "✅ FITUR BARU: Tombol Edit dan Hapus User - Berhasil menambahkan fitur management user yang lengkap. Admin dapat edit user (nama, role, kelas, jabatan, password optional) dan hapus user dengan konfirmasi. Username tidak dapat diubah untuk menjaga konsistensi data. Tested dan working 100%."
