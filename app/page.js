@@ -2876,6 +2876,182 @@ export default function App() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Database Management - Admin Only */}
+            {user.role === 'admin' && (
+              <Card className="border-orange-200 bg-orange-50">
+                <CardHeader>
+                  <CardTitle className="text-orange-900 flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5" />
+                    Manajemen Database
+                  </CardTitle>
+                  <CardDescription className="text-orange-700">
+                    Backup, restore, dan kelola database sistem. Fitur ini hanya tersedia untuk Admin.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Backup Database */}
+                    <div className="p-4 border rounded-lg bg-white">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                            <Download className="h-4 w-4" />
+                            Backup Database
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Download semua data sistem dalam format JSON. Backup dapat digunakan untuk restore di kemudian hari.
+                          </p>
+                        </div>
+                        <Button
+                          onClick={async () => {
+                            try {
+                              setLoading(true);
+                              const response = await apiCall('/database/backup');
+                              const backup = await response.json();
+                              
+                              // Create download
+                              const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+                              const url = window.URL.createObjectURL(blob);
+                              const a = document.createElement('a');
+                              a.href = url;
+                              a.download = `backup-laboran-dkv-${new Date().toISOString().split('T')[0]}.json`;
+                              document.body.appendChild(a);
+                              a.click();
+                              window.URL.revokeObjectURL(url);
+                              document.body.removeChild(a);
+                              
+                              setSuccess('Backup berhasil diunduh!');
+                            } catch (err) {
+                              setError('Gagal membuat backup');
+                            }
+                            setLoading(false);
+                          }}
+                          disabled={loading}
+                          className="ml-4"
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Backup Sekarang
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Restore Database */}
+                    <div className="p-4 border rounded-lg bg-white">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                            <Upload className="h-4 w-4" />
+                            Restore Database
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Upload file backup untuk mengembalikan data. <strong className="text-red-600">PERHATIAN:</strong> Semua data saat ini akan diganti dengan data dari backup.
+                          </p>
+                        </div>
+                        <div className="ml-4">
+                          <input
+                            type="file"
+                            accept=".json"
+                            id="restore-file"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const file = e.target.files[0];
+                              if (!file) return;
+
+                              if (!confirm('PERINGATAN: Restore akan mengganti semua data saat ini dengan data dari backup. Apakah Anda yakin ingin melanjutkan?')) {
+                                e.target.value = '';
+                                return;
+                              }
+
+                              try {
+                                setLoading(true);
+                                const text = await file.text();
+                                const backup = JSON.parse(text);
+                                
+                                const response = await apiCall('/database/restore', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify(backup)
+                                });
+                                
+                                const result = await response.json();
+                                if (response.ok) {
+                                  setSuccess(`Database berhasil di-restore! ${result.stats.users} users, ${result.stats.barang} barang, ${result.stats.peminjaman} peminjaman, ${result.stats.kategori} kategori`);
+                                  // Reload semua data
+                                  setTimeout(() => window.location.reload(), 2000);
+                                } else {
+                                  setError(result.error || 'Gagal restore database');
+                                }
+                              } catch (err) {
+                                setError('File backup tidak valid atau terjadi kesalahan');
+                              }
+                              setLoading(false);
+                              e.target.value = '';
+                            }}
+                          />
+                          <Button
+                            onClick={() => document.getElementById('restore-file').click()}
+                            disabled={loading}
+                            variant="outline"
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Pilih File Backup
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Clear Database */}
+                    <div className="p-4 border-2 border-red-300 rounded-lg bg-red-50">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-red-900 flex items-center gap-2">
+                            <Trash2 className="h-4 w-4" />
+                            Hapus Semua Data
+                          </h3>
+                          <p className="text-sm text-red-700 mt-1">
+                            <strong>BAHAYA:</strong> Menghapus semua data barang, peminjaman, kategori, dan setting. User admin akan tetap dipertahankan. Tindakan ini tidak dapat dibatalkan!
+                          </p>
+                        </div>
+                        <Button
+                          onClick={async () => {
+                            const confirm1 = confirm('⚠️ PERINGATAN PERTAMA:\n\nAnda akan menghapus SEMUA DATA dari sistem!\n\nApakah Anda yakin?');
+                            if (!confirm1) return;
+
+                            const confirm2 = confirm('⚠️ KONFIRMASI TERAKHIR:\n\nSemua data barang, peminjaman, kategori akan TERHAPUS PERMANEN!\n\nUser admin akan tetap ada.\n\nKlik OK untuk HAPUS atau Cancel untuk membatalkan.');
+                            if (!confirm2) return;
+
+                            try {
+                              setLoading(true);
+                              const response = await apiCall('/database/clear', {
+                                method: 'DELETE'
+                              });
+                              
+                              const result = await response.json();
+                              if (response.ok) {
+                                setSuccess(result.message);
+                                setTimeout(() => window.location.reload(), 2000);
+                              } else {
+                                setError(result.error || 'Gagal menghapus database');
+                              }
+                            } catch (err) {
+                              setError('Terjadi kesalahan');
+                            }
+                            setLoading(false);
+                          }}
+                          disabled={loading}
+                          variant="destructive"
+                          className="ml-4"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Hapus Semua Data
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>
