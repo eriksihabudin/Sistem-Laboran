@@ -299,6 +299,37 @@ export default function App() {
     setLoading(false);
   };
 
+  const handleEditBarang = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const formData = new FormData(e.target);
+      const response = await apiCall(`/barang/${selectedBarang._id}`, {
+        method: 'PUT',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Gagal mengupdate barang');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Barang berhasil diupdate!');
+      setTimeout(() => setSuccess(''), 3000);
+      setShowBarangEditDialog(false);
+      setSelectedBarang(null);
+      loadBarang();
+    } catch (err) {
+      setError('Terjadi kesalahan saat mengupdate barang');
+    }
+    setLoading(false);
+  };
+
   const handleAddPeminjaman = async (e) => {
     e.preventDefault();
     setLoading(true);
