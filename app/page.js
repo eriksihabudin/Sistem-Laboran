@@ -1859,7 +1859,7 @@ export default function App() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">Tanggal & Jam Pinjam</p>
-                        <p className="font-semibold">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID')}</p>
+                        <p className="font-semibold">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })}</p>
                         <p className="text-sm">{item.jamPinjam}</p>
                       </div>
                       <div>
