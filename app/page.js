@@ -1101,7 +1101,16 @@ export default function App() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="kategori">Kategori</Label>
-                        <Input id="kategori" name="kategori" placeholder="Kamera, Tripod, dll" />
+                        <Select name="kategori">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih kategori" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {kategori.map((k) => (
+                              <SelectItem key={k._id} value={k.nama}>{k.nama}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="serial">Serial/Code</Label>
