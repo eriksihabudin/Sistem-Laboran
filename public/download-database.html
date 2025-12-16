@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Database - Sistem Laboran DKV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .credentials {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .credential-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .credential-label {
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
+            width: 100px;
+        }
+        
+        .credential-value {
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 10px 5px;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #999;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Database Sistem Laboran DKV</h1>
+        <p class="subtitle">Backup lengkap untuk setup hosting Anda</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Users</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">14</span>
+                <span class="stat-label">Barang</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">9</span>
+                <span class="stat-label">Peminjaman</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">9</span>
+                <span class="stat-label">Kategori</span>
+            </div>
+        </div>
+        
+        <div class="success-box">
+            <strong>✅ File Size:</strong> 17.65 KB<br>
+            <strong>📅 Tanggal:</strong> 16 Desember 2025<br>
+            <strong>🔄 Format:</strong> JSON (Compatible dengan fitur Restore)
+        </div>
+        
+        <div class="button-group">
+            <a href="/backup-laboran-dkv-2025-12-16.json" class="btn btn-primary" download>
+                📥 Download Database Backup
+            </a>
+            <a href="/CARA-RESTORE-DATABASE.md" class="btn btn-secondary" download>
+                📖 Download Panduan Restore
+            </a>
+        </div>
+        
+        <div class="info-box">
+            <strong>ℹ️ Tentang Database Ini:</strong>
+            <ul>
+                <li>Database lengkap dengan sample data inventaris lab DKV</li>
+                <li>Sudah include user admin dan laboran</li>
+                <li>Data peminjaman dengan history lengkap</li>
+                <li>9 kategori barang (Kamera, Lensa, Audio, dll)</li>
+                <li>Setting profil sekolah siap pakai</li>
+            </ul>
+        </div>
+        
+        <div class="credentials">
+            <h3 style="margin-bottom: 15px;">🔐 Default Login Credentials:</h3>
+            
+            <div class="credential-item">
+                <div><span class="credential-label">Admin:</span></div>
+                <div style="margin-top: 5px;">
+                    Username: <span class="credential-value">admin</span><br>
+                    Password: <span class="credential-value">admin123</span>
+                </div>
+            </div>
+            
+            <div class="credential-item">
+                <div><span class="credential-label">Laboran:</span></div>
+                <div style="margin-top: 5px;">
+                    Username: <span class="credential-value">laboran</span><br>
+                    Password: <span class="credential-value">laboran123</span>
+                </div>
+            </div>
+            
+            <div class="credential-item">
+                <div><span class="credential-label">User Test:</span></div>
+                <div style="margin-top: 5px;">
+                    Username: <span class="credential-value">testsiswa</span><br>
+                    Password: <span class="credential-value">testsiswa123</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <strong>⚠️ PENTING:</strong>
+            <ul>
+                <li>Setelah restore, <strong>SEGERA GANTI PASSWORD</strong> default untuk keamanan</li>
+                <li>Backup data lama Anda sebelum restore (jika ada)</li>
+                <li>Pastikan MongoDB sudah running di hosting Anda</li>
+                <li>Hanya admin yang bisa akses fitur Database Management</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <strong>📋 Cara Restore:</strong>
+            <ol style="margin-left: 20px;">
+                <li>Login sebagai <strong>admin</strong> di aplikasi Anda</li>
+                <li>Buka menu <strong>Setting</strong></li>
+                <li>Scroll ke section <strong>"Manajemen Database"</strong></li>
+                <li>Klik tombol <strong>"Pilih File Backup"</strong></li>
+                <li>Upload file JSON yang sudah didownload</li>
+                <li>Konfirmasi dan tunggu proses selesai</li>
+                <li>Halaman akan reload otomatis</li>
+            </ol>
+        </div>
+        
+        <div class="success-box">
+            <strong>✅ Verifikasi Setelah Restore:</strong>
+            <ul>
+                <li>Dashboard menampilkan stats: 14 barang, 7 normal, 3 rusak</li>
+                <li>Grafik Peminjaman Bulanan menunjukkan data Oktober & November</li>
+                <li>Menu Inventaris menampilkan 14 barang</li>
+                <li>Menu Peminjaman menampilkan 9 peminjaman</li>
+                <li>Menu Users menampilkan 3 users</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Sistem Laboran DKV &copy; 2025</p>
+            <p style="font-size: 12px; margin-top: 5px;">Database Management System with Backup & Restore</p>
+        </div>
+    </div>
+</body>
+</html>
