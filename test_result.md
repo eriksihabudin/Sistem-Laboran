@@ -285,6 +285,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "✅ Berhasil menambahkan fitur Database Management di menu Setting (Admin only). Backup: download semua data ke JSON (16KB). Restore: upload JSON dan restore semua data dengan stats report. Hapus Database: clear semua data dengan konfirmasi ganda, admin user tetap dipertahankan. Tested: Backup (13 barang) → Clear (0 barang) → Restore (13 barang kembali). Semua fitur working 100%!"
+      - working: true
+        agent: "main"
+        comment: "✅ FIX: Grafik Peminjaman Bulanan tidak update setelah restore - DIPERBAIKI. Masalah: tanggal tersimpan sebagai string bukan Date object. Solusi: menambahkan fungsi convertDates() di endpoint restore untuk konversi string ke Date object. Field yang dikonversi: tanggalPinjam, tanggalDikembalikan, createdAt, updatedAt, dan nested riwayatKerusakan.tanggal. Tested: Grafik sekarang menampilkan Okt: 1, Nov: 8 peminjaman dengan benar!"
 
 metadata:
   created_by: "testing_agent"
