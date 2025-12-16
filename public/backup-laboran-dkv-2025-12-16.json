@@ -1,0 +1,562 @@
+{
+  "timestamp": "2025-12-16T13:23:00.254Z",
+  "version": "1.0",
+  "data": {
+    "users": [
+      {
+        "_id": "6925ec81876ee6cc4e5dad15",
+        "username": "admin",
+        "password": "$2b$10$Iv8esUBGtbIfNCXO5uXRG.boNJTVaUGhzLbRyOBQJLg1WnVcyOLHK",
+        "nama": "Administrator",
+        "role": "admin",
+        "createdAt": "2025-11-25T17:50:57.549Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad16",
+        "username": "laboran",
+        "password": "$2b$10$YfSC4EIPgwNr0M20Qn44R.K9Qr1EhpyVZh5HVAZK3rXVWPQEnqbmW",
+        "nama": "Laboran DKV",
+        "role": "laboran",
+        "createdAt": "2025-11-25T17:50:57.549Z"
+      },
+      {
+        "_id": "69283f119a3aa518209d4e4a",
+        "username": "testsiswa",
+        "password": "$2b$10$6yWkL0NrAsLx7v8wcuaKAehFYd.Xmw4OMUWljpTtmLAePFRRfPfIS",
+        "nama": "testsiswa",
+        "role": "guru",
+        "kelas": "X DKV A",
+        "jabatan": null,
+        "createdAt": "2025-11-27T12:07:45.361Z"
+      }
+    ],
+    "barang": [
+      {
+        "_id": "6925ec81876ee6cc4e5dad1f",
+        "nama": "Canon EOS 90D",
+        "kategori": "Kamera",
+        "serial": "CAM-001",
+        "kondisi": "rusak",
+        "lokasi": "Rak A1",
+        "jumlah": 2,
+        "spesifikasi": "Sensor APS-C 32.5MP, Video 4K 30fps",
+        "tahunPembelian": "2023",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2025-11-27T09:49:40.567Z",
+            "deskripsi": "Rusak\n",
+            "foto": null,
+            "oleh": "admin"
+          }
+        ],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-27T09:49:40.567Z",
+        "statusPeminjaman": "dipinjam"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad20",
+        "nama": "Sony A7 III",
+        "kategori": "Kamera",
+        "serial": "CAM-002",
+        "kondisi": "normal",
+        "lokasi": "Rak A2",
+        "jumlah": 1,
+        "spesifikasi": "Full Frame 24.2MP, Video 4K",
+        "tahunPembelian": "2024",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:56:49.730Z",
+        "statusPeminjaman": "dipinjam"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad21",
+        "nama": "Nikon D850",
+        "kategori": "Kamera",
+        "serial": "CAM-003",
+        "kondisi": "normal",
+        "lokasi": "Rak A3",
+        "jumlah": 1,
+        "spesifikasi": "Full Frame 45.7MP",
+        "tahunPembelian": "2021",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2024-11-15T00:00:00.000Z",
+            "deskripsi": "Tombol shutter agak macet, tapi masih bisa digunakan",
+            "oleh": "Laboran"
+          }
+        ],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-27T07:18:06.899Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad22",
+        "nama": "Canon EF 50mm f/1.8",
+        "kategori": "Lensa",
+        "serial": "LENS-001",
+        "kondisi": "normal",
+        "lokasi": "Rak B1",
+        "jumlah": 3,
+        "spesifikasi": "Lensa prime 50mm aperture f/1.8",
+        "tahunPembelian": "2023",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad23",
+        "nama": "Manfrotto MT055",
+        "kategori": "Tripod",
+        "serial": "TRI-001",
+        "kondisi": "normal",
+        "lokasi": "Rak C1",
+        "jumlah": 5,
+        "spesifikasi": "Tripod aluminium max height 170cm",
+        "tahunPembelian": "2022",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad24",
+        "nama": "Godox SL-60W",
+        "kategori": "Lighting",
+        "serial": "LIGHT-001",
+        "kondisi": "rusak",
+        "lokasi": "Rak D1",
+        "jumlah": 1,
+        "spesifikasi": "LED Video Light 60W",
+        "tahunPembelian": "2020",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2024-12-01T00:00:00.000Z",
+            "deskripsi": "Lampu tidak menyala, diduga masalah power supply",
+            "oleh": "Laboran"
+          }
+        ],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad25",
+        "nama": "iMac 27\" 2020",
+        "kategori": "Komputer",
+        "serial": "COMP-001",
+        "kondisi": "normal",
+        "lokasi": "Meja Edit 1",
+        "jumlah": 1,
+        "spesifikasi": "i7, 32GB RAM, 1TB SSD, Retina 5K",
+        "tahunPembelian": "2020",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad26",
+        "nama": "Rode VideoMic Pro",
+        "kategori": "Audio",
+        "serial": "MIC-001",
+        "kondisi": "normal",
+        "lokasi": "Rak E1",
+        "jumlah": 2,
+        "spesifikasi": "Shotgun microphone",
+        "tahunPembelian": "2022",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad27",
+        "nama": "Zhiyun Crane 3S",
+        "kategori": "Aksesoris",
+        "serial": "ACC-001",
+        "kondisi": "rusak",
+        "lokasi": "Rak F1",
+        "jumlah": 1,
+        "spesifikasi": "Gimbal stabilizer untuk kamera DSLR",
+        "tahunPembelian": "2023",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2025-11-27T09:59:05.194Z",
+            "deskripsi": "rusak",
+            "foto": null,
+            "oleh": "admin"
+          }
+        ],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-27T09:59:05.194Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad28",
+        "nama": "SanDisk Extreme Pro 128GB",
+        "kategori": "Aksesoris",
+        "serial": "ACC-002",
+        "kondisi": "normal",
+        "lokasi": "Lemari Kecil",
+        "jumlah": 10,
+        "spesifikasi": "SD Card 128GB UHS-I U3",
+        "tahunPembelian": "2024",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-25T17:50:57.597Z",
+        "updatedAt": "2025-11-25T17:50:57.597Z"
+      },
+      {
+        "_id": "6925ed17d0231e2dbe60782f",
+        "nama": "Test Camera API",
+        "kategori": "Kamera",
+        "serial": "TEST-001",
+        "kondisi": "rusak_bisa_dipakai",
+        "lokasi": "Test Rack",
+        "jumlah": 1,
+        "spesifikasi": "Test camera for API testing",
+        "tahunPembelian": "2024",
+        "foto": "/uploads/barang/1764093207681-test.jpg",
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2025-11-27T07:18:15.653Z",
+            "deskripsi": "Update kondisi barang",
+            "foto": null,
+            "oleh": null
+          }
+        ],
+        "createdAt": "2025-11-25T17:53:27.682Z",
+        "updatedAt": "2025-11-27T07:18:15.653Z",
+        "statusPeminjaman": "tersedia"
+      },
+      {
+        "_id": "6925ee82d0231e2dbe607832",
+        "nama": "Sony A7R",
+        "kategori": "Kamera",
+        "serial": "7763",
+        "kondisi": "rusak",
+        "lokasi": "Rak A1",
+        "jumlah": 1,
+        "spesifikasi": "Oke",
+        "tahunPembelian": "2025",
+        "foto": "/uploads/barang/1764093570749-logo ITM FIX BIRU.png",
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2025-11-27T07:17:59.161Z",
+            "deskripsi": "Update kondisi barang",
+            "foto": null,
+            "oleh": null
+          }
+        ],
+        "createdAt": "2025-11-25T17:59:30.751Z",
+        "updatedAt": "2025-11-27T07:17:59.161Z",
+        "statusPeminjaman": "tersedia"
+      },
+      {
+        "_id": "6925ef94d0231e2dbe607833",
+        "nama": "Test Camera Sony A7",
+        "kategori": "Kamera",
+        "serial": "SONY-A7-001",
+        "kondisi": "rusak_bisa_dipakai",
+        "lokasi": "Lab DKV Lantai 2",
+        "jumlah": 1,
+        "spesifikasi": "Kamera mirrorless full frame dengan sensor 24MP",
+        "tahunPembelian": "2024",
+        "foto": null,
+        "galeri": [],
+        "riwayatKerusakan": [
+          {
+            "tanggal": "2025-11-27T07:16:20.259Z",
+            "deskripsi": "Test update",
+            "foto": null,
+            "oleh": null
+          },
+          {
+            "tanggal": "2025-11-27T09:24:47.070Z",
+            "deskripsi": "Rusak pokok e\n",
+            "foto": null,
+            "oleh": "admin"
+          }
+        ],
+        "createdAt": "2025-11-25T18:04:04.683Z",
+        "updatedAt": "2025-11-27T10:30:23.079Z",
+        "statusPeminjaman": "tersedia"
+      },
+      {
+        "_id": "6928aa97bfd487657db9a87f",
+        "nama": "Test Camera API",
+        "kategori": "Kamera",
+        "serial": "TEST-001",
+        "kondisi": "normal",
+        "lokasi": "Test Rack",
+        "jumlah": 1,
+        "spesifikasi": "Test camera for API testing",
+        "tahunPembelian": "2024",
+        "foto": "/uploads/barang/1764272791187-test.jpg",
+        "galeri": [],
+        "riwayatKerusakan": [],
+        "createdAt": "2025-11-27T19:46:31.189Z",
+        "updatedAt": "2025-11-27T19:46:32.059Z",
+        "statusPeminjaman": "dipinjam"
+      }
+    ],
+    "peminjaman": [
+      {
+        "_id": "6925ede1d0231e2dbe607831",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "xii",
+        "barang": [
+          "6925ec81876ee6cc4e5dad20",
+          "6925ec81876ee6cc4e5dad1f"
+        ],
+        "tanggalPinjam": "2025-11-26T00:00:00.000Z",
+        "jamPinjam": "00:56",
+        "tanggalKembali": "2025-11-27T00:00:00.000Z",
+        "status": "dipinjam",
+        "surat": "/uploads/surat/1764093409728-COVER BELAKANG DAN SAMPING NUNING.jpg",
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-25T17:56:49.728Z",
+        "updatedAt": "2025-11-25T17:56:49.728Z"
+      },
+      {
+        "_id": "69281e46de0d202170e94669",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "X",
+        "barang": [
+          "6925ef94d0231e2dbe607833"
+        ],
+        "tanggalPinjam": "2025-11-27T00:00:00.000Z",
+        "jamPinjam": "16:47",
+        "tanggalKembali": "2025-11-27T00:00:00.000Z",
+        "status": "dikembalikan",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-27T09:47:50.108Z",
+        "updatedAt": "2025-11-27T10:11:13.500Z",
+        "catatanPengembalian": "Normal",
+        "jamDikembalikan": "10.11",
+        "kondisiPengembalian": "baik",
+        "tanggalDikembalikan": "2025-11-27T10:11:13.500Z"
+      },
+      {
+        "_id": "69281f1ede0d202170e9466a",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "X",
+        "barang": [
+          "6925ef94d0231e2dbe607833"
+        ],
+        "tanggalPinjam": "2025-10-27T00:00:00.000Z",
+        "jamPinjam": "16:51",
+        "tanggalKembali": "2025-10-27T00:00:00.000Z",
+        "status": "dipinjam",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-27T09:51:26.510Z",
+        "updatedAt": "2025-11-27T09:51:26.510Z"
+      },
+      {
+        "_id": "69282801de0d202170e9466b",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "X",
+        "barang": [
+          "6925ef94d0231e2dbe607833"
+        ],
+        "tanggalPinjam": "2025-11-27T10:29:21.379Z",
+        "jamPinjam": "00.29",
+        "tanggalKembaliRencana": "2025-11-27T00:00:00.000Z",
+        "jamKembaliRencana": "17:28",
+        "status": "dikembalikan",
+        "surat": "/uploads/surat/1764239361381-Invoice ITM LUNAS_Page_1.jpg",
+        "catatan": "Kondisi Normal\r\n",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-27T10:29:21.379Z",
+        "updatedAt": "2025-11-27T10:30:23.076Z",
+        "catatanPengembalian": "Baterai drop",
+        "jamDikembalikan": "00.30",
+        "kondisiPengembalian": "rusak_ringan",
+        "tanggalDikembalikan": "2025-11-27T10:30:23.076Z"
+      },
+      {
+        "_id": "69282b8a3854d271ce47943b",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "X",
+        "barang": [],
+        "tanggalPinjam": "2025-11-27T10:44:26.651Z",
+        "jamPinjam": "00.44",
+        "tanggalKembaliRencana": "2025-11-27T00:00:00.000Z",
+        "jamKembaliRencana": "17:44",
+        "status": "dikembalikan",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-27T10:44:26.651Z",
+        "updatedAt": "2025-11-27T10:44:46.619Z",
+        "catatanPengembalian": "oke\n",
+        "jamDikembalikan": "00.44",
+        "kondisiPengembalian": "baik",
+        "tanggalDikembalikan": "2025-11-27T10:44:46.619Z"
+      },
+      {
+        "_id": "69283bc19a3aa518209d4e48",
+        "namaPeminjam": "Budi Santoso",
+        "kelasjabatan": "XI DKV 2",
+        "barang": [],
+        "tanggalPinjam": "2025-11-27T18:53:37.000Z",
+        "jamPinjam": "01.53",
+        "tanggalKembaliRencana": null,
+        "jamKembaliRencana": null,
+        "status": "dipinjam",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad16",
+        "createdAt": "2025-11-27T18:53:37.000Z",
+        "updatedAt": "2025-11-27T18:53:37.000Z"
+      },
+      {
+        "_id": "69283c169a3aa518209d4e49",
+        "namaPeminjam": "Andi Wijaya",
+        "kelasjabatan": "XII DKV 1",
+        "barang": [],
+        "tanggalPinjam": "2025-11-27T11:55:02.041Z",
+        "jamPinjam": "18.55",
+        "tanggalKembaliRencana": null,
+        "jamKembaliRencana": null,
+        "status": "dikembalikan",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad16",
+        "createdAt": "2025-11-27T11:55:02.041Z",
+        "updatedAt": "2025-11-27T11:57:25.889Z",
+        "catatanPengembalian": "oke\n",
+        "jamDikembalikan": "18.57",
+        "kondisiPengembalian": "baik",
+        "tanggalDikembalikan": "2025-11-27T11:57:25.889Z"
+      },
+      {
+        "_id": "6928482d9a3aa518209d4e4b",
+        "namaPeminjam": "Nama",
+        "kelasjabatan": "X",
+        "barang": [],
+        "tanggalPinjam": "2025-11-27T12:46:37.601Z",
+        "jamPinjam": "19.46",
+        "tanggalKembaliRencana": "2025-11-27T00:00:00.000Z",
+        "jamKembaliRencana": "19:46",
+        "status": "dikembalikan",
+        "surat": null,
+        "catatan": "",
+        "createdBy": "6925ec81876ee6cc4e5dad15",
+        "createdAt": "2025-11-27T12:46:37.601Z",
+        "updatedAt": "2025-11-27T12:46:44.315Z",
+        "catatanPengembalian": "okee\n",
+        "jamDikembalikan": "19.46",
+        "kondisiPengembalian": "baik",
+        "tanggalDikembalikan": "2025-11-27T12:46:44.315Z"
+      },
+      {
+        "_id": "6928aa98bfd487657db9a880",
+        "namaPeminjam": "Siswa Test API",
+        "kelasjabatan": "XII DKV 1",
+        "barang": [
+          "6928aa97bfd487657db9a87f"
+        ],
+        "tanggalPinjam": "2025-11-27T19:46:32.048Z",
+        "jamPinjam": "02.46",
+        "tanggalKembaliRencana": "2024-12-21T00:00:00.000Z",
+        "jamKembaliRencana": null,
+        "status": "dipinjam",
+        "surat": "/uploads/surat/1764272792053-surat_test.pdf",
+        "catatan": "Test peminjaman via API",
+        "createdBy": "6925ec81876ee6cc4e5dad16",
+        "createdAt": "2025-11-27T19:46:32.048Z",
+        "updatedAt": "2025-11-27T19:46:32.048Z"
+      }
+    ],
+    "kategori": [
+      {
+        "_id": "6925ec81876ee6cc4e5dad18",
+        "nama": "Kamera",
+        "deskripsi": "Kamera DSLR, Mirrorless, dll",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad19",
+        "nama": "Lensa",
+        "deskripsi": "Berbagai jenis lensa kamera",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad1a",
+        "nama": "Tripod",
+        "deskripsi": "Tripod dan monopod",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad1b",
+        "nama": "Lighting",
+        "deskripsi": "Peralatan pencahayaan",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad1c",
+        "nama": "Komputer",
+        "deskripsi": "PC dan laptop untuk editing",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad1d",
+        "nama": "Audio",
+        "deskripsi": "Mikrofon dan peralatan audio",
+        "createdAt": "2025-11-25T17:50:57.582Z"
+      },
+      {
+        "_id": "6925ec81876ee6cc4e5dad1e",
+        "nama": "Aksesoris",
+        "deskripsi": "Updated description for testing",
+        "createdAt": "2025-11-25T17:50:57.582Z",
+        "updatedAt": "2025-11-27T09:29:21.365Z"
+      },
+      {
+        "_id": "6925f10fd0231e2dbe607834",
+        "nama": "Kamera",
+        "deskripsi": "",
+        "createdAt": "2025-11-25T18:10:23.194Z"
+      },
+      {
+        "_id": "69281903de0d202170e94667",
+        "nama": "Kabel",
+        "deskripsi": "",
+        "createdAt": "2025-11-27T09:25:23.506Z"
+      }
+    ],
+    "setting": [
+      {
+        "_id": "6925ec81876ee6cc4e5dad29",
+        "key": "sekolah",
+        "namaSekolah": "SMK Negeri 1 Jakarta - Jurusan DKV",
+        "alamat": "Jl. Pendidikan No. 123, Jakarta Pusat",
+        "telepon": "021-12345678",
+        "email": "laboran.dkv@smkn1jkt.sch.id",
+        "createdAt": "2025-11-25T17:50:57.615Z",
+        "updatedAt": "2025-11-25T17:50:57.615Z"
+      }
+    ]
+  }
+}
