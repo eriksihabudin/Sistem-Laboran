@@ -317,6 +317,32 @@ export async function POST(request) {
         return NextResponse.json({ error: 'Format backup tidak valid' }, { status: 400 });
       }
 
+      // Helper function to convert string dates to Date objects
+      const convertDates = (obj) => {
+        if (!obj) return obj;
+        
+        const dateFields = ['createdAt', 'updatedAt', 'tanggalPinjam', 'tanggalDikembalikan', 
+                           'tanggalKembaliRencana', 'tanggal'];
+        
+        for (const field of dateFields) {
+          if (obj[field] && typeof obj[field] === 'string') {
+            obj[field] = new Date(obj[field]);
+          }
+        }
+        
+        // Handle nested riwayatKerusakan in barang
+        if (obj.riwayatKerusakan && Array.isArray(obj.riwayatKerusakan)) {
+          obj.riwayatKerusakan = obj.riwayatKerusakan.map(riwayat => {
+            if (riwayat.tanggal && typeof riwayat.tanggal === 'string') {
+              riwayat.tanggal = new Date(riwayat.tanggal);
+            }
+            return riwayat;
+          });
+        }
+        
+        return obj;
+      };
+
       // Clear existing data
       await db.collection('users').deleteMany({});
       await db.collection('barang').deleteMany({});
@@ -324,21 +350,26 @@ export async function POST(request) {
       await db.collection('kategori').deleteMany({});
       await db.collection('setting').deleteMany({});
 
-      // Restore data
+      // Restore data with date conversion
       if (backup.data.users && backup.data.users.length > 0) {
-        await db.collection('users').insertMany(backup.data.users);
+        const usersWithDates = backup.data.users.map(convertDates);
+        await db.collection('users').insertMany(usersWithDates);
       }
       if (backup.data.barang && backup.data.barang.length > 0) {
-        await db.collection('barang').insertMany(backup.data.barang);
+        const barangWithDates = backup.data.barang.map(convertDates);
+        await db.collection('barang').insertMany(barangWithDates);
       }
       if (backup.data.peminjaman && backup.data.peminjaman.length > 0) {
-        await db.collection('peminjaman').insertMany(backup.data.peminjaman);
+        const peminjamanWithDates = backup.data.peminjaman.map(convertDates);
+        await db.collection('peminjaman').insertMany(peminjamanWithDates);
       }
       if (backup.data.kategori && backup.data.kategori.length > 0) {
-        await db.collection('kategori').insertMany(backup.data.kategori);
+        const kategoriWithDates = backup.data.kategori.map(convertDates);
+        await db.collection('kategori').insertMany(kategoriWithDates);
       }
       if (backup.data.setting && backup.data.setting.length > 0) {
-        await db.collection('setting').insertMany(backup.data.setting);
+        const settingWithDates = backup.data.setting.map(convertDates);
+        await db.collection('setting').insertMany(settingWithDates);
       }
 
       return NextResponse.json({ 
