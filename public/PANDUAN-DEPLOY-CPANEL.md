@@ -396,7 +396,7 @@ npm install --production
 
 Download file backup dari:
 ```
-https://dkvlab.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
+https://creative-lab-12.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
 ```
 
 Save ke komputer Anda.
@@ -848,7 +848,7 @@ https://yourdomain.com
 **Documentation:**
 - Setup MongoDB: `PANDUAN-SETUP-MONGODB.md`
 - Restore Database: `CARA-RESTORE-DATABASE.md`
-- Download Page: `https://dkvlab.preview.emergentagent.com/download-database.html`
+- Download Page: `https://creative-lab-12.preview.emergentagent.com/download-database.html`
 
 **Common Issues:**
 - Check logs first
