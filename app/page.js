@@ -1503,44 +1503,92 @@ export default function App() {
             </Dialog>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {barang.map((item) => (
-                <Card key={item._id} className="overflow-hidden">
-                  <div className="aspect-video bg-gray-100 relative">
-                    {item.foto ? (
-                      <img src={item.foto} alt={item.nama} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Camera className="h-12 w-12 text-gray-400" />
+              {(() => {
+                // Filter dan sort barang client-side
+                let filteredBarang = [...barang];
+                
+                // Filter berdasarkan pencarian
+                if (searchBarang.trim()) {
+                  filteredBarang = filteredBarang.filter(item => 
+                    item.nama?.toLowerCase().includes(searchBarang.toLowerCase()) ||
+                    item.serial?.toLowerCase().includes(searchBarang.toLowerCase()) ||
+                    item.kategori?.toLowerCase().includes(searchBarang.toLowerCase())
+                  );
+                }
+                
+                // Filter berdasarkan kategori
+                if (filterKategori && filterKategori.trim()) {
+                  filteredBarang = filteredBarang.filter(item => item.kategori === filterKategori);
+                }
+                
+                // Filter berdasarkan kondisi
+                if (filterKondisi && filterKondisi.trim()) {
+                  filteredBarang = filteredBarang.filter(item => item.kondisi === filterKondisi);
+                }
+                
+                // Sorting
+                filteredBarang.sort((a, b) => {
+                  switch (sortBarang) {
+                    case 'abjad-az':
+                      return (a.nama || '').localeCompare(b.nama || '', 'id');
+                    case 'abjad-za':
+                      return (b.nama || '').localeCompare(a.nama || '', 'id');
+                    case 'terlama':
+                      return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+                    case 'terbaru':
+                    default:
+                      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                  }
+                });
+                
+                if (filteredBarang.length === 0) {
+                  return (
+                    <div className="col-span-full text-center py-12">
+                      <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-500">Tidak ada barang yang sesuai dengan filter</p>
+                    </div>
+                  );
+                }
+                
+                return filteredBarang.map((item) => (
+                  <Card key={item._id} className="overflow-hidden">
+                    <div className="aspect-video bg-gray-100 relative">
+                      {item.foto ? (
+                        <img src={item.foto} alt={item.nama} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Camera className="h-12 w-12 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex justify-between items-start">
+                        <h3 className="font-semibold text-lg">{item.nama}</h3>
+                        {getKondisiBadge(item.kondisi)}
                       </div>
-                    )}
-                  </div>
-                  <CardContent className="p-4 space-y-2">
-                    <div className="flex justify-between items-start">
-                      <h3 className="font-semibold text-lg">{item.nama}</h3>
-                      {getKondisiBadge(item.kondisi)}
-                    </div>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      <p>Kategori: {item.kategori || '-'}</p>
-                      <p>Serial: {item.serial || '-'}</p>
-                      <p>Lokasi: {item.lokasi || '-'}</p>
-                      <p>Jumlah: {item.jumlah || 0} unit</p>
-                    </div>
-                    <div className="flex gap-2 mt-4">
-                      <Button size="sm" variant="outline" onClick={() => loadBarangDetail(item._id)}>
-                        <Eye className="h-3 w-3 mr-1" />
-                        Detail
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => openEditBarang(item._id)}>
-                        <Edit className="h-3 w-3 mr-1" />
-                        Edit
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleDeleteBarang(item._id)}>
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      <div className="text-sm text-gray-600 space-y-1">
+                        <p>Kategori: {item.kategori || '-'}</p>
+                        <p>Serial: {item.serial || '-'}</p>
+                        <p>Lokasi: {item.lokasi || '-'}</p>
+                        <p>Jumlah: {item.jumlah || 0} unit</p>
+                      </div>
+                      <div className="flex gap-2 mt-4">
+                        <Button size="sm" variant="outline" onClick={() => loadBarangDetail(item._id)}>
+                          <Eye className="h-3 w-3 mr-1" />
+                          Detail
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => openEditBarang(item._id)}>
+                          <Edit className="h-3 w-3 mr-1" />
+                          Edit
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => handleDeleteBarang(item._id)}>
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ));
+              })()}
             </div>
           </TabsContent>
 
