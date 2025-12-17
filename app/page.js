@@ -61,6 +61,7 @@ export default function App() {
   const [filterKondisi, setFilterKondisi] = useState('');
   const [filterKategori, setFilterKategori] = useState('');
   const [searchBarang, setSearchBarang] = useState('');
+  const [sortBarang, setSortBarang] = useState('terbaru'); // terbaru, terlama, abjad-az, abjad-za
 
   // Peminjaman state
   const [peminjaman, setPeminjaman] = useState([]);
