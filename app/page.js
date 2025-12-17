@@ -1185,11 +1185,22 @@ export default function App() {
                   placeholder="Cari barang..."
                   value={searchBarang}
                   onChange={(e) => setSearchBarang(e.target.value)}
-                  className="w-64"
+                  className="w-48 lg:w-64"
                 />
+                <Select value={filterKategori} onValueChange={setFilterKategori}>
+                  <SelectTrigger className="w-44">
+                    <SelectValue placeholder="Semua Kategori" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value=" ">Semua Kategori</SelectItem>
+                    {kategori.map((k) => (
+                      <SelectItem key={k._id} value={k.nama}>{k.nama}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Select value={filterKondisi} onValueChange={setFilterKondisi}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Filter Kondisi" />
+                  <SelectTrigger className="w-44">
+                    <SelectValue placeholder="Semua Kondisi" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value=" ">Semua Kondisi</SelectItem>
@@ -1198,10 +1209,17 @@ export default function App() {
                     <SelectItem value="rusak_bisa_dipakai">Rusak Bisa Dipakai</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button onClick={loadBarang}>
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filter
-                </Button>
+                <Select value={sortBarang} onValueChange={setSortBarang}>
+                  <SelectTrigger className="w-44">
+                    <SelectValue placeholder="Urutkan" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="terbaru">Terbaru Ditambahkan</SelectItem>
+                    <SelectItem value="terlama">Terlama Ditambahkan</SelectItem>
+                    <SelectItem value="abjad-az">Nama (A-Z)</SelectItem>
+                    <SelectItem value="abjad-za">Nama (Z-A)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <Dialog open={showBarangDialog} onOpenChange={setShowBarangDialog}>
                 <DialogTrigger asChild>
