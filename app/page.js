@@ -134,7 +134,10 @@ export default function App() {
         loadBarang();
         loadKategori(); // Load kategori untuk dropdown
       }
-      if (activeTab === 'peminjaman') loadPeminjaman();
+      if (activeTab === 'peminjaman') {
+        loadPeminjaman();
+        loadBarang(); // Load barang untuk form peminjaman baru
+      }
       if (activeTab === 'users') loadUsers();
       if (activeTab === 'kategori') loadKategori();
       if (activeTab === 'setting') {
