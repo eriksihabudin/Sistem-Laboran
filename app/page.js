@@ -1608,10 +1608,57 @@ export default function App() {
                         <Label htmlFor="tahunPembelian">Tahun Pembelian</Label>
                         <Input id="tahunPembelian" name="tahunPembelian" type="number" placeholder="2024" />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="foto">Foto Barang</Label>
-                        <Input id="foto" name="foto" type="file" accept="image/*" />
+                    </div>
+                    
+                    {/* Foto Barang - Pilihan Upload atau Link */}
+                    <div className="space-y-3">
+                      <Label>Foto Barang</Label>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant={fotoType === 'upload' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setFotoType('upload')}
+                        >
+                          <Upload className="h-4 w-4 mr-2" />
+                          Upload File
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={fotoType === 'link' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setFotoType('link')}
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Link URL
+                        </Button>
                       </div>
+                      
+                      {fotoType === 'upload' ? (
+                        <Input id="foto" name="foto" type="file" accept="image/*" />
+                      ) : (
+                        <div className="space-y-2">
+                          <Input 
+                            id="fotoLink" 
+                            placeholder="https://example.com/foto.jpg" 
+                            value={fotoLink}
+                            onChange={(e) => setFotoLink(e.target.value)}
+                          />
+                          {fotoLink && (
+                            <div className="mt-2">
+                              <p className="text-xs text-gray-500 mb-1">Preview:</p>
+                              <img 
+                                src={fotoLink} 
+                                alt="Preview" 
+                                className="w-32 h-32 object-cover rounded border"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="spesifikasi">Spesifikasi</Label>
