@@ -2727,7 +2727,9 @@ export default function App() {
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
                           <CardTitle>Laporan Barang Rusak Bisa Dipakai</CardTitle>
-                          <CardDescription>Total: {getFilteredLaporanData().length} dari {laporanData.length} barang</CardDescription>
+                          <CardDescription>
+                            Total: {getFilteredLaporanData().length} jenis barang ({getFilteredLaporanData().reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0)} unit)
+                          </CardDescription>
                         </div>
                         <div className="flex gap-2 print:hidden">
                           <Input
@@ -2740,6 +2742,17 @@ export default function App() {
                             <Download className="h-4 w-4 mr-2" />
                             Print
                           </Button>
+                        </div>
+                      </div>
+                      {/* Ringkasan Total Unit */}
+                      <div className="flex gap-3 mt-4 pt-4 border-t">
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-yellow-700">{getFilteredLaporanData().reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0)}</div>
+                          <div className="text-sm text-yellow-600">Total Unit Rusak Bisa Dipakai</div>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-gray-700">{getFilteredLaporanData().length}</div>
+                          <div className="text-sm text-gray-600">Jenis Barang</div>
                         </div>
                       </div>
                     </CardHeader>
@@ -2778,7 +2791,7 @@ export default function App() {
                                 <td className="p-3">{item.serial || '-'}</td>
                                 <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
                                 <td className="p-3">{item.lokasi || '-'}</td>
-                                <td className="p-3">{item.jumlah || 0}</td>
+                                <td className="p-3 font-semibold">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
                                 <td className="p-3">
                                   {item.riwayatKerusakan && item.riwayatKerusakan.length > 0 ? (
@@ -2797,6 +2810,13 @@ export default function App() {
                               </tr>
                             ))}
                           </tbody>
+                          <tfoot>
+                            <tr className="border-t-2 bg-yellow-50 font-semibold">
+                              <td colSpan="7" className="p-3 text-right">Total Unit:</td>
+                              <td className="p-3 text-lg text-yellow-700">{getFilteredLaporanData().reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0)}</td>
+                              <td colSpan="2" className="p-3"></td>
+                            </tr>
+                          </tfoot>
                         </table>
                       </div>
                     </CardContent>
