@@ -73,6 +73,7 @@ export default function App() {
   const [selectedPeminjaman, setSelectedPeminjaman] = useState(null);
   const [filterStatusPeminjaman, setFilterStatusPeminjaman] = useState('');
   const [searchBarangPeminjaman, setSearchBarangPeminjaman] = useState('');
+  const [selectedBarangIds, setSelectedBarangIds] = useState([]); // Barang yang dipilih untuk peminjaman
 
   // Kategori state
   const [kategori, setKategori] = useState([]);
