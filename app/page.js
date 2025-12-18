@@ -2291,16 +2291,13 @@ export default function App() {
                                   type="checkbox"
                                   value={item._id}
                                   disabled={disabled}
+                                  checked={selectedBarangIds.includes(item._id)}
                                   onChange={(e) => {
-                                    const checkbox = e.target;
-                                    const barangIdsInput = document.getElementById('barangIdsHidden');
-                                    let ids = barangIdsInput.value ? JSON.parse(barangIdsInput.value) : [];
-                                    if (checkbox.checked) {
-                                      ids.push(item._id);
+                                    if (e.target.checked) {
+                                      setSelectedBarangIds([...selectedBarangIds, item._id]);
                                     } else {
-                                      ids = ids.filter(id => id !== item._id);
+                                      setSelectedBarangIds(selectedBarangIds.filter(id => id !== item._id));
                                     }
-                                    barangIdsInput.value = JSON.stringify(ids);
                                   }}
                                 />
                                 {item.foto && <img src={item.foto} className="w-8 h-8 object-cover rounded" />}
