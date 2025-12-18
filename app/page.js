@@ -33,7 +33,10 @@ import {
   Eye,
   Filter,
   Calendar,
-  Clock
+  Clock,
+  ChevronLeft,
+  ChevronRight,
+  Menu
 } from 'lucide-react';
 
 export default function App() {
