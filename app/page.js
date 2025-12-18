@@ -3200,6 +3200,7 @@ export default function App() {
             )}
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </div>
   );
