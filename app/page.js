@@ -1295,7 +1295,8 @@ export default function App() {
                       <CardTitle className="text-sm font-medium text-gray-600">Total Barang</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold">{stats.totalBarang}</div>
+                      <div className="text-3xl font-bold">{stats.totalUnit || 0}</div>
+                      <p className="text-xs text-gray-500 mt-1">{stats.totalBarang} jenis barang</p>
                     </CardContent>
                   </Card>
                   <Card className="border-green-200 bg-green-50">
@@ -1303,7 +1304,8 @@ export default function App() {
                       <CardTitle className="text-sm font-medium text-green-700">Barang Normal</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-green-700">{stats.barangNormal}</div>
+                      <div className="text-3xl font-bold text-green-700">{stats.unitNormal || 0}</div>
+                      <p className="text-xs text-green-600 mt-1">{stats.barangNormal} jenis barang</p>
                     </CardContent>
                   </Card>
                   <Card className="border-red-200 bg-red-50">
@@ -1311,7 +1313,8 @@ export default function App() {
                       <CardTitle className="text-sm font-medium text-red-700">Barang Rusak</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-red-700">{stats.barangRusak}</div>
+                      <div className="text-3xl font-bold text-red-700">{stats.unitRusak || 0}</div>
+                      <p className="text-xs text-red-600 mt-1">{stats.barangRusak} jenis barang</p>
                     </CardContent>
                   </Card>
                   <Card className="border-yellow-200 bg-yellow-50">
@@ -1319,7 +1322,8 @@ export default function App() {
                       <CardTitle className="text-sm font-medium text-yellow-700">Rusak Bisa Dipakai</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-yellow-700">{stats.barangRusakBisaDipakai}</div>
+                      <div className="text-3xl font-bold text-yellow-700">{stats.unitRusakBisaDipakai || 0}</div>
+                      <p className="text-xs text-yellow-600 mt-1">{stats.barangRusakBisaDipakai} jenis barang</p>
                     </CardContent>
                   </Card>
                   <Card className="border-blue-200 bg-blue-50">
