@@ -615,6 +615,13 @@ export default function App() {
 
     try {
       const formData = new FormData(e.target);
+      
+      // Jika menggunakan link foto, tambahkan ke formData
+      if (fotoType === 'link' && fotoLink) {
+        formData.set('fotoUrl', fotoLink);
+        formData.delete('foto'); // Hapus file foto jika ada
+      }
+      
       const response = await apiCall('/barang', {
         method: 'POST',
         body: formData
@@ -630,6 +637,8 @@ export default function App() {
 
       setSuccess('Barang berhasil ditambahkan!');
       setShowBarangDialog(false);
+      setFotoType('upload'); // Reset ke default
+      setFotoLink(''); // Reset link
       loadBarang();
       e.target.reset();
     } catch (err) {
