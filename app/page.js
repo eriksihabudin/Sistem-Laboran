@@ -3057,17 +3057,60 @@ export default function App() {
                           </CardDescription>
                         </div>
                         <div className="flex gap-2 print:hidden">
-                          <Input
-                            placeholder="Cari barang..."
-                            value={laporanSearch}
-                            onChange={(e) => setLaporanSearch(e.target.value)}
-                            className="w-64"
-                          />
                           <Button onClick={handlePrintLaporan}>
                             <Download className="h-4 w-4 mr-2" />
                             Print
                           </Button>
                         </div>
+                      </div>
+                      
+                      {/* Filter Section */}
+                      <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t print:hidden">
+                        <Input
+                          placeholder="Cari barang..."
+                          value={laporanSearch}
+                          onChange={(e) => setLaporanSearch(e.target.value)}
+                          className="w-48"
+                        />
+                        <Select value={laporanFilterKategori} onValueChange={setLaporanFilterKategori}>
+                          <SelectTrigger className="w-44">
+                            <SelectValue placeholder="Semua Kategori" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value=" ">Semua Kategori</SelectItem>
+                            {kategori.map((k) => (
+                              <SelectItem key={k._id} value={k.nama}>{k.nama}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select value={laporanFilterTahun} onValueChange={setLaporanFilterTahun}>
+                          <SelectTrigger className="w-44">
+                            <SelectValue placeholder="Semua Tahun" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value=" ">Semua Tahun</SelectItem>
+                            {(() => {
+                              // Get unique years from laporanData
+                              const years = [...new Set(laporanData.map(b => b.tahunPembelian).filter(Boolean))].sort((a, b) => b - a);
+                              return years.map((year) => (
+                                <SelectItem key={year} value={year}>{year}</SelectItem>
+                              ));
+                            })()}
+                          </SelectContent>
+                        </Select>
+                        {(laporanFilterKategori?.trim() || laporanFilterTahun?.trim() || laporanSearch) && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              setLaporanFilterKategori('');
+                              setLaporanFilterTahun('');
+                              setLaporanSearch('');
+                            }}
+                          >
+                            Reset Filter
+                          </Button>
+                        )}
                       </div>
                       
                       {/* Ringkasan Total Unit */}
