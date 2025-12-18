@@ -976,7 +976,7 @@ export default function App() {
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
               <img 
-                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                src="/logo-smk.png" 
                 alt="Logo SMK Al Basthomi" 
                 className="w-24 h-24 object-contain"
               />
