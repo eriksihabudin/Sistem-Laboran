@@ -735,6 +735,31 @@ export default function App() {
     setLoading(false);
   };
 
+  const handleDeletePeminjaman = async (id) => {
+    if (!confirm('Yakin ingin menghapus data peminjaman ini?')) return;
+
+    setLoading(true);
+    try {
+      const response = await apiCall(`/peminjaman/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Gagal menghapus peminjaman');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Data peminjaman berhasil dihapus!');
+      loadPeminjaman();
+    } catch (err) {
+      setError('Terjadi kesalahan');
+    }
+    setLoading(false);
+  };
+
   const handleUpdateKondisi = async (barangId, kondisi) => {
     // Jika kondisi rusak atau rusak_bisa_dipakai, buka dialog untuk catatan
     if (kondisi === 'rusak' || kondisi === 'rusak_bisa_dipakai') {
