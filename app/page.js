@@ -463,6 +463,19 @@ export default function App() {
       });
     }
     
+    // Filter by kategori and tahun pembelian for Inventaris Lengkap
+    if (laporanType === 'Inventaris Lengkap') {
+      // Filter by kategori
+      if (laporanFilterKategori && laporanFilterKategori.trim()) {
+        filtered = filtered.filter(item => item.kategori === laporanFilterKategori);
+      }
+      
+      // Filter by tahun pembelian
+      if (laporanFilterTahun && laporanFilterTahun.trim()) {
+        filtered = filtered.filter(item => item.tahunPembelian === laporanFilterTahun);
+      }
+    }
+    
     return filtered;
   };
 
