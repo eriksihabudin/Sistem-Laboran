@@ -938,122 +938,167 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <div className="w-64 bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50">
+      <div className={`${sidebarCollapsed ? 'w-20' : 'w-64'} bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-all duration-300`}>
         {/* Sidebar Header */}
-        <div className="p-6 border-b">
-          <h1 className="text-xl font-bold text-gray-900">Sistem Laboran DKV</h1>
-          <p className="text-xs text-gray-500 mt-1">Inventaris & Peminjaman</p>
+        <div className={`${sidebarCollapsed ? 'p-4' : 'p-6'} border-b`}>
+          {sidebarCollapsed ? (
+            <div className="flex justify-center">
+              <Package className="h-8 w-8 text-blue-700" />
+            </div>
+          ) : (
+            <>
+              <h1 className="text-xl font-bold text-gray-900">Sistem Laboran DKV</h1>
+              <p className="text-xs text-gray-500 mt-1">Inventaris & Peminjaman</p>
+            </>
+          )}
         </div>
         
         {/* Navigation Menu */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-4'} space-y-1`}>
           <button
             onClick={() => { setActiveTab('dashboard'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'dashboard' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Dashboard"
           >
-            <Package className="h-5 w-5" />
-            <span className="font-medium">Dashboard</span>
+            <Package className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Dashboard</span>}
           </button>
           
           <button
             onClick={() => { setActiveTab('inventaris'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'inventaris' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Inventaris"
           >
-            <ClipboardList className="h-5 w-5" />
-            <span className="font-medium">Inventaris</span>
+            <ClipboardList className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Inventaris</span>}
           </button>
           
           <button
             onClick={() => { setActiveTab('kondisi'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'kondisi' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Kondisi"
           >
-            <AlertTriangle className="h-5 w-5" />
-            <span className="font-medium">Kondisi</span>
+            <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Kondisi</span>}
           </button>
           
           <button
             onClick={() => { setActiveTab('peminjaman'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'peminjaman' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Peminjaman"
           >
-            <Calendar className="h-5 w-5" />
-            <span className="font-medium">Peminjaman</span>
+            <Calendar className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Peminjaman</span>}
           </button>
           
           <button
             onClick={() => { setActiveTab('laporan'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'laporan' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Laporan"
           >
-            <FileText className="h-5 w-5" />
-            <span className="font-medium">Laporan</span>
+            <FileText className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Laporan</span>}
           </button>
           
           {user.role === 'admin' && (
             <button
               onClick={() => { setActiveTab('users'); setError(''); setSuccess(''); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
                 activeTab === 'users' 
                   ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
+              title="Users"
             >
-              <Users className="h-5 w-5" />
-              <span className="font-medium">Users</span>
+              <Users className="h-5 w-5 flex-shrink-0" />
+              {!sidebarCollapsed && <span className="font-medium">Users</span>}
             </button>
           )}
           
           <button
             onClick={() => { setActiveTab('setting'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
               activeTab === 'setting' 
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
+            title="Setting"
           >
-            <Settings className="h-5 w-5" />
-            <span className="font-medium">Setting</span>
+            <Settings className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Setting</span>}
           </button>
         </nav>
         
-        {/* Sidebar Footer - User Info */}
-        <div className="p-4 border-t">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <Users className="h-5 w-5 text-blue-700" />
+        {/* Sidebar Footer - User Info & Collapse Button */}
+        <div className={`${sidebarCollapsed ? 'p-2' : 'p-4'} border-t`}>
+          {!sidebarCollapsed && (
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <Users className="h-5 w-5 text-blue-700" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{user.nama}</p>
+                <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{user.nama}</p>
-              <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+          )}
+          
+          {sidebarCollapsed ? (
+            <div className="space-y-2">
+              <Button variant="outline" size="icon" className="w-full" onClick={handleLogout} title="Keluar">
+                <LogOut className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-full" 
+                onClick={() => setSidebarCollapsed(false)}
+                title="Expand Sidebar"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
             </div>
-          </div>
-          <Button variant="outline" className="w-full" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Keluar
-          </Button>
+          ) : (
+            <div className="space-y-2">
+              <Button variant="outline" className="w-full" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Keluar
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="w-full text-gray-500 hover:text-gray-700" 
+                onClick={() => setSidebarCollapsed(true)}
+              >
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Collapse
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-64">
+      <div className={`flex-1 ${sidebarCollapsed ? 'ml-20' : 'ml-64'} transition-all duration-300`}
         {/* Top Header */}
         <div className="bg-white border-b sticky top-0 z-40">
           <div className="px-6 py-4 flex justify-between items-center">
