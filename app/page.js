@@ -930,15 +930,131 @@ export default function App() {
 
   // Main Application
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Sistem Laboran DKV</h1>
-            <p className="text-sm text-gray-600">Selamat datang, {user.nama} ({user.role})</p>
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50">
+        {/* Sidebar Header */}
+        <div className="p-6 border-b">
+          <h1 className="text-xl font-bold text-gray-900">Sistem Laboran DKV</h1>
+          <p className="text-xs text-gray-500 mt-1">Inventaris & Peminjaman</p>
+        </div>
+        
+        {/* Navigation Menu */}
+        <nav className="flex-1 p-4 space-y-1">
+          <button
+            onClick={() => { setActiveTab('dashboard'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'dashboard' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Package className="h-5 w-5" />
+            <span className="font-medium">Dashboard</span>
+          </button>
+          
+          <button
+            onClick={() => { setActiveTab('inventaris'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'inventaris' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <ClipboardList className="h-5 w-5" />
+            <span className="font-medium">Inventaris</span>
+          </button>
+          
+          <button
+            onClick={() => { setActiveTab('kondisi'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'kondisi' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <AlertTriangle className="h-5 w-5" />
+            <span className="font-medium">Kondisi</span>
+          </button>
+          
+          <button
+            onClick={() => { setActiveTab('peminjaman'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'peminjaman' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Calendar className="h-5 w-5" />
+            <span className="font-medium">Peminjaman</span>
+          </button>
+          
+          <button
+            onClick={() => { setActiveTab('laporan'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'laporan' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <FileText className="h-5 w-5" />
+            <span className="font-medium">Laporan</span>
+          </button>
+          
+          {user.role === 'admin' && (
+            <button
+              onClick={() => { setActiveTab('users'); setError(''); setSuccess(''); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                activeTab === 'users' 
+                  ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <Users className="h-5 w-5" />
+              <span className="font-medium">Users</span>
+            </button>
+          )}
+          
+          <button
+            onClick={() => { setActiveTab('setting'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'setting' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Settings className="h-5 w-5" />
+            <span className="font-medium">Setting</span>
+          </button>
+        </nav>
+        
+        {/* Sidebar Footer - User Info */}
+        <div className="p-4 border-t">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+              <Users className="h-5 w-5 text-blue-700" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">{user.nama}</p>
+              <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+          <Button variant="outline" className="w-full" onClick={handleLogout}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Keluar
+          </Button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 ml-64">
+        {/* Top Header */}
+        <div className="bg-white border-b sticky top-0 z-40">
+          <div className="px-6 py-4 flex justify-between items-center">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 capitalize">{activeTab}</h2>
+              <p className="text-sm text-gray-500">Kelola data {activeTab} sistem inventaris</p>
+            </div>
             <div className="flex items-center gap-2 text-gray-700 bg-gray-50 px-4 py-2 rounded-lg border">
               <Clock className="h-5 w-5 text-blue-600" />
               <div className="text-center">
@@ -961,67 +1077,30 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <Button variant="outline" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Keluar
-            </Button>
           </div>
         </div>
-      </div>
 
-      {/* Alerts */}
-      {error && (
-        <div className="container mx-auto px-4 mt-4">
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        </div>
-      )}
-      {success && (
-        <div className="container mx-auto px-4 mt-4">
-          <Alert className="border-green-500 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-600">{success}</AlertDescription>
-          </Alert>
-        </div>
-      )}
+        {/* Alerts */}
+        {error && (
+          <div className="px-6 mt-4">
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </div>
+        )}
+        {success && (
+          <div className="px-6 mt-4">
+            <Alert className="border-green-500 bg-green-50">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-600">{success}</AlertDescription>
+            </Alert>
+          </div>
+        )}
 
-      {/* Navigation Tabs */}
-      <div className="container mx-auto px-4 mt-6">
-        <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setError(''); setSuccess(''); }}>
-          <TabsList className="grid grid-cols-7 w-full mb-6">
-            <TabsTrigger value="dashboard">
-              <Package className="h-4 w-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="inventaris">
-              <ClipboardList className="h-4 w-4 mr-2" />
-              Inventaris
-            </TabsTrigger>
-            <TabsTrigger value="kondisi">
-              <AlertTriangle className="h-4 w-4 mr-2" />
-              Kondisi
-            </TabsTrigger>
-            <TabsTrigger value="peminjaman">
-              <Calendar className="h-4 w-4 mr-2" />
-              Peminjaman
-            </TabsTrigger>
-            <TabsTrigger value="laporan">
-              <FileText className="h-4 w-4 mr-2" />
-              Laporan
-            </TabsTrigger>
-            {user.role === 'admin' && (
-              <TabsTrigger value="users">
-                <Users className="h-4 w-4 mr-2" />
-                Users
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="setting">
-              <Settings className="h-4 w-4 mr-2" />
-              Setting
-            </TabsTrigger>
-          </TabsList>
+        {/* Page Content */}
+        <div className="p-6">
+          <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setError(''); setSuccess(''); }} className="hidden">
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
