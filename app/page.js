@@ -1328,6 +1328,41 @@ export default function App() {
                   </Card>
                 </div>
 
+                {/* Jumlah Barang per Kategori */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ClipboardList className="h-5 w-5" />
+                      Jumlah Barang per Kategori
+                    </CardTitle>
+                    <CardDescription>Distribusi inventaris berdasarkan kategori</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                      {kategori.map((kat) => {
+                        const count = barang.filter(b => b.kategori === kat.nama).length;
+                        const totalUnit = barang.filter(b => b.kategori === kat.nama).reduce((sum, b) => sum + (b.jumlah || 1), 0);
+                        return (
+                          <div 
+                            key={kat._id} 
+                            className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-4 hover:shadow-md transition-shadow"
+                          >
+                            <div className="text-2xl font-bold text-blue-700">{count}</div>
+                            <div className="text-sm font-medium text-gray-700 truncate" title={kat.nama}>{kat.nama}</div>
+                            <div className="text-xs text-gray-500 mt-1">{totalUnit} unit</div>
+                          </div>
+                        );
+                      })}
+                      {kategori.length === 0 && (
+                        <div className="col-span-full text-center py-8 text-gray-500">
+                          <Package className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+                          <p>Belum ada kategori</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
