@@ -1692,26 +1692,61 @@ export default function App() {
                 </DialogHeader>
                 {barangDetail && (
                   <div className="space-y-6">
-                    {/* Foto Utama */}
-                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                      {barangDetail.foto ? (
-                        <img src={barangDetail.foto} alt={barangDetail.nama} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Camera className="h-20 w-20 text-gray-400" />
+                    {/* Header dengan Foto dan Info Utama */}
+                    <div className="flex flex-col md:flex-row gap-6">
+                      {/* Foto Utama */}
+                      <div className="w-full md:w-64 flex-shrink-0">
+                        <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                          {barangDetail.foto ? (
+                            <img src={barangDetail.foto} alt={barangDetail.nama} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Camera className="h-20 w-20 text-gray-400" />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-
-                    {/* Informasi Utama */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <h3 className="text-2xl font-bold">{barangDetail.nama}</h3>
-                        <div className="mt-2">{getKondisiBadge(barangDetail.kondisi)}</div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">Serial/Code</p>
-                        <p className="font-semibold">{barangDetail.serial || '-'}</p>
+                      
+                      {/* Informasi Utama */}
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold">{barangDetail.nama}</h3>
+                        <div className="mt-2 flex items-center gap-2">
+                          {getKondisiBadge(barangDetail.kondisi)}
+                          <span className="text-sm text-gray-500">• {barangDetail.jumlah || 0} unit</span>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                          <div>
+                            <p className="text-xs text-gray-500">Serial/Code</p>
+                            <p className="font-medium">{barangDetail.serial || '-'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">Kategori</p>
+                            <p className="font-medium">{barangDetail.kategori || '-'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">Lokasi</p>
+                            <p className="font-medium">{barangDetail.lokasi || '-'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">Tahun Pembelian</p>
+                            <p className="font-medium">{barangDetail.tahunPembelian || '-'}</p>
+                          </div>
+                        </div>
+                        
+                        {/* Tombol Aksi */}
+                        <div className="flex gap-2 mt-4 pt-4 border-t">
+                          <Button size="sm" onClick={() => {
+                            setShowBarangDetailDialog(false);
+                            openEditBarang(barangDetail._id);
+                          }}>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Barang
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setShowBarangDetailDialog(false)}>
+                            Tutup
+                          </Button>
+                        </div>
                       </div>
                     </div>
 
