@@ -2228,7 +2228,10 @@ export default function App() {
                   Filter
                 </Button>
               </div>
-              <Dialog open={showPeminjamanDialog} onOpenChange={setShowPeminjamanDialog}>
+              <Dialog open={showPeminjamanDialog} onOpenChange={(open) => {
+                setShowPeminjamanDialog(open);
+                if (!open) setSelectedBarangIds([]); // Reset saat dialog ditutup
+              }}>
                 <DialogTrigger asChild>
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
