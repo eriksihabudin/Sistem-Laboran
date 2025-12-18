@@ -130,7 +130,11 @@ export default function App() {
 
   useEffect(() => {
     if (user && token) {
-      if (activeTab === 'dashboard') loadDashboard();
+      if (activeTab === 'dashboard') {
+        loadDashboard();
+        loadBarang(); // Load barang untuk statistik per kategori
+        loadKategori(); // Load kategori untuk statistik per kategori
+      }
       if (activeTab === 'inventaris') {
         loadBarang();
         loadKategori(); // Load kategori untuk dropdown
