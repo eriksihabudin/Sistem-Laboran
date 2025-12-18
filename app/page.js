@@ -2048,6 +2048,159 @@ export default function App() {
               </DialogContent>
             </Dialog>
 
+            {/* Dialog Detail Peminjaman */}
+            <Dialog open={showPeminjamanDetailDialog} onOpenChange={setShowPeminjamanDetailDialog}>
+              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Detail Peminjaman</DialogTitle>
+                </DialogHeader>
+                {selectedPeminjamanDetail && (
+                  <div className="space-y-6">
+                    {/* Info Peminjam */}
+                    <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="text-sm text-gray-600">Nama Peminjam</p>
+                        <p className="font-semibold text-lg">{selectedPeminjamanDetail.namaPeminjam}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Kelas/Jabatan</p>
+                        <p className="font-semibold">{selectedPeminjamanDetail.kelasjabatan}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Tanggal & Jam Pinjam</p>
+                        <p className="font-semibold">
+                          {new Date(selectedPeminjamanDetail.tanggalPinjam).toLocaleDateString('id-ID', { 
+                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Jakarta' 
+                          })}
+                        </p>
+                        <p className="text-sm">{selectedPeminjamanDetail.jamPinjam || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Rencana Pengembalian</p>
+                        {selectedPeminjamanDetail.tanggalKembaliRencana ? (
+                          <>
+                            <p className="font-semibold">
+                              {new Date(selectedPeminjamanDetail.tanggalKembaliRencana).toLocaleDateString('id-ID', { 
+                                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Jakarta' 
+                              })}
+                            </p>
+                            <p className="text-sm">{selectedPeminjamanDetail.jamKembaliRencana || '-'}</p>
+                          </>
+                        ) : (
+                          <p className="text-gray-500">Tidak ditentukan</p>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Status</p>
+                        {selectedPeminjamanDetail.status === 'dipinjam' ? (
+                          <Badge className="bg-orange-500 mt-1">Dipinjam</Badge>
+                        ) : (
+                          <Badge className="bg-green-500 mt-1">Dikembalikan</Badge>
+                        )}
+                      </div>
+                      {selectedPeminjamanDetail.status === 'dikembalikan' && selectedPeminjamanDetail.tanggalDikembalikan && (
+                        <div>
+                          <p className="text-sm text-gray-600">Tanggal Dikembalikan</p>
+                          <p className="font-semibold">
+                            {new Date(selectedPeminjamanDetail.tanggalDikembalikan).toLocaleDateString('id-ID', { 
+                              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Jakarta' 
+                            })}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Surat Peminjaman */}
+                    {selectedPeminjamanDetail.surat && (
+                      <div className="p-4 border rounded-lg">
+                        <p className="text-sm text-gray-600 mb-2">Surat Peminjaman</p>
+                        <Button variant="outline" asChild>
+                          <a href={selectedPeminjamanDetail.surat} target="_blank" rel="noopener noreferrer">
+                            <FileText className="h-4 w-4 mr-2" />
+                            Lihat Surat Peminjaman
+                          </a>
+                        </Button>
+                      </div>
+                    )}
+
+                    {/* Daftar Barang yang Dipinjam */}
+                    <div>
+                      <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                        <ClipboardList className="h-5 w-5" />
+                        Daftar Barang yang Dipinjam
+                      </h4>
+                      {selectedPeminjamanDetail.barangData && selectedPeminjamanDetail.barangData.length > 0 ? (
+                        <div className="space-y-3">
+                          {selectedPeminjamanDetail.barangData.map((b, idx) => (
+                            <div key={b._id} className="flex items-center gap-4 p-4 border rounded-lg bg-white hover:bg-gray-50">
+                              <div className="text-lg font-bold text-gray-400 w-8">{idx + 1}</div>
+                              {b.foto ? (
+                                <img src={b.foto} className="w-16 h-16 object-cover rounded-lg border" alt={b.nama} />
+                              ) : (
+                                <div className="w-16 h-16 bg-gray-100 rounded-lg border flex items-center justify-center">
+                                  <Camera className="h-6 w-6 text-gray-400" />
+                                </div>
+                              )}
+                              <div className="flex-1">
+                                <p className="font-semibold text-lg">{b.nama}</p>
+                                <div className="flex flex-wrap gap-2 mt-1">
+                                  {b.kategori && (
+                                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">{b.kategori}</span>
+                                  )}
+                                  {b.serial && (
+                                    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">SN: {b.serial}</span>
+                                  )}
+                                  {b.kondisi && (
+                                    <span className={`text-xs px-2 py-1 rounded ${
+                                      b.kondisi === 'normal' ? 'bg-green-100 text-green-700' :
+                                      b.kondisi === 'rusak' ? 'bg-red-100 text-red-700' :
+                                      'bg-yellow-100 text-yellow-700'
+                                    }`}>
+                                      {b.kondisi === 'normal' ? 'Normal' : b.kondisi === 'rusak' ? 'Rusak' : 'Rusak Bisa Dipakai'}
+                                    </span>
+                                  )}
+                                </div>
+                                {b.lokasi && <p className="text-xs text-gray-500 mt-1">Lokasi: {b.lokasi}</p>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 bg-gray-50 rounded-lg">
+                          <Package className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+                          <p className="text-gray-500">Tidak ada data barang</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Catatan */}
+                    {selectedPeminjamanDetail.catatan && (
+                      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p className="text-sm font-medium text-yellow-800 mb-1">Catatan:</p>
+                        <p className="text-sm text-yellow-700">{selectedPeminjamanDetail.catatan}</p>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex gap-2 justify-end pt-4 border-t">
+                      {selectedPeminjamanDetail.status === 'dipinjam' && (
+                        <Button onClick={() => {
+                          setShowPeminjamanDetailDialog(false);
+                          handleReturnBarang(selectedPeminjamanDetail);
+                        }}>
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Tandai Dikembalikan
+                        </Button>
+                      )}
+                      <Button variant="outline" onClick={() => setShowPeminjamanDetailDialog(false)}>
+                        Tutup
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
+
             <div className="flex flex-wrap gap-2 justify-between">
               <div className="flex gap-2">
                 <Select value={filterStatusPeminjaman} onValueChange={setFilterStatusPeminjaman}>
