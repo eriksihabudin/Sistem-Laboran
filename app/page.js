@@ -2834,6 +2834,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Tanggal Kembali</th>
                               <th className="text-left p-3 font-semibold">Jam Kembali</th>
                               <th className="text-left p-3 font-semibold">Status</th>
+                              <th className="text-left p-3 font-semibold">Surat</th>
                               <th className="text-left p-3 font-semibold">Kondisi Pengembalian</th>
                               <th className="text-left p-3 font-semibold">Catatan</th>
                             </tr>
