@@ -654,6 +654,10 @@ export default function App() {
 
     try {
       const formData = new FormData(e.target);
+      
+      // Override barangIds dengan state yang benar
+      formData.set('barangIds', JSON.stringify(selectedBarangIds));
+      
       const response = await apiCall('/peminjaman', {
         method: 'POST',
         body: formData
@@ -669,7 +673,9 @@ export default function App() {
 
       setSuccess('Peminjaman berhasil dicatat!');
       setShowPeminjamanDialog(false);
+      setSelectedBarangIds([]); // Reset selected barang
       loadPeminjaman();
+      loadBarang(); // Reload barang untuk update status
       e.target.reset();
     } catch (err) {
       setError('Terjadi kesalahan saat menambah peminjaman');
