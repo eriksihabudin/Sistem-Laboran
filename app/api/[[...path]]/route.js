@@ -435,6 +435,13 @@ export async function GET(request) {
       const barangRusak = await barangCollection.countDocuments({ kondisi: 'rusak' });
       const barangRusakBisaDipakai = await barangCollection.countDocuments({ kondisi: 'rusak_bisa_dipakai' });
       
+      // Hitung total unit (qty) semua barang
+      const allBarang = await barangCollection.find().toArray();
+      const totalUnit = allBarang.reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0);
+      const unitNormal = allBarang.filter(b => b.kondisi === 'normal').reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0);
+      const unitRusak = allBarang.filter(b => b.kondisi === 'rusak').reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0);
+      const unitRusakBisaDipakai = allBarang.filter(b => b.kondisi === 'rusak_bisa_dipakai').reduce((sum, b) => sum + (parseInt(b.jumlah) || 1), 0);
+      
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
@@ -447,9 +454,13 @@ export async function GET(request) {
       
       return NextResponse.json({
         totalBarang,
+        totalUnit,
         barangNormal,
+        unitNormal,
         barangRusak,
+        unitRusak,
         barangRusakBisaDipakai,
+        unitRusakBisaDipakai,
         peminjamanAktifHariIni
       });
     }
