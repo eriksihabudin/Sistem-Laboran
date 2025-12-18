@@ -974,8 +974,15 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
+            <div className="flex justify-center mb-4">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                alt="Logo SMK Al Basthomi" 
+                className="w-24 h-24 object-contain"
+              />
+            </div>
             <CardTitle className="text-2xl font-bold text-center">Sistem Laboran DKV</CardTitle>
-            <CardDescription className="text-center">Masuk ke sistem inventaris dan peminjaman</CardDescription>
+            <CardDescription className="text-center">SMK Al Basthomi Loceret</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
