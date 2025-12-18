@@ -67,6 +67,8 @@ export default function App() {
   const [filterKategori, setFilterKategori] = useState('');
   const [searchBarang, setSearchBarang] = useState('');
   const [sortBarang, setSortBarang] = useState('terbaru'); // terbaru, terlama, abjad-az, abjad-za
+  const [fotoType, setFotoType] = useState('upload'); // upload atau link
+  const [fotoLink, setFotoLink] = useState('');
 
   // Peminjaman state
   const [peminjaman, setPeminjaman] = useState([]);
