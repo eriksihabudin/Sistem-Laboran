@@ -1029,16 +1029,27 @@ export default function App() {
       {/* Sidebar */}
       <div className={`${sidebarCollapsed ? 'w-20' : 'w-64'} bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-all duration-300`}>
         {/* Sidebar Header */}
-        <div className={`${sidebarCollapsed ? 'p-4' : 'p-6'} border-b`}>
+        <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b`}>
           {sidebarCollapsed ? (
             <div className="flex justify-center">
-              <Package className="h-8 w-8 text-blue-700" />
+              <img 
+                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                alt="Logo" 
+                className="w-12 h-12 object-contain"
+              />
             </div>
           ) : (
-            <>
-              <h1 className="text-xl font-bold text-gray-900">Sistem Laboran DKV</h1>
-              <p className="text-xs text-gray-500 mt-1">Inventaris & Peminjaman</p>
-            </>
+            <div className="flex items-center gap-3">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                alt="Logo SMK Al Basthomi" 
+                className="w-12 h-12 object-contain"
+              />
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">Sistem Laboran</h1>
+                <p className="text-xs text-gray-500">SMK Al Basthomi</p>
+              </div>
+            </div>
           )}
         </div>
         
