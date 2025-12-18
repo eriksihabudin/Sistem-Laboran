@@ -1100,7 +1100,17 @@ export default function App() {
 
         {/* Page Content */}
         <div className="p-6">
-          <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setError(''); setSuccess(''); }} className="hidden">
+          <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setError(''); setSuccess(''); }}>
+            {/* Hidden TabsList - navigation handled by sidebar */}
+            <TabsList className="hidden">
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="inventaris">Inventaris</TabsTrigger>
+              <TabsTrigger value="kondisi">Kondisi</TabsTrigger>
+              <TabsTrigger value="peminjaman">Peminjaman</TabsTrigger>
+              <TabsTrigger value="laporan">Laporan</TabsTrigger>
+              <TabsTrigger value="users">Users</TabsTrigger>
+              <TabsTrigger value="setting">Setting</TabsTrigger>
+            </TabsList>
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
