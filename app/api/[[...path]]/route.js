@@ -835,8 +835,13 @@ export async function PUT(request) {
       const jumlah = formData.get('jumlah');
       if (jumlah !== null) updateData.jumlah = parseInt(jumlah);
       
+      // Handle foto - prioritaskan link URL jika ada
+      const fotoUrlLink = formData.get('fotoUrl');
       const foto = formData.get('foto');
-      if (foto && foto.size > 0) {
+      
+      if (fotoUrlLink && fotoUrlLink.trim()) {
+        updateData.foto = fotoUrlLink.trim();
+      } else if (foto && foto.size > 0) {
         updateData.foto = await saveFile(foto, 'barang');
       }
       
