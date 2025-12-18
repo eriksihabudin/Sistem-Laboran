@@ -680,6 +680,8 @@ export default function App() {
       setTimeout(() => setSuccess(''), 3000);
       setShowBarangEditDialog(false);
       setSelectedBarang(null);
+      setEditFotoType('upload'); // Reset ke default
+      setEditFotoLink(''); // Reset link
       loadBarang();
     } catch (err) {
       setError('Terjadi kesalahan saat mengupdate barang');
