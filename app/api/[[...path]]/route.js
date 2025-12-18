@@ -653,9 +653,15 @@ export async function GET(request) {
       // Populate barang data
       for (let p of peminjaman) {
         const barangData = [];
-        for (let barangId of p.barang) {
-          const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
-          if (b) barangData.push(b);
+        if (p.barang && Array.isArray(p.barang) && p.barang.length > 0) {
+          for (let barangId of p.barang) {
+            try {
+              const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
+              if (b) barangData.push(b);
+            } catch (e) {
+              console.error('Error fetching barang:', barangId, e);
+            }
+          }
         }
         p.barangData = barangData;
       }
