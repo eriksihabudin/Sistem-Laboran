@@ -149,9 +149,13 @@ export async function POST(request) {
       const spesifikasi = formData.get('spesifikasi');
       const tahunPembelian = formData.get('tahunPembelian');
       const foto = formData.get('foto');
+      const fotoUrlLink = formData.get('fotoUrl'); // Link foto dari web
       
       let fotoUrl = null;
-      if (foto && foto.size > 0) {
+      // Prioritaskan link URL jika ada, jika tidak gunakan file upload
+      if (fotoUrlLink && fotoUrlLink.trim()) {
+        fotoUrl = fotoUrlLink.trim();
+      } else if (foto && foto.size > 0) {
         fotoUrl = await saveFile(foto, 'barang');
       }
       
