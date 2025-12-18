@@ -2878,6 +2878,19 @@ export default function App() {
                                   )}
                                 </td>
                                 <td className="p-3">
+                                  {item.surat ? (
+                                    <span className="inline-flex items-center gap-1 text-green-600">
+                                      <CheckCircle className="h-4 w-4" />
+                                      <span className="text-sm">Pakai Surat</span>
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 text-gray-500">
+                                      <AlertCircle className="h-4 w-4" />
+                                      <span className="text-sm">Tidak Pakai</span>
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3">
                                   {item.kondisiPengembalian ? (
                                     <span className={`text-sm ${
                                       item.kondisiPengembalian === 'baik' ? 'text-green-600' :
