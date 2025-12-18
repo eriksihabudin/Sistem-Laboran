@@ -2193,7 +2193,7 @@ export default function App() {
               {peminjaman.map((item) => (
                 <Card key={item._id}>
                   <CardContent className="p-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                       <div>
                         <p className="text-sm text-gray-600">Peminjam</p>
                         <p className="font-semibold">{item.namaPeminjam}</p>
@@ -2202,7 +2202,18 @@ export default function App() {
                       <div>
                         <p className="text-sm text-gray-600">Tanggal & Jam Pinjam</p>
                         <p className="font-semibold">{new Date(item.tanggalPinjam).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })}</p>
-                        <p className="text-sm">{item.jamPinjam}</p>
+                        <p className="text-sm">{item.jamPinjam || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Rencana Pengembalian</p>
+                        {item.tanggalKembaliRencana ? (
+                          <>
+                            <p className="font-semibold">{new Date(item.tanggalKembaliRencana).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })}</p>
+                            <p className="text-sm">{item.jamKembaliRencana || '-'}</p>
+                          </>
+                        ) : (
+                          <p className="text-sm text-gray-500">Tidak ditentukan</p>
+                        )}
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">Status</p>
@@ -2211,12 +2222,17 @@ export default function App() {
                         ) : (
                           <Badge className="bg-green-500">Dikembalikan</Badge>
                         )}
+                        {item.status === 'dikembalikan' && item.tanggalDikembalikan && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(item.tanggalDikembalikan).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })}
+                          </p>
+                        )}
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         {item.status === 'dipinjam' && (
                           <Button size="sm" onClick={() => handleReturnBarang(item)}>
                             <CheckCircle className="h-4 w-4 mr-1" />
-                            Tandai Kembali
+                            Kembali
                           </Button>
                         )}
                         {item.surat && (
@@ -2227,16 +2243,30 @@ export default function App() {
                             </a>
                           </Button>
                         )}
+                        <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDeletePeminjaman(item._id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
+                    
+                    {/* Barang yang dipinjam */}
                     {item.barangData && item.barangData.length > 0 && (
-                      <div className="mt-4">
-                        <p className="text-sm text-gray-600 mb-2">Barang yang dipinjam:</p>
+                      <div className="mt-4 pt-4 border-t">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Barang yang dipinjam:</p>
                         <div className="flex flex-wrap gap-2">
                           {item.barangData.map((b) => (
-                            <div key={b._id} className="flex items-center gap-2 border rounded px-3 py-1">
-                              {b.foto && <img src={b.foto} className="w-6 h-6 object-cover rounded" />}
-                              <span className="text-sm">{b.nama}</span>
+                            <div key={b._id} className="flex items-center gap-2 bg-gray-50 border rounded-lg px-3 py-2">
+                              {b.foto ? (
+                                <img src={b.foto} className="w-8 h-8 object-cover rounded" alt={b.nama} />
+                              ) : (
+                                <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
+                                  <Camera className="h-4 w-4 text-gray-400" />
+                                </div>
+                              )}
+                              <div>
+                                <span className="text-sm font-medium">{b.nama}</span>
+                                {b.kategori && <p className="text-xs text-gray-500">{b.kategori}</p>}
+                              </div>
                             </div>
                           ))}
                         </div>
