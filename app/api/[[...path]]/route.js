@@ -957,6 +957,27 @@ export async function DELETE(request) {
       return NextResponse.json({ message: 'Kategori berhasil dihapus' });
     }
 
+    // === PEMINJAMAN DELETE ===
+    if (pathname.startsWith('/peminjaman/')) {
+      const id = pathname.split('/').pop();
+      
+      // Get peminjaman data first to update barang status
+      const peminjaman = await db.collection('peminjaman').findOne({ _id: new ObjectId(id) });
+      
+      if (peminjaman && peminjaman.barang && peminjaman.status === 'dipinjam') {
+        // Update status barang yang dipinjam menjadi tersedia kembali
+        for (const barangId of peminjaman.barang) {
+          await db.collection('barang').updateOne(
+            { _id: new ObjectId(barangId) },
+            { $set: { statusPeminjaman: 'tersedia' } }
+          );
+        }
+      }
+      
+      await db.collection('peminjaman').deleteOne({ _id: new ObjectId(id) });
+      return NextResponse.json({ message: 'Data peminjaman berhasil dihapus' });
+    }
+
     // === DATABASE CLEAR ===
     if (pathname === '/database/clear') {
       if (userData.role !== 'admin') {
