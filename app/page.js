@@ -160,6 +160,7 @@ export default function App() {
   useEffect(() => {
     if (user && token && activeTab === 'laporan') {
       loadLaporan(laporanType);
+      loadKategori(); // Load kategori untuk filter di Inventaris Lengkap
     }
   }, [laporanType]);
 
