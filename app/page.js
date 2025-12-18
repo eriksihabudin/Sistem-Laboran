@@ -2346,7 +2346,14 @@ export default function App() {
 
             <div className="space-y-4">
               {peminjaman.map((item) => (
-                <Card key={item._id}>
+                <Card 
+                  key={item._id} 
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => {
+                    setSelectedPeminjamanDetail(item);
+                    setShowPeminjamanDetailDialog(true);
+                  }}
+                >
                   <CardContent className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                       <div>
@@ -2383,7 +2390,7 @@ export default function App() {
                           </p>
                         )}
                       </div>
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2" onClick={(e) => e.stopPropagation()}>
                         {item.status === 'dipinjam' && (
                           <Button size="sm" onClick={() => handleReturnBarang(item)}>
                             <CheckCircle className="h-4 w-4 mr-1" />
@@ -2404,12 +2411,14 @@ export default function App() {
                       </div>
                     </div>
                     
-                    {/* Barang yang dipinjam */}
+                    {/* Preview Barang yang dipinjam */}
                     {item.barangData && item.barangData.length > 0 && (
                       <div className="mt-4 pt-4 border-t">
-                        <p className="text-sm font-medium text-gray-700 mb-2">Barang yang dipinjam:</p>
+                        <p className="text-sm font-medium text-gray-700 mb-2">
+                          Barang yang dipinjam ({item.barangData.length} item) - <span className="text-blue-600">Klik untuk detail</span>
+                        </p>
                         <div className="flex flex-wrap gap-2">
-                          {item.barangData.map((b) => (
+                          {item.barangData.slice(0, 3).map((b) => (
                             <div key={b._id} className="flex items-center gap-2 bg-gray-50 border rounded-lg px-3 py-2">
                               {b.foto ? (
                                 <img src={b.foto} className="w-8 h-8 object-cover rounded" alt={b.nama} />
@@ -2424,6 +2433,11 @@ export default function App() {
                               </div>
                             </div>
                           ))}
+                          {item.barangData.length > 3 && (
+                            <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-700">
+                              <span className="text-sm font-medium">+{item.barangData.length - 3} lainnya</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
