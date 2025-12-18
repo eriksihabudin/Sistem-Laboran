@@ -91,6 +91,7 @@ export default function App() {
   
   // Sidebar state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [laporanMenuExpanded, setLaporanMenuExpanded] = useState(false);
   
   // Filter peminjaman
   const [filterTanggal, setFilterTanggal] = useState('');
