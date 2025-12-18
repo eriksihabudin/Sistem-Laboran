@@ -2226,7 +2226,8 @@ export default function App() {
           {/* Laporan Tab */}
           <TabsContent value="laporan" className="space-y-4">
             <Tabs value={laporanType} onValueChange={setLaporanType}>
-              <TabsList className="grid grid-cols-5 w-full">
+              {/* TabsList hidden - navigation moved to sidebar */}
+              <TabsList className="hidden">
                 <TabsTrigger value="Barang Normal">Barang Normal</TabsTrigger>
                 <TabsTrigger value="Barang Rusak">Barang Rusak</TabsTrigger>
                 <TabsTrigger value="Barang Rusak Bisa Dipakai">Rusak Bisa Dipakai</TabsTrigger>
