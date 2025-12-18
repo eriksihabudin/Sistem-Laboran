@@ -1047,7 +1047,7 @@ export default function App() {
               />
               <div>
                 <h1 className="text-lg font-bold text-gray-900">Sistem Laboran</h1>
-                <p className="text-xs text-gray-500">SMK Al Basthomi</p>
+                <p className="text-xs text-gray-500">SMK Al Basthomi Loceret</p>
               </div>
             </div>
           )}
