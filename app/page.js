@@ -1098,7 +1098,7 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 ${sidebarCollapsed ? 'ml-20' : 'ml-64'} transition-all duration-300`}
+      <div className={`flex-1 ${sidebarCollapsed ? 'ml-20' : 'ml-64'} transition-all duration-300`}>
         {/* Top Header */}
         <div className="bg-white border-b sticky top-0 z-40">
           <div className="px-6 py-4 flex justify-between items-center">
