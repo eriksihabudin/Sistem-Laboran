@@ -1010,18 +1010,96 @@ export default function App() {
             {!sidebarCollapsed && <span className="font-medium">Peminjaman</span>}
           </button>
           
-          <button
-            onClick={() => { setActiveTab('laporan'); setError(''); setSuccess(''); }}
-            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
-              activeTab === 'laporan' 
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-            title="Laporan"
-          >
-            <FileText className="h-5 w-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Laporan</span>}
-          </button>
+          {/* Laporan Menu with Sub-menu */}
+          <div>
+            <button
+              onClick={() => { 
+                if (sidebarCollapsed) {
+                  setActiveTab('laporan'); 
+                  setLaporanType('Barang Normal');
+                } else {
+                  setLaporanMenuExpanded(!laporanMenuExpanded);
+                }
+                setError(''); 
+                setSuccess(''); 
+              }}
+              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'} py-3 rounded-lg text-left transition-colors ${
+                activeTab === 'laporan' 
+                  ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+              title="Laporan"
+            >
+              <div className={`flex items-center ${sidebarCollapsed ? '' : 'gap-3'}`}>
+                <FileText className="h-5 w-5 flex-shrink-0" />
+                {!sidebarCollapsed && <span className="font-medium">Laporan</span>}
+              </div>
+              {!sidebarCollapsed && (
+                laporanMenuExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
+              )}
+            </button>
+            
+            {/* Sub-menu items */}
+            {!sidebarCollapsed && laporanMenuExpanded && (
+              <div className="ml-4 mt-1 space-y-1">
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Barang Normal'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Barang Normal'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <CheckCircle className="h-4 w-4" />
+                  Barang Normal
+                </button>
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Barang Rusak'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Barang Rusak'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  Barang Rusak
+                </button>
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Barang Rusak Bisa Dipakai'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Barang Rusak Bisa Dipakai'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <AlertTriangle className="h-4 w-4" />
+                  Rusak Bisa Dipakai
+                </button>
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Peminjaman Bulanan'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Peminjaman Bulanan'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Calendar className="h-4 w-4" />
+                  Peminjaman
+                </button>
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Inventaris Lengkap'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Inventaris Lengkap'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <ClipboardList className="h-4 w-4" />
+                  Inventaris Lengkap
+                </button>
+              </div>
+            )}
+          </div>
           
           {user.role === 'admin' && (
             <button
