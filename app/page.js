@@ -1987,7 +1987,7 @@ export default function App() {
                 
                 return filteredBarang.map((item) => (
                   <Card key={item._id} className="overflow-hidden">
-                    <div className="aspect-video bg-gray-100 relative">
+                    <div className="aspect-square bg-gray-100 relative">
                       {item.foto ? (
                         <img src={item.foto} alt={item.nama} className="w-full h-full object-cover" />
                       ) : (
