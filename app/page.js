@@ -106,6 +106,8 @@ export default function App() {
   const [showBarangDetailDialog, setShowBarangDetailDialog] = useState(false);
   const [showPeminjamanDialog, setShowPeminjamanDialog] = useState(false);
   const [showPengembalianDialog, setShowPengembalianDialog] = useState(false);
+  const [showPeminjamanDetailDialog, setShowPeminjamanDetailDialog] = useState(false);
+  const [selectedPeminjamanDetail, setSelectedPeminjamanDetail] = useState(null);
   const [selectedPeminjamanReturn, setSelectedPeminjamanReturn] = useState(null);
   const [showUserDialog, setShowUserDialog] = useState(false);
   const [showUserEditDialog, setShowUserEditDialog] = useState(false);
