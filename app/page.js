@@ -1750,26 +1750,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Detail Informasi */}
-                    <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <p className="text-sm text-gray-600">Kategori</p>
-                        <p className="font-semibold">{barangDetail.kategori || '-'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Lokasi Penyimpanan</p>
-                        <p className="font-semibold">{barangDetail.lokasi || '-'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Jumlah Unit</p>
-                        <p className="font-semibold">{barangDetail.jumlah || 0} unit</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Tahun Pembelian</p>
-                        <p className="font-semibold">{barangDetail.tahunPembelian || '-'}</p>
-                      </div>
-                    </div>
-
                     {/* Spesifikasi */}
                     {barangDetail.spesifikasi && (
                       <div>
