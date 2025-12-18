@@ -1463,9 +1463,9 @@ export default function App() {
                           <YAxis />
                           <Tooltip />
                           <Legend />
-                          <Bar dataKey="normal" fill="#22c55e" />
-                          <Bar dataKey="rusakBisaDipakai" fill="#eab308" />
-                          <Bar dataKey="rusak" fill="#ef4444" />
+                          <Bar dataKey="normal" name="Normal" fill="#22c55e" />
+                          <Bar dataKey="rusakBisaDipakai" name="Rusak Bisa Dipakai" fill="#eab308" />
+                          <Bar dataKey="rusak" name="Rusak" fill="#ef4444" />
                         </BarChart>
                       </ResponsiveContainer>
                     </CardContent>
