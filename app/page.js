@@ -36,6 +36,8 @@ import {
   Clock,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Menu
 } from 'lucide-react';
 
