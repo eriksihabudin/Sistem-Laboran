@@ -1986,7 +1986,11 @@ export default function App() {
                 }
                 
                 return filteredBarang.map((item) => (
-                  <Card key={item._id} className="overflow-hidden">
+                  <Card 
+                    key={item._id} 
+                    className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                    onClick={() => loadBarangDetail(item._id)}
+                  >
                     <div className="aspect-square bg-gray-100 relative">
                       {item.foto ? (
                         <img src={item.foto} alt={item.nama} className="w-full h-full object-cover" />
@@ -2007,16 +2011,12 @@ export default function App() {
                         <p>Lokasi: {item.lokasi || '-'}</p>
                         <p>Jumlah: {item.jumlah || 0} unit</p>
                       </div>
-                      <div className="flex gap-2 mt-4">
-                        <Button size="sm" variant="outline" onClick={() => loadBarangDetail(item._id)}>
-                          <Eye className="h-3 w-3 mr-1" />
-                          Detail
-                        </Button>
+                      <div className="flex gap-2 mt-4" onClick={(e) => e.stopPropagation()}>
                         <Button size="sm" variant="outline" onClick={() => openEditBarang(item._id)}>
                           <Edit className="h-3 w-3 mr-1" />
                           Edit
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => handleDeleteBarang(item._id)}>
+                        <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDeleteBarang(item._id)}>
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
