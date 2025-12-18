@@ -656,6 +656,13 @@ export default function App() {
 
     try {
       const formData = new FormData(e.target);
+      
+      // Jika menggunakan link foto, tambahkan ke formData
+      if (editFotoType === 'link' && editFotoLink) {
+        formData.set('fotoUrl', editFotoLink);
+        formData.delete('foto'); // Hapus file foto jika ada
+      }
+      
       const response = await apiCall(`/barang/${selectedBarang._id}`, {
         method: 'PUT',
         body: formData
