@@ -1859,16 +1859,65 @@ export default function App() {
                         <Label htmlFor="edit-tahunPembelian">Tahun Pembelian</Label>
                         <Input id="edit-tahunPembelian" name="tahunPembelian" type="number" defaultValue={selectedBarang.tahunPembelian} placeholder="2024" />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-foto">Foto Barang (Kosongkan jika tidak ingin diubah)</Label>
-                        <Input id="edit-foto" name="foto" type="file" accept="image/*" />
-                        {selectedBarang.foto && (
-                          <div className="mt-2">
-                            <p className="text-xs text-gray-600 mb-1">Foto saat ini:</p>
-                            <img src={selectedBarang.foto} alt="Current" className="w-20 h-20 object-cover rounded border" />
-                          </div>
-                        )}
+                    </div>
+                    
+                    {/* Foto Barang - Pilihan Upload atau Link */}
+                    <div className="space-y-3">
+                      <Label>Foto Barang (Kosongkan jika tidak ingin diubah)</Label>
+                      
+                      {selectedBarang.foto && (
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <p className="text-xs text-gray-600 mb-2">Foto saat ini:</p>
+                          <img src={selectedBarang.foto} alt="Current" className="w-24 h-24 object-cover rounded border" />
+                        </div>
+                      )}
+                      
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant={editFotoType === 'upload' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setEditFotoType('upload')}
+                        >
+                          <Upload className="h-4 w-4 mr-2" />
+                          Upload File
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={editFotoType === 'link' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setEditFotoType('link')}
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Link URL
+                        </Button>
                       </div>
+                      
+                      {editFotoType === 'upload' ? (
+                        <Input id="edit-foto" name="foto" type="file" accept="image/*" />
+                      ) : (
+                        <div className="space-y-2">
+                          <Input 
+                            id="editFotoLink" 
+                            placeholder="https://example.com/foto.jpg" 
+                            value={editFotoLink}
+                            onChange={(e) => setEditFotoLink(e.target.value)}
+                          />
+                          {editFotoLink && (
+                            <div className="mt-2">
+                              <p className="text-xs text-gray-500 mb-1">Preview foto baru:</p>
+                              <img 
+                                src={editFotoLink} 
+                                alt="Preview" 
+                                className="w-24 h-24 object-cover rounded border"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="edit-spesifikasi">Spesifikasi</Label>
