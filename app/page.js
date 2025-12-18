@@ -89,6 +89,9 @@ export default function App() {
   // Clock state
   const [currentTime, setCurrentTime] = useState(new Date());
   
+  // Sidebar state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  
   // Filter peminjaman
   const [filterTanggal, setFilterTanggal] = useState('');
   const [filterBulan, setFilterBulan] = useState('');
