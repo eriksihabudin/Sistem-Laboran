@@ -1033,7 +1033,7 @@ export default function App() {
           {sidebarCollapsed ? (
             <div className="flex justify-center">
               <img 
-                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                src="/logo-smk.png" 
                 alt="Logo" 
                 className="w-12 h-12 object-contain"
               />
@@ -1041,7 +1041,7 @@ export default function App() {
           ) : (
             <div className="flex items-center gap-3">
               <img 
-                src="https://customer-assets.emergentagent.com/job_creative-lab-12/artifacts/hzm5nd69_SMK%20Al%20Basthomi.png" 
+                src="/logo-smk.png" 
                 alt="Logo SMK Al Basthomi" 
                 className="w-12 h-12 object-contain"
               />
