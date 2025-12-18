@@ -3562,63 +3562,6 @@ export default function App() {
           <TabsContent value="setting" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Pengaturan Profil Sekolah</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={async (e) => {
-                  e.preventDefault();
-                  setLoading(true);
-                  const formData = new FormData(e.target);
-                  const data = {
-                    namaSekolah: formData.get('namaSekolah'),
-                    alamat: formData.get('alamat'),
-                    telepon: formData.get('telepon'),
-                    email: formData.get('email')
-                  };
-                  
-                  try {
-                    const response = await apiCall('/setting', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(data)
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                      setSuccess('Setting berhasil disimpan!');
-                      loadSetting();
-                    } else {
-                      setError(result.error);
-                    }
-                  } catch (err) {
-                    setError('Terjadi kesalahan');
-                  }
-                  setLoading(false);
-                }} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="namaSekolah">Nama Sekolah</Label>
-                    <Input id="namaSekolah" name="namaSekolah" defaultValue={setting.namaSekolah} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="alamat">Alamat</Label>
-                    <Textarea id="alamat" name="alamat" defaultValue={setting.alamat} rows={3} />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="telepon">Telepon</Label>
-                      <Input id="telepon" name="telepon" defaultValue={setting.telepon} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" name="email" type="email" defaultValue={setting.email} />
-                    </div>
-                  </div>
-                  <Button type="submit" disabled={loading}>Simpan Pengaturan</Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
                 <CardTitle>Kategori Barang</CardTitle>
               </CardHeader>
               <CardContent>
