@@ -1381,8 +1381,8 @@ export default function App() {
   // Main Application
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
-      <div className={`${sidebarCollapsed ? 'w-20' : 'w-64'} bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-all duration-300`}>
+      {/* Sidebar - Hidden saat print */}
+      <div className={`${sidebarCollapsed ? 'w-20' : 'w-64'} bg-white border-r min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-all duration-300 print:hidden`}>
         {/* Sidebar Header */}
         <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b`}>
           {sidebarCollapsed ? (
