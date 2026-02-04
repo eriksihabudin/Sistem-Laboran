@@ -1831,6 +1831,23 @@ export default function App() {
                     <SelectItem value="rusak_bisa_dipakai">Rusak Bisa Dipakai</SelectItem>
                   </SelectContent>
                 </Select>
+                <Select value={filterLokasi} onValueChange={setFilterLokasi}>
+                  <SelectTrigger className="w-52">
+                    <SelectValue placeholder="Semua Lokasi" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value=" ">Semua Lokasi</SelectItem>
+                    {lokasi.map((loc) => {
+                      const isChild = loc.parentId;
+                      const parentName = isChild ? lokasi.find(l => l._id === loc.parentId)?.nama : null;
+                      return (
+                        <SelectItem key={loc._id} value={loc._id}>
+                          {isChild ? `${parentName} → ${loc.nama}` : loc.nama}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
                 <Select value={sortBarang} onValueChange={setSortBarang}>
                   <SelectTrigger className="w-44">
                     <SelectValue placeholder="Urutkan" />
