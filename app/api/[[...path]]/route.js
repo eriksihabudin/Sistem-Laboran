@@ -1093,6 +1093,28 @@ export async function PUT(request) {
       return NextResponse.json({ message: 'Kategori berhasil diupdate' });
     }
 
+    // === LOKASI UPDATE ===
+    if (pathname.startsWith('/lokasi/')) {
+      const id = pathname.split('/').pop();
+      const { nama, deskripsi, parentId } = await request.json();
+      
+      if (!nama || nama.trim() === '') {
+        return NextResponse.json({ error: 'Nama lokasi wajib diisi' }, { status: 400 });
+      }
+      
+      await db.collection('lokasi').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { 
+          nama: nama.trim(), 
+          deskripsi: deskripsi || '',
+          parentId: parentId && parentId.trim() !== '' ? parentId : null,
+          updatedAt: getJakartaTime() 
+        } }
+      );
+      
+      return NextResponse.json({ message: 'Lokasi berhasil diupdate' });
+    }
+
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     
   } catch (error) {
