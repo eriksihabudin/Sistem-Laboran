@@ -869,9 +869,35 @@ export default function App() {
     return barang.filter(b => b.lokasiPenyimpanan === lokasiId);
   };
 
+  // Get total units by lokasi (sum of jumlah)
+  const getTotalUnitByLokasi = (lokasiId) => {
+    const items = getBarangByLokasi(lokasiId);
+    return items.reduce((total, item) => total + (item.jumlah || 0), 0);
+  };
+
+  // Get total units including all sub-locations (for parent location)
+  const getTotalUnitWithChildren = (parentLokasiId) => {
+    // Get units in parent location
+    let total = getTotalUnitByLokasi(parentLokasiId);
+    
+    // Add units from all child locations
+    const children = getChildLocations(parentLokasiId);
+    children.forEach(child => {
+      total += getTotalUnitByLokasi(child._id);
+    });
+    
+    return total;
+  };
+
   // Get barang without lokasi
   const getBarangTanpaLokasi = () => {
     return barang.filter(b => !b.lokasiPenyimpanan || b.lokasiPenyimpanan.trim() === '');
+  };
+
+  // Get total units without lokasi
+  const getTotalUnitTanpaLokasi = () => {
+    const items = getBarangTanpaLokasi();
+    return items.reduce((total, item) => total + (item.jumlah || 0), 0);
   };
 
   // Drag and Drop handlers
