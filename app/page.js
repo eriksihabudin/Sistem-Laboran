@@ -92,6 +92,8 @@ export default function App() {
   const [showLokasiEditDialog, setShowLokasiEditDialog] = useState(false);
   const [selectedLokasi, setSelectedLokasi] = useState(null);
   const [expandedLokasi, setExpandedLokasi] = useState({});
+  const [draggedBarang, setDraggedBarang] = useState(null);
+  const [dragOverLokasi, setDragOverLokasi] = useState(null);
 
   // Users state
   const [users, setUsers] = useState([]);
