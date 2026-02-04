@@ -4090,16 +4090,76 @@ export default function App() {
             <Alert className="bg-blue-50 border-blue-200">
               <MapPin className="h-4 w-4 text-blue-600" />
               <AlertDescription className="text-blue-700">
-                Buat struktur lokasi penyimpanan dengan hierarki. Contoh: <strong>Lemari Kamera</strong> → <strong>Rak 1, Rak 2</strong>. 
-                Klik pada lokasi utama untuk melihat sub-lokasi.
+                <strong>Drag & Drop</strong>: Seret barang untuk memindahkan ke lokasi lain. Klik lokasi untuk melihat barang di dalamnya.
               </AlertDescription>
             </Alert>
 
+            {/* Barang Tanpa Lokasi - Drop Zone */}
+            <Card 
+              className={`border-2 border-dashed transition-colors ${
+                dragOverLokasi === 'none' ? 'border-orange-400 bg-orange-50' : 'border-gray-300'
+              }`}
+              onDragOver={(e) => handleDragOver(e, 'none')}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, 'none')}
+            >
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Package className="h-5 w-5 text-orange-600" />
+                    <CardTitle className="text-lg">Barang Tanpa Lokasi</CardTitle>
+                    <Badge variant="outline" className="bg-orange-50 text-orange-700">
+                      {getBarangTanpaLokasi().length} barang
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {getBarangTanpaLokasi().length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {getBarangTanpaLokasi().map((item) => (
+                      <div
+                        key={item._id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, item)}
+                        onDragEnd={handleDragEnd}
+                        className={`flex items-center gap-2 px-3 py-2 bg-white border rounded-lg cursor-grab hover:shadow-md transition-all ${
+                          draggedBarang?._id === item._id ? 'opacity-50 scale-95' : ''
+                        }`}
+                      >
+                        {item.foto ? (
+                          <img src={item.foto} className="w-8 h-8 object-cover rounded" alt={item.nama} />
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
+                            <Camera className="h-4 w-4 text-gray-400" />
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-sm font-medium">{item.nama}</p>
+                          <p className="text-xs text-gray-500">{item.jumlah} unit</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 text-center py-4">Tidak ada barang tanpa lokasi</p>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Lokasi List */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               {getParentLocations().length > 0 ? (
                 getParentLocations().map((parentLoc) => (
-                  <Card key={parentLoc._id} className="overflow-hidden">
+                  <Card 
+                    key={parentLoc._id} 
+                    className={`overflow-hidden transition-colors ${
+                      dragOverLokasi === parentLoc._id ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+                    }`}
+                    onDragOver={(e) => handleDragOver(e, parentLoc._id)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, parentLoc._id)}
+                  >
                     <CardHeader 
                       className="cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={() => toggleLokasiExpand(parentLoc._id)}
@@ -4117,6 +4177,9 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="bg-blue-50">
+                            {getBarangByLokasi(parentLoc._id).length} barang
+                          </Badge>
                           <Badge variant="outline" className="bg-gray-50">
                             {getChildLocations(parentLoc._id).length} sub-lokasi
                           </Badge>
@@ -4155,47 +4218,122 @@ export default function App() {
                       </Button>
                     </div>
 
-                    {/* Child locations */}
+                    {/* Barang in this location */}
+                    {getBarangByLokasi(parentLoc._id).length > 0 && (
+                      <div className="px-6 pb-3">
+                        <p className="text-xs text-gray-500 mb-2 font-medium">Barang di lokasi ini:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {getBarangByLokasi(parentLoc._id).map((item) => (
+                            <div
+                              key={item._id}
+                              draggable
+                              onDragStart={(e) => handleDragStart(e, item)}
+                              onDragEnd={handleDragEnd}
+                              className={`flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg cursor-grab hover:shadow-md transition-all ${
+                                draggedBarang?._id === item._id ? 'opacity-50 scale-95' : ''
+                              }`}
+                            >
+                              {item.foto ? (
+                                <img src={item.foto} className="w-8 h-8 object-cover rounded" alt={item.nama} />
+                              ) : (
+                                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                                  <Camera className="h-4 w-4 text-gray-400" />
+                                </div>
+                              )}
+                              <div>
+                                <p className="text-sm font-medium">{item.nama}</p>
+                                <p className="text-xs text-gray-600">{item.jumlah} unit</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expanded content - Child locations */}
                     {expandedLokasi[parentLoc._id] && (
                       <CardContent className="pt-0 border-t bg-gray-50">
                         {getChildLocations(parentLoc._id).length > 0 ? (
-                          <div className="space-y-2 mt-3">
+                          <div className="space-y-3 mt-3">
                             {getChildLocations(parentLoc._id).map((childLoc) => (
                               <div
                                 key={childLoc._id}
-                                className="flex items-center justify-between p-3 bg-white rounded-lg border"
+                                className={`p-3 bg-white rounded-lg border transition-colors ${
+                                  dragOverLokasi === childLoc._id ? 'ring-2 ring-green-400 bg-green-50' : ''
+                                }`}
+                                onDragOver={(e) => handleDragOver(e, childLoc._id)}
+                                onDragLeave={handleDragLeave}
+                                onDrop={(e) => handleDrop(e, childLoc._id)}
                               >
-                                <div className="flex items-center gap-3">
-                                  <div className="w-8 h-8 rounded bg-green-100 flex items-center justify-center">
-                                    <Layers className="h-4 w-4 text-green-600" />
+                                <div className="flex items-center justify-between mb-2">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded bg-green-100 flex items-center justify-center">
+                                      <Layers className="h-4 w-4 text-green-600" />
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">{childLoc.nama}</p>
+                                      {childLoc.deskripsi && (
+                                        <p className="text-xs text-gray-500">{childLoc.deskripsi}</p>
+                                      )}
+                                    </div>
                                   </div>
-                                  <div>
-                                    <p className="font-medium">{childLoc.nama}</p>
-                                    {childLoc.deskripsi && (
-                                      <p className="text-xs text-gray-500">{childLoc.deskripsi}</p>
-                                    )}
+                                  <div className="flex items-center gap-2">
+                                    <Badge variant="outline" className="bg-green-50 text-green-700">
+                                      {getBarangByLokasi(childLoc._id).length} barang
+                                    </Badge>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => {
+                                        setSelectedLokasi(childLoc);
+                                        setShowLokasiEditDialog(true);
+                                      }}
+                                    >
+                                      <Edit className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                      onClick={() => handleDeleteLokasi(childLoc._id)}
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
                                   </div>
                                 </div>
-                                <div className="flex gap-1">
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => {
-                                      setSelectedLokasi(childLoc);
-                                      setShowLokasiEditDialog(true);
-                                    }}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                    onClick={() => handleDeleteLokasi(childLoc._id)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
-                                </div>
+                                
+                                {/* Barang in child location */}
+                                {getBarangByLokasi(childLoc._id).length > 0 ? (
+                                  <div className="flex flex-wrap gap-2 mt-2 pt-2 border-t">
+                                    {getBarangByLokasi(childLoc._id).map((item) => (
+                                      <div
+                                        key={item._id}
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, item)}
+                                        onDragEnd={handleDragEnd}
+                                        className={`flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg cursor-grab hover:shadow-md transition-all ${
+                                          draggedBarang?._id === item._id ? 'opacity-50 scale-95' : ''
+                                        }`}
+                                      >
+                                        {item.foto ? (
+                                          <img src={item.foto} className="w-8 h-8 object-cover rounded" alt={item.nama} />
+                                        ) : (
+                                          <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                                            <Camera className="h-4 w-4 text-gray-400" />
+                                          </div>
+                                        )}
+                                        <div>
+                                          <p className="text-sm font-medium">{item.nama}</p>
+                                          <p className="text-xs text-gray-600">{item.jumlah} unit</p>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-gray-400 mt-2 pt-2 border-t text-center">
+                                    Seret barang ke sini untuk menambahkan
+                                  </p>
+                                )}
                               </div>
                             ))}
                           </div>
