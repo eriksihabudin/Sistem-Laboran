@@ -2988,6 +2988,9 @@ export default function App() {
                             const disabled = isBarangDisabled(item._id);
                             const selectedQty = getSelectedQty(item._id);
                             const isSelected = selectedQty > 0;
+                            const stokTersedia = item.jumlah || 0;
+                            const stokHabis = stokTersedia <= 0;
+                            
                             return (
                               <div 
                                 key={item._id} 
@@ -3002,20 +3005,35 @@ export default function App() {
                                 {item.foto && <img src={item.foto} className="w-10 h-10 object-cover rounded" />}
                                 <div className="flex-1">
                                   <span className="text-sm font-medium">{item.nama}</span>
-                                  <div className="flex gap-2 items-center text-xs text-gray-600">
+                                  <div className="flex gap-2 items-center text-xs text-gray-600 flex-wrap">
                                     <span>{item.kategori}</span>
                                     <span>•</span>
-                                    <span className="font-medium">Stok: {item.jumlah}</span>
+                                    <span className={`font-medium ${stokHabis ? 'text-red-500' : stokTersedia <= 2 ? 'text-orange-500' : 'text-green-600'}`}>
+                                      Stok Tersedia: {stokTersedia} unit
+                                    </span>
                                     {item.kondisi === 'rusak_bisa_dipakai' && (
                                       <>
                                         <span>•</span>
                                         <Badge className="bg-yellow-500 h-4 text-xs">Rusak Bisa Dipakai</Badge>
                                       </>
                                     )}
+                                    {item.kondisi === 'rusak' && (
+                                      <>
+                                        <span>•</span>
+                                        <Badge className="bg-red-500 h-4 text-xs">Rusak</Badge>
+                                      </>
+                                    )}
                                   </div>
                                 </div>
                                 {disabled ? (
-                                  <span className="text-xs text-red-500 font-medium">Tidak Tersedia</span>
+                                  <div className="text-right">
+                                    <span className="text-xs text-red-500 font-medium block">
+                                      {item.kondisi === 'rusak' ? 'Barang Rusak' : 'Stok Habis'}
+                                    </span>
+                                    {stokHabis && item.kondisi !== 'rusak' && (
+                                      <span className="text-xs text-gray-400">Sedang dipinjam semua</span>
+                                    )}
+                                  </div>
                                 ) : (
                                   <div className="flex items-center gap-1">
                                     <Button
@@ -3031,7 +3049,7 @@ export default function App() {
                                     <Input
                                       type="number"
                                       min="0"
-                                      max={item.jumlah}
+                                      max={stokTersedia}
                                       value={selectedQty}
                                       onChange={(e) => setBarangQty(item._id, parseInt(e.target.value) || 0)}
                                       className="w-14 h-7 text-center text-sm"
@@ -3041,7 +3059,7 @@ export default function App() {
                                       variant="outline"
                                       size="sm"
                                       className="h-7 w-7 p-0"
-                                      disabled={selectedQty >= item.jumlah}
+                                      disabled={selectedQty >= stokTersedia}
                                       onClick={() => addBarangToPeminjaman(item._id, 1)}
                                     >
                                       +
