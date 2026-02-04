@@ -216,7 +216,7 @@ export async function POST(request) {
       const formData = await request.formData();
       const namaPeminjam = formData.get('namaPeminjam');
       const kelasjabatan = formData.get('kelasjabatan');
-      const barangIds = formData.get('barangIds');
+      const barangItems = formData.get('barangItems'); // Format baru: [{barangId, qty, nama}]
       const tanggalKembali = formData.get('tanggalKembali');
       const jamKembali = formData.get('jamKembali');
       const catatan = formData.get('catatan');
@@ -237,12 +237,28 @@ export async function POST(request) {
         suratUrl = await saveFile(suratFile, 'surat');
       }
       
-      const barangList = JSON.parse(barangIds);
+      // Parse barang items dengan qty
+      const barangList = JSON.parse(barangItems || '[]');
+      
+      if (barangList.length === 0) {
+        return NextResponse.json({ error: 'Pilih minimal 1 barang untuk dipinjam' }, { status: 400 });
+      }
+
+      // Validasi stok sebelum proses
+      for (const item of barangList) {
+        const barangData = await db.collection('barang').findOne({ _id: new ObjectId(item.barangId) });
+        if (!barangData) {
+          return NextResponse.json({ error: `Barang ${item.nama || item.barangId} tidak ditemukan` }, { status: 400 });
+        }
+        if (barangData.jumlah < item.qty) {
+          return NextResponse.json({ error: `Stok ${barangData.nama} tidak mencukupi (tersedia: ${barangData.jumlah}, diminta: ${item.qty})` }, { status: 400 });
+        }
+      }
       
       const peminjaman = {
         namaPeminjam,
         kelasjabatan,
-        barang: barangList,
+        barangItems: barangList, // Simpan dengan qty
         tanggalPinjam: jakartaTime,
         jamPinjam,
         tanggalKembaliRencana: tanggalKembali ? new Date(tanggalKembali) : null,
@@ -257,12 +273,13 @@ export async function POST(request) {
       
       const result = await db.collection('peminjaman').insertOne(peminjaman);
       
-      // Update status barang menjadi sedang dipinjam
-      for (const barangId of barangList) {
+      // Kurangi stok barang sesuai qty yang dipinjam
+      for (const item of barangList) {
         await db.collection('barang').updateOne(
-          { _id: new ObjectId(barangId) },
+          { _id: new ObjectId(item.barangId) },
           { 
-            $set: { statusPeminjaman: 'dipinjam', updatedAt: getJakartaTime() }
+            $inc: { jumlah: -item.qty },
+            $set: { updatedAt: getJakartaTime() }
           }
         );
       }
