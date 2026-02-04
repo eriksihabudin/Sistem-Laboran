@@ -960,11 +960,15 @@ export async function PUT(request) {
       const formData = await request.formData();
       const updateData = {};
       
-      const fields = ['nama', 'kategori', 'serial', 'kondisi', 'lokasi', 'spesifikasi', 'tahunPembelian'];
+      const fields = ['nama', 'kategori', 'serial', 'kondisi', 'spesifikasi', 'tahunPembelian'];
       fields.forEach(field => {
         const value = formData.get(field);
         if (value !== null) updateData[field] = value;
       });
+      
+      // Handle lokasiPenyimpanan - bisa null jika kosong
+      const lokasiPenyimpanan = formData.get('lokasiPenyimpanan');
+      updateData.lokasiPenyimpanan = lokasiPenyimpanan && lokasiPenyimpanan.trim() ? lokasiPenyimpanan.trim() : null;
       
       const jumlah = formData.get('jumlah');
       if (jumlah !== null) updateData.jumlah = parseInt(jumlah);
