@@ -938,6 +938,12 @@ export async function PUT(request) {
         timeZone: 'Asia/Jakarta'
       });
       
+      // Get peminjaman data first
+      const peminjaman = await db.collection('peminjaman').findOne({ _id: new ObjectId(peminjamanId) });
+      if (!peminjaman) {
+        return NextResponse.json({ error: 'Peminjaman tidak ditemukan' }, { status: 404 });
+      }
+      
       await db.collection('peminjaman').updateOne(
         { _id: new ObjectId(peminjamanId) },
         { 
@@ -952,15 +958,29 @@ export async function PUT(request) {
         }
       );
       
-      // Update status barang
-      const peminjaman = await db.collection('peminjaman').findOne({ _id: new ObjectId(peminjamanId) });
-      for (const barangId of peminjaman.barang) {
-        await db.collection('barang').updateOne(
-          { _id: new ObjectId(barangId) },
-          { 
-            $set: { statusPeminjaman: 'tersedia', updatedAt: getJakartaTime() }
-          }
-        );
+      // Kembalikan stok barang berdasarkan format data
+      if (peminjaman.barangItems && Array.isArray(peminjaman.barangItems) && peminjaman.barangItems.length > 0) {
+        // Format baru dengan qty
+        for (const item of peminjaman.barangItems) {
+          await db.collection('barang').updateOne(
+            { _id: new ObjectId(item.barangId) },
+            { 
+              $inc: { jumlah: item.qty }, // Kembalikan stok sesuai qty
+              $set: { updatedAt: getJakartaTime() }
+            }
+          );
+        }
+      } else if (peminjaman.barang && Array.isArray(peminjaman.barang)) {
+        // Format lama
+        for (const barangId of peminjaman.barang) {
+          await db.collection('barang').updateOne(
+            { _id: new ObjectId(barangId) },
+            { 
+              $inc: { jumlah: 1 }, // Kembalikan 1 unit
+              $set: { statusPeminjaman: 'tersedia', updatedAt: getJakartaTime() }
+            }
+          );
+        }
       }
       
       return NextResponse.json({ message: 'Barang berhasil dikembalikan' });
