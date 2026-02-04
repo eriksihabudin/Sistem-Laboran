@@ -4305,7 +4305,7 @@ export default function App() {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <Badge variant="outline" className="bg-green-50 text-green-700">
-                                      {getBarangByLokasi(childLoc._id).length} barang
+                                      {getTotalUnitByLokasi(childLoc._id)} unit
                                     </Badge>
                                     <Button
                                       size="sm"
