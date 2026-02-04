@@ -55,7 +55,7 @@ cd laboran-dkv
 ```
 
 **Opsi B: Download Manual**
-1. Download file `seed.js` dari: https://creative-lab-12.preview.emergentagent.com/scripts/seed.js
+1. Download file `seed.js` dari: https://asset-tracker-dkv.preview.emergentagent.com/scripts/seed.js
 2. Buat folder project: `mkdir laboran-dkv && cd laboran-dkv`
 3. Buat folder: `mkdir scripts`
 4. Save `seed.js` ke folder `scripts/`
@@ -214,7 +214,7 @@ Cara paling mudah jika sudah ada file backup!
 
 ### **Step 1: Download Backup**
 
-Download: https://creative-lab-12.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
+Download: https://asset-tracker-dkv.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
 
 ---
 

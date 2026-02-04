@@ -209,7 +209,7 @@ Jika tidak ada akses SSH sama sekali, gunakan fitur **Restore Database**.
 
 **Step 1: Download file backup**
 ```
-https://creative-lab-12.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
+https://asset-tracker-dkv.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
 ```
 
 **Step 2: Login ke aplikasi**

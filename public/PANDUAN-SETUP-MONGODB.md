@@ -419,7 +419,7 @@ CORS_ORIGINS=*
 
 6. **Upload file:**
    - File: `backup-laboran-dkv-2025-12-16.json`
-   - Download dari: https://creative-lab-12.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
+   - Download dari: https://asset-tracker-dkv.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
 
 7. **Konfirmasi restore**
 
@@ -435,7 +435,7 @@ CORS_ORIGINS=*
 cd ~/public_html/laboran-dkv
 
 # Download backup file
-wget https://creative-lab-12.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
+wget https://asset-tracker-dkv.preview.emergentagent.com/backup-laboran-dkv-2025-12-16.json
 
 # Create restore script
 nano restore.js
