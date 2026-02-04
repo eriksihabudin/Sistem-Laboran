@@ -782,8 +782,8 @@ export default function App() {
     try {
       const formData = new FormData(e.target);
       
-      // Override barangIds dengan state yang benar
-      formData.set('barangIds', JSON.stringify(selectedBarangIds));
+      // Kirim format baru dengan qty per barang
+      formData.set('barangItems', JSON.stringify(selectedBarangItems));
       
       const response = await apiCall('/peminjaman', {
         method: 'POST',
@@ -800,7 +800,7 @@ export default function App() {
 
       setSuccess('Peminjaman berhasil dicatat!');
       setShowPeminjamanDialog(false);
-      setSelectedBarangIds([]); // Reset selected barang
+      setSelectedBarangItems([]); // Reset selected barang
       loadPeminjaman();
       loadBarang(); // Reload barang untuk update status
       e.target.reset();
