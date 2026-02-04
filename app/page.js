@@ -154,6 +154,7 @@ export default function App() {
       if (activeTab === 'inventaris') {
         loadBarang();
         loadKategori(); // Load kategori untuk dropdown
+        loadLokasi(); // Load lokasi untuk dropdown
       }
       if (activeTab === 'peminjaman') {
         loadPeminjaman();
@@ -161,6 +162,7 @@ export default function App() {
       }
       if (activeTab === 'users') loadUsers();
       if (activeTab === 'kategori') loadKategori();
+      if (activeTab === 'lokasi') loadLokasi();
       if (activeTab === 'setting') {
         loadSetting();
         loadKategori();
