@@ -2539,7 +2539,7 @@ export default function App() {
               </div>
               <Dialog open={showPeminjamanDialog} onOpenChange={(open) => {
                 setShowPeminjamanDialog(open);
-                if (!open) setSelectedBarangIds([]); // Reset saat dialog ditutup
+                if (!open) setSelectedBarangItems([]); // Reset saat dialog ditutup
               }}>
                 <DialogTrigger asChild>
                   <Button>
