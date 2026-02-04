@@ -1544,6 +1544,17 @@ export default function App() {
                   <ClipboardList className="h-4 w-4" />
                   Inventaris Lengkap
                 </button>
+                <button
+                  onClick={() => { setActiveTab('laporan'); setLaporanType('Lokasi Penyimpanan'); setError(''); setSuccess(''); }}
+                  className={`w-full flex items-center gap-2 pl-6 pr-4 py-2 rounded-lg text-left text-sm transition-colors ${
+                    activeTab === 'laporan' && laporanType === 'Lokasi Penyimpanan'
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <MapPin className="h-4 w-4" />
+                  Lokasi Penyimpanan
+                </button>
               </div>
             )}
           </div>
