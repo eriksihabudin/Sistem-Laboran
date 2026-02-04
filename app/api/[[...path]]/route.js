@@ -666,12 +666,14 @@ export async function GET(request) {
       const kategori = searchParams.get('kategori');
       const search = searchParams.get('search');
       const tahun = searchParams.get('tahun');
+      const lokasiFilter = searchParams.get('lokasi');
       
       let query = {};
       
       if (kondisi) query.kondisi = kondisi;
       if (kategori) query.kategori = kategori;
       if (tahun) query.tahunPembelian = tahun;
+      if (lokasiFilter) query.lokasiPenyimpanan = lokasiFilter;
       if (search) {
         query.$or = [
           { nama: { $regex: search, $options: 'i' } },
@@ -680,6 +682,26 @@ export async function GET(request) {
       }
       
       const barang = await db.collection('barang').find(query).sort({ createdAt: -1 }).toArray();
+      
+      // Populate lokasi data
+      const lokasiCollection = await db.collection('lokasi').find().toArray();
+      const lokasiMap = {};
+      lokasiCollection.forEach(loc => {
+        lokasiMap[loc._id.toString()] = loc;
+      });
+      
+      // Add lokasi info to each barang
+      barang.forEach(b => {
+        if (b.lokasiPenyimpanan && lokasiMap[b.lokasiPenyimpanan]) {
+          const loc = lokasiMap[b.lokasiPenyimpanan];
+          let lokasiNama = loc.nama;
+          if (loc.parentId && lokasiMap[loc.parentId]) {
+            lokasiNama = `${lokasiMap[loc.parentId].nama} → ${loc.nama}`;
+          }
+          b.lokasiNama = lokasiNama;
+        }
+      });
+      
       return NextResponse.json(barang);
     }
 
