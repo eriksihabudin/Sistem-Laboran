@@ -504,9 +504,38 @@ export async function GET(request) {
       // Populate barang data
       for (let p of peminjaman) {
         const barangData = [];
-        for (let barangId of p.barang) {
-          const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
-          if (b) barangData.push(b);
+        
+        // Support format baru (barangItems dengan qty)
+        if (p.barangItems && Array.isArray(p.barangItems) && p.barangItems.length > 0) {
+          for (let item of p.barangItems) {
+            try {
+              const b = await db.collection('barang').findOne({ _id: new ObjectId(item.barangId) });
+              if (b) {
+                barangData.push({
+                  ...b,
+                  qtyPinjam: item.qty
+                });
+              }
+            } catch (e) {
+              console.error('Error fetching barang:', item.barangId, e);
+            }
+          }
+        }
+        // Support format lama
+        else if (p.barang && Array.isArray(p.barang)) {
+          for (let barangId of p.barang) {
+            try {
+              const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
+              if (b) {
+                barangData.push({
+                  ...b,
+                  qtyPinjam: 1
+                });
+              }
+            } catch (e) {
+              console.error('Error fetching barang:', barangId, e);
+            }
+          }
         }
         p.barangData = barangData;
       }
