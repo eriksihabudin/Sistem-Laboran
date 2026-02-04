@@ -831,6 +831,17 @@ export async function GET(request) {
       return NextResponse.json(kategori);
     }
 
+    // === LOKASI PENYIMPANAN ENDPOINTS ===
+    if (pathname === '/lokasi') {
+      const userData = verifyToken(request);
+      if (!userData) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const lokasi = await db.collection('lokasi').find().sort({ nama: 1 }).toArray();
+      return NextResponse.json(lokasi);
+    }
+
     // === SETTING ENDPOINTS ===
     if (pathname === '/setting') {
       const userData = verifyToken(request);
