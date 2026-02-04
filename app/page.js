@@ -38,7 +38,10 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  Menu
+  Menu,
+  MapPin,
+  FolderOpen,
+  Layers
 } from 'lucide-react';
 
 export default function App() {
