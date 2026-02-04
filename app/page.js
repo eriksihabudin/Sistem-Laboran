@@ -107,6 +107,7 @@ export default function App() {
   const [laporanSearch, setLaporanSearch] = useState('');
   const [laporanFilterKategori, setLaporanFilterKategori] = useState('');
   const [laporanFilterTahun, setLaporanFilterTahun] = useState('');
+  const [laporanFilterLokasi, setLaporanFilterLokasi] = useState(''); // Filter untuk laporan lokasi
 
   // Clock state
   const [currentTime, setCurrentTime] = useState(new Date());
