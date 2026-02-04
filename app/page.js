@@ -547,16 +547,49 @@ export default function App() {
     const item = barang.find(b => b._id === barangId);
     if (!item) return true;
 
-    // Disabled jika rusak
+    // Disabled jika rusak total (tidak bisa dipakai)
     if (item.kondisi === 'rusak') return true;
 
-    // Disabled jika stok habis
+    // Disabled jika stok habis (semua unit sedang dipinjam atau memang tidak ada)
     if (!item.jumlah || item.jumlah <= 0) return true;
 
-    // Disabled jika sedang dipinjam dan stok = 1
-    if (item.statusPeminjaman === 'dipinjam' && item.jumlah <= 1) return true;
-
     return false;
+  };
+
+  // Cek apakah barang sedang ada yang dipinjam (untuk info)
+  const isBarangSedangDipinjam = (barangId) => {
+    const item = barang.find(b => b._id === barangId);
+    if (!item) return false;
+    
+    // Cek apakah ada peminjaman aktif untuk barang ini
+    const activeLoan = peminjaman.find(p => 
+      p.status === 'dipinjam' && 
+      ((p.barangItems && p.barangItems.some(bi => bi.barangId === barangId)) ||
+       (p.barang && p.barang.includes(barangId)))
+    );
+    
+    return !!activeLoan;
+  };
+
+  // Mendapatkan jumlah unit yang sedang dipinjam
+  const getUnitDipinjam = (barangId) => {
+    let totalDipinjam = 0;
+    
+    peminjaman.forEach(p => {
+      if (p.status === 'dipinjam') {
+        // Format baru
+        if (p.barangItems) {
+          const item = p.barangItems.find(bi => bi.barangId === barangId);
+          if (item) totalDipinjam += item.qty;
+        }
+        // Format lama
+        else if (p.barang && p.barang.includes(barangId)) {
+          totalDipinjam += 1;
+        }
+      }
+    });
+    
+    return totalDipinjam;
   };
 
   // Mendapatkan sisa stok yang tersedia (dikurangi yang sudah dipilih)
