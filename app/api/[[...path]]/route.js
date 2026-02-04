@@ -306,6 +306,31 @@ export async function POST(request) {
       return NextResponse.json({ id: result.insertedId, message: 'Kategori berhasil ditambahkan' });
     }
 
+    // === LOKASI PENYIMPANAN POST ===
+    if (pathname === '/lokasi') {
+      const userData = verifyToken(request);
+      if (!userData) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const { nama, deskripsi, parentId } = await request.json();
+      
+      if (!nama || nama.trim() === '') {
+        return NextResponse.json({ error: 'Nama lokasi wajib diisi' }, { status: 400 });
+      }
+      
+      const lokasi = {
+        nama: nama.trim(),
+        deskripsi: deskripsi || '',
+        parentId: parentId && parentId.trim() !== '' ? parentId : null,
+        createdAt: getJakartaTime(),
+        updatedAt: getJakartaTime()
+      };
+      
+      const result = await db.collection('lokasi').insertOne(lokasi);
+      return NextResponse.json({ id: result.insertedId, message: 'Lokasi penyimpanan berhasil ditambahkan' });
+    }
+
     // === SETTING ENDPOINTS ===
     if (pathname === '/setting') {
       const userData = verifyToken(request);
