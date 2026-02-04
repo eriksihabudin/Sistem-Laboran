@@ -1600,6 +1600,7 @@ export default function App() {
               <TabsTrigger value="peminjaman">Peminjaman</TabsTrigger>
               <TabsTrigger value="laporan">Laporan</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
+              <TabsTrigger value="lokasi">Lokasi Penyimpanan</TabsTrigger>
               <TabsTrigger value="setting">Setting</TabsTrigger>
             </TabsList>
 
