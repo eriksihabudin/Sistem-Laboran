@@ -3257,7 +3257,7 @@ export default function App() {
                                     <div className="space-y-1">
                                       {item.barangData.map((b, i) => (
                                         <div key={i} className="text-sm">
-                                          {i + 1}. {b.nama}
+                                          {i + 1}. {b.nama} {b.qtyPinjam > 1 && <span className="text-blue-600 font-medium">(x{b.qtyPinjam})</span>}
                                         </div>
                                       ))}
                                     </div>
