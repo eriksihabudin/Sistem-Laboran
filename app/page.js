@@ -2041,8 +2041,15 @@ export default function App() {
                             <p className="font-medium">{barangDetail.kategori || '-'}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-500">Lokasi</p>
-                            <p className="font-medium">{barangDetail.lokasi || '-'}</p>
+                            <p className="text-xs text-gray-500">Lokasi Penyimpanan</p>
+                            <p className="font-medium flex items-center gap-1">
+                              {barangDetail.lokasiNama ? (
+                                <>
+                                  <MapPin className="h-3 w-3 text-gray-500" />
+                                  {barangDetail.lokasiNama}
+                                </>
+                              ) : '-'}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs text-gray-500">Tahun Pembelian</p>
