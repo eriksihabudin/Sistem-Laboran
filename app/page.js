@@ -3860,7 +3860,21 @@ export default function App() {
                       <div>
                         <CardTitle>Laporan Lokasi Penyimpanan</CardTitle>
                         <CardDescription>
-                          Total: {lokasi.length} lokasi ({barang.reduce((sum, b) => sum + (parseInt(b.jumlah) || 0), 0)} unit barang)
+                          {laporanFilterLokasi ? (
+                            <>Menampilkan: {(() => {
+                              const loc = lokasi.find(l => l._id === laporanFilterLokasi);
+                              if (loc) {
+                                if (loc.parentId) {
+                                  const parent = lokasi.find(l => l._id === loc.parentId);
+                                  return parent ? `${parent.nama} → ${loc.nama}` : loc.nama;
+                                }
+                                return loc.nama;
+                              }
+                              return '';
+                            })()}</>
+                          ) : (
+                            <>Total: {lokasi.length} lokasi ({barang.reduce((sum, b) => sum + (parseInt(b.jumlah) || 0), 0)} unit barang)</>
+                          )}
                         </CardDescription>
                       </div>
                       <Button onClick={handlePrintLaporan} className="print:hidden">
@@ -3868,81 +3882,109 @@ export default function App() {
                         Print
                       </Button>
                     </div>
-                    {/* Ringkasan */}
-                    <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-3 text-center">
-                        <div className="text-3xl font-bold text-blue-700">{barang.reduce((sum, b) => sum + (parseInt(b.jumlah) || 0), 0)}</div>
-                        <div className="text-sm text-blue-600">Total Unit</div>
+
+                    {/* Filter Lokasi */}
+                    <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t print:hidden">
+                      <div className="flex-1 min-w-[250px]">
+                        <Label className="text-sm text-gray-600 mb-1 block">Filter Lokasi</Label>
+                        <Select value={laporanFilterLokasi} onValueChange={setLaporanFilterLokasi}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Semua Lokasi" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value=" ">Semua Lokasi</SelectItem>
+                            {getParentLocations().map((parentLoc) => (
+                              <div key={parentLoc._id}>
+                                <SelectItem value={parentLoc._id} className="font-semibold">
+                                  📁 {parentLoc.nama}
+                                </SelectItem>
+                                {getChildLocations(parentLoc._id).map((childLoc) => (
+                                  <SelectItem key={childLoc._id} value={childLoc._id} className="pl-6">
+                                    └ {childLoc.nama}
+                                  </SelectItem>
+                                ))}
+                              </div>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
-                      <div className="bg-gray-50 rounded-lg px-6 py-3 text-center">
-                        <div className="text-3xl font-bold text-gray-700">{getParentLocations().length}</div>
-                        <div className="text-sm text-gray-600">Lokasi Utama</div>
-                      </div>
-                      <div className="bg-green-50 border border-green-200 rounded-lg px-6 py-3 text-center">
-                        <div className="text-3xl font-bold text-green-700">{lokasi.filter(l => l.parentId).length}</div>
-                        <div className="text-sm text-green-600">Sub-Lokasi</div>
-                      </div>
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg px-6 py-3 text-center">
-                        <div className="text-3xl font-bold text-orange-700">{getTotalUnitTanpaLokasi()}</div>
-                        <div className="text-sm text-orange-600">Unit Tanpa Lokasi</div>
-                      </div>
+                      {laporanFilterLokasi && laporanFilterLokasi.trim() && (
+                        <Button 
+                          variant="outline" 
+                          className="self-end"
+                          onClick={() => setLaporanFilterLokasi('')}
+                        >
+                          Reset Filter
+                        </Button>
+                      )}
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    {/* Barang Tanpa Lokasi */}
-                    {getBarangTanpaLokasi().length > 0 && (
-                      <div className="mb-6">
-                        <h3 className="font-semibold text-lg mb-3 flex items-center gap-2 text-orange-700">
-                          <Package className="h-5 w-5" />
-                          Barang Tanpa Lokasi ({getTotalUnitTanpaLokasi()} unit)
-                        </h3>
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-sm border">
-                            <thead className="bg-orange-50">
-                              <tr>
-                                <th className="text-left p-3 border-b">No</th>
-                                <th className="text-left p-3 border-b">Nama Barang</th>
-                                <th className="text-left p-3 border-b">Kategori</th>
-                                <th className="text-left p-3 border-b">Serial</th>
-                                <th className="text-center p-3 border-b">Jumlah</th>
-                                <th className="text-left p-3 border-b">Kondisi</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {getBarangTanpaLokasi().map((item, index) => (
-                                <tr key={item._id} className="border-b hover:bg-gray-50">
-                                  <td className="p-3">{index + 1}</td>
-                                  <td className="p-3 font-medium">{item.nama}</td>
-                                  <td className="p-3">{item.kategori || '-'}</td>
-                                  <td className="p-3">{item.serial || '-'}</td>
-                                  <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
-                                  <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+
+                    {/* Ringkasan - tampilkan berbeda tergantung filter */}
+                    {!laporanFilterLokasi || !laporanFilterLokasi.trim() ? (
+                      <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t">
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-blue-700">{barang.reduce((sum, b) => sum + (parseInt(b.jumlah) || 0), 0)}</div>
+                          <div className="text-sm text-blue-600">Total Unit</div>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-gray-700">{getParentLocations().length}</div>
+                          <div className="text-sm text-gray-600">Lokasi Utama</div>
+                        </div>
+                        <div className="bg-green-50 border border-green-200 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-green-700">{lokasi.filter(l => l.parentId).length}</div>
+                          <div className="text-sm text-green-600">Sub-Lokasi</div>
+                        </div>
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg px-6 py-3 text-center">
+                          <div className="text-3xl font-bold text-orange-700">{getTotalUnitTanpaLokasi()}</div>
+                          <div className="text-sm text-orange-600">Unit Tanpa Lokasi</div>
                         </div>
                       </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t">
+                        {(() => {
+                          const selectedLoc = lokasi.find(l => l._id === laporanFilterLokasi);
+                          if (!selectedLoc) return null;
+                          
+                          const isParent = !selectedLoc.parentId;
+                          const totalUnit = isParent ? getTotalUnitWithChildren(selectedLoc._id) : getTotalUnitByLokasi(selectedLoc._id);
+                          const childCount = isParent ? getChildLocations(selectedLoc._id).length : 0;
+                          
+                          return (
+                            <>
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-3 text-center">
+                                <div className="text-3xl font-bold text-blue-700">{totalUnit}</div>
+                                <div className="text-sm text-blue-600">Total Unit</div>
+                              </div>
+                              <div className="bg-gray-50 rounded-lg px-6 py-3 text-center">
+                                <div className="text-3xl font-bold text-gray-700">{getBarangByLokasi(selectedLoc._id).length}</div>
+                                <div className="text-sm text-gray-600">Jenis Barang</div>
+                              </div>
+                              {isParent && childCount > 0 && (
+                                <div className="bg-green-50 border border-green-200 rounded-lg px-6 py-3 text-center">
+                                  <div className="text-3xl font-bold text-green-700">{childCount}</div>
+                                  <div className="text-sm text-green-600">Sub-Lokasi</div>
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </div>
                     )}
-
-                    {/* Lokasi dengan barang */}
-                    {getParentLocations().map((parentLoc) => (
-                      <div key={parentLoc._id} className="mb-6">
-                        <h3 className="font-semibold text-lg mb-3 flex items-center gap-2 text-blue-700">
-                          <FolderOpen className="h-5 w-5" />
-                          {parentLoc.nama} ({getTotalUnitWithChildren(parentLoc._id)} unit)
-                        </h3>
-                        {parentLoc.deskripsi && (
-                          <p className="text-sm text-gray-500 mb-3">{parentLoc.deskripsi}</p>
-                        )}
-                        
-                        {/* Barang di lokasi utama */}
-                        {getBarangByLokasi(parentLoc._id).length > 0 && (
-                          <div className="mb-4">
-                            <h4 className="font-medium text-sm text-gray-600 mb-2">Barang di lokasi ini ({getTotalUnitByLokasi(parentLoc._id)} unit):</h4>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Konten berdasarkan filter */}
+                    {!laporanFilterLokasi || !laporanFilterLokasi.trim() ? (
+                      <>
+                        {/* Barang Tanpa Lokasi */}
+                        {getBarangTanpaLokasi().length > 0 && (
+                          <div className="mb-6">
+                            <h3 className="font-semibold text-lg mb-3 flex items-center gap-2 text-orange-700">
+                              <Package className="h-5 w-5" />
+                              Barang Tanpa Lokasi ({getTotalUnitTanpaLokasi()} unit)
+                            </h3>
                             <div className="overflow-x-auto">
                               <table className="w-full text-sm border">
-                                <thead className="bg-blue-50">
+                                <thead className="bg-orange-50">
                                   <tr>
                                     <th className="text-left p-3 border-b">No</th>
                                     <th className="text-left p-3 border-b">Nama Barang</th>
@@ -3953,7 +3995,7 @@ export default function App() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {getBarangByLokasi(parentLoc._id).map((item, index) => (
+                                  {getBarangTanpaLokasi().map((item, index) => (
                                     <tr key={item._id} className="border-b hover:bg-gray-50">
                                       <td className="p-3">{index + 1}</td>
                                       <td className="p-3 font-medium">{item.nama}</td>
@@ -3969,60 +4011,222 @@ export default function App() {
                           </div>
                         )}
 
-                        {/* Sub-lokasi */}
-                        {getChildLocations(parentLoc._id).map((childLoc) => (
-                          <div key={childLoc._id} className="ml-6 mb-4 border-l-2 border-green-200 pl-4">
-                            <h4 className="font-medium text-green-700 flex items-center gap-2 mb-2">
-                              <Layers className="h-4 w-4" />
-                              {childLoc.nama} ({getTotalUnitByLokasi(childLoc._id)} unit)
-                            </h4>
-                            {childLoc.deskripsi && (
-                              <p className="text-sm text-gray-500 mb-2">{childLoc.deskripsi}</p>
+                        {/* Semua Lokasi dengan barang */}
+                        {getParentLocations().map((parentLoc) => (
+                          <div key={parentLoc._id} className="mb-6">
+                            <h3 className="font-semibold text-lg mb-3 flex items-center gap-2 text-blue-700">
+                              <FolderOpen className="h-5 w-5" />
+                              {parentLoc.nama} ({getTotalUnitWithChildren(parentLoc._id)} unit)
+                            </h3>
+                            {parentLoc.deskripsi && (
+                              <p className="text-sm text-gray-500 mb-3">{parentLoc.deskripsi}</p>
                             )}
-                            {getBarangByLokasi(childLoc._id).length > 0 ? (
-                              <div className="overflow-x-auto">
-                                <table className="w-full text-sm border">
-                                  <thead className="bg-green-50">
-                                    <tr>
-                                      <th className="text-left p-3 border-b">No</th>
-                                      <th className="text-left p-3 border-b">Nama Barang</th>
-                                      <th className="text-left p-3 border-b">Kategori</th>
-                                      <th className="text-left p-3 border-b">Serial</th>
-                                      <th className="text-center p-3 border-b">Jumlah</th>
-                                      <th className="text-left p-3 border-b">Kondisi</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {getBarangByLokasi(childLoc._id).map((item, index) => (
-                                      <tr key={item._id} className="border-b hover:bg-gray-50">
-                                        <td className="p-3">{index + 1}</td>
-                                        <td className="p-3 font-medium">{item.nama}</td>
-                                        <td className="p-3">{item.kategori || '-'}</td>
-                                        <td className="p-3">{item.serial || '-'}</td>
-                                        <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
-                                        <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                            
+                            {/* Barang di lokasi utama */}
+                            {getBarangByLokasi(parentLoc._id).length > 0 && (
+                              <div className="mb-4">
+                                <h4 className="font-medium text-sm text-gray-600 mb-2">Barang di lokasi ini ({getTotalUnitByLokasi(parentLoc._id)} unit):</h4>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-sm border">
+                                    <thead className="bg-blue-50">
+                                      <tr>
+                                        <th className="text-left p-3 border-b">No</th>
+                                        <th className="text-left p-3 border-b">Nama Barang</th>
+                                        <th className="text-left p-3 border-b">Kategori</th>
+                                        <th className="text-left p-3 border-b">Serial</th>
+                                        <th className="text-center p-3 border-b">Jumlah</th>
+                                        <th className="text-left p-3 border-b">Kondisi</th>
                                       </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
+                                    </thead>
+                                    <tbody>
+                                      {getBarangByLokasi(parentLoc._id).map((item, index) => (
+                                        <tr key={item._id} className="border-b hover:bg-gray-50">
+                                          <td className="p-3">{index + 1}</td>
+                                          <td className="p-3 font-medium">{item.nama}</td>
+                                          <td className="p-3">{item.kategori || '-'}</td>
+                                          <td className="p-3">{item.serial || '-'}</td>
+                                          <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
+                                          <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
-                            ) : (
-                              <p className="text-sm text-gray-400 italic">Tidak ada barang</p>
+                            )}
+
+                            {/* Sub-lokasi */}
+                            {getChildLocations(parentLoc._id).map((childLoc) => (
+                              <div key={childLoc._id} className="ml-6 mb-4 border-l-2 border-green-200 pl-4">
+                                <h4 className="font-medium text-green-700 flex items-center gap-2 mb-2">
+                                  <Layers className="h-4 w-4" />
+                                  {childLoc.nama} ({getTotalUnitByLokasi(childLoc._id)} unit)
+                                </h4>
+                                {childLoc.deskripsi && (
+                                  <p className="text-sm text-gray-500 mb-2">{childLoc.deskripsi}</p>
+                                )}
+                                {getBarangByLokasi(childLoc._id).length > 0 ? (
+                                  <div className="overflow-x-auto">
+                                    <table className="w-full text-sm border">
+                                      <thead className="bg-green-50">
+                                        <tr>
+                                          <th className="text-left p-3 border-b">No</th>
+                                          <th className="text-left p-3 border-b">Nama Barang</th>
+                                          <th className="text-left p-3 border-b">Kategori</th>
+                                          <th className="text-left p-3 border-b">Serial</th>
+                                          <th className="text-center p-3 border-b">Jumlah</th>
+                                          <th className="text-left p-3 border-b">Kondisi</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {getBarangByLokasi(childLoc._id).map((item, index) => (
+                                          <tr key={item._id} className="border-b hover:bg-gray-50">
+                                            <td className="p-3">{index + 1}</td>
+                                            <td className="p-3 font-medium">{item.nama}</td>
+                                            <td className="p-3">{item.kategori || '-'}</td>
+                                            <td className="p-3">{item.serial || '-'}</td>
+                                            <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
+                                            <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                ) : (
+                                  <p className="text-sm text-gray-400 italic">Tidak ada barang</p>
+                                )}
+                              </div>
+                            ))}
+                            
+                            {getBarangByLokasi(parentLoc._id).length === 0 && getChildLocations(parentLoc._id).length === 0 && (
+                              <p className="text-sm text-gray-400 italic">Lokasi kosong, tidak ada barang dan sub-lokasi</p>
                             )}
                           </div>
                         ))}
-                        
-                        {getBarangByLokasi(parentLoc._id).length === 0 && getChildLocations(parentLoc._id).length === 0 && (
-                          <p className="text-sm text-gray-400 italic">Lokasi kosong, tidak ada barang dan sub-lokasi</p>
-                        )}
-                      </div>
-                    ))}
 
-                    {lokasi.length === 0 && (
-                      <div className="text-center py-8">
-                        <MapPin className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                        <p className="text-gray-500">Belum ada lokasi penyimpanan</p>
-                      </div>
+                        {lokasi.length === 0 && (
+                          <div className="text-center py-8">
+                            <MapPin className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                            <p className="text-gray-500">Belum ada lokasi penyimpanan</p>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      /* Tampilan untuk lokasi tertentu (untuk label) */
+                      (() => {
+                        const selectedLoc = lokasi.find(l => l._id === laporanFilterLokasi);
+                        if (!selectedLoc) return <p className="text-gray-500">Lokasi tidak ditemukan</p>;
+                        
+                        const isParent = !selectedLoc.parentId;
+                        const parentLoc = isParent ? null : lokasi.find(l => l._id === selectedLoc.parentId);
+                        
+                        return (
+                          <div className="space-y-4">
+                            {/* Header Label untuk Print */}
+                            <div className="text-center border-2 border-gray-300 rounded-lg p-4 bg-white">
+                              <h2 className="text-2xl font-bold text-gray-800">
+                                {isParent ? selectedLoc.nama : `${parentLoc?.nama} → ${selectedLoc.nama}`}
+                              </h2>
+                              {selectedLoc.deskripsi && (
+                                <p className="text-gray-600 mt-1">{selectedLoc.deskripsi}</p>
+                              )}
+                              <div className="mt-3 text-lg font-semibold text-blue-700">
+                                Total: {isParent ? getTotalUnitWithChildren(selectedLoc._id) : getTotalUnitByLokasi(selectedLoc._id)} unit
+                              </div>
+                            </div>
+
+                            {/* Barang di lokasi ini */}
+                            {getBarangByLokasi(selectedLoc._id).length > 0 && (
+                              <div>
+                                <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                  <Package className="h-4 w-4" />
+                                  Daftar Barang ({getTotalUnitByLokasi(selectedLoc._id)} unit)
+                                </h4>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-sm border">
+                                    <thead className="bg-blue-50">
+                                      <tr>
+                                        <th className="text-left p-3 border-b">No</th>
+                                        <th className="text-left p-3 border-b">Nama Barang</th>
+                                        <th className="text-left p-3 border-b">Kategori</th>
+                                        <th className="text-left p-3 border-b">Serial</th>
+                                        <th className="text-center p-3 border-b">Jumlah</th>
+                                        <th className="text-left p-3 border-b">Kondisi</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {getBarangByLokasi(selectedLoc._id).map((item, index) => (
+                                        <tr key={item._id} className="border-b hover:bg-gray-50">
+                                          <td className="p-3">{index + 1}</td>
+                                          <td className="p-3 font-medium">{item.nama}</td>
+                                          <td className="p-3">{item.kategori || '-'}</td>
+                                          <td className="p-3">{item.serial || '-'}</td>
+                                          <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
+                                          <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Sub-lokasi (jika parent) */}
+                            {isParent && getChildLocations(selectedLoc._id).length > 0 && (
+                              <div className="space-y-4 mt-4">
+                                {getChildLocations(selectedLoc._id).map((childLoc) => (
+                                  <div key={childLoc._id} className="border-l-4 border-green-400 pl-4 py-2">
+                                    <h4 className="font-semibold text-green-700 flex items-center gap-2 mb-2">
+                                      <Layers className="h-4 w-4" />
+                                      {childLoc.nama} ({getTotalUnitByLokasi(childLoc._id)} unit)
+                                    </h4>
+                                    {childLoc.deskripsi && (
+                                      <p className="text-sm text-gray-500 mb-2">{childLoc.deskripsi}</p>
+                                    )}
+                                    {getBarangByLokasi(childLoc._id).length > 0 ? (
+                                      <div className="overflow-x-auto">
+                                        <table className="w-full text-sm border">
+                                          <thead className="bg-green-50">
+                                            <tr>
+                                              <th className="text-left p-3 border-b">No</th>
+                                              <th className="text-left p-3 border-b">Nama Barang</th>
+                                              <th className="text-left p-3 border-b">Kategori</th>
+                                              <th className="text-left p-3 border-b">Serial</th>
+                                              <th className="text-center p-3 border-b">Jumlah</th>
+                                              <th className="text-left p-3 border-b">Kondisi</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {getBarangByLokasi(childLoc._id).map((item, index) => (
+                                              <tr key={item._id} className="border-b hover:bg-gray-50">
+                                                <td className="p-3">{index + 1}</td>
+                                                <td className="p-3 font-medium">{item.nama}</td>
+                                                <td className="p-3">{item.kategori || '-'}</td>
+                                                <td className="p-3">{item.serial || '-'}</td>
+                                                <td className="p-3 text-center font-semibold">{item.jumlah || 0}</td>
+                                                <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    ) : (
+                                      <p className="text-sm text-gray-400 italic">Tidak ada barang</p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {getBarangByLokasi(selectedLoc._id).length === 0 && (!isParent || getChildLocations(selectedLoc._id).length === 0) && (
+                              <div className="text-center py-8 bg-gray-50 rounded-lg">
+                                <Package className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                                <p className="text-gray-500">Tidak ada barang di lokasi ini</p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()
                     )}
                   </CardContent>
                 </Card>
