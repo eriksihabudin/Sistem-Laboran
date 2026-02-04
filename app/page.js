@@ -4135,7 +4135,7 @@ export default function App() {
                     <Package className="h-5 w-5 text-orange-600" />
                     <CardTitle className="text-lg">Barang Tanpa Lokasi</CardTitle>
                     <Badge variant="outline" className="bg-orange-50 text-orange-700">
-                      {getBarangTanpaLokasi().length} barang
+                      {getTotalUnitTanpaLokasi()} unit
                     </Badge>
                   </div>
                 </div>
