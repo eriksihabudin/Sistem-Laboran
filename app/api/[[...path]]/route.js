@@ -1079,13 +1079,27 @@ export async function DELETE(request) {
       // Get peminjaman data first to update barang status
       const peminjaman = await db.collection('peminjaman').findOne({ _id: new ObjectId(id) });
       
-      if (peminjaman && peminjaman.barang && peminjaman.status === 'dipinjam') {
-        // Update status barang yang dipinjam menjadi tersedia kembali
-        for (const barangId of peminjaman.barang) {
-          await db.collection('barang').updateOne(
-            { _id: new ObjectId(barangId) },
-            { $set: { statusPeminjaman: 'tersedia' } }
-          );
+      if (peminjaman && peminjaman.status === 'dipinjam') {
+        // Kembalikan stok berdasarkan format data
+        if (peminjaman.barangItems && Array.isArray(peminjaman.barangItems) && peminjaman.barangItems.length > 0) {
+          // Format baru dengan qty
+          for (const item of peminjaman.barangItems) {
+            await db.collection('barang').updateOne(
+              { _id: new ObjectId(item.barangId) },
+              { $inc: { jumlah: item.qty } } // Kembalikan stok sesuai qty
+            );
+          }
+        } else if (peminjaman.barang && Array.isArray(peminjaman.barang)) {
+          // Format lama
+          for (const barangId of peminjaman.barang) {
+            await db.collection('barang').updateOne(
+              { _id: new ObjectId(barangId) },
+              { 
+                $inc: { jumlah: 1 },
+                $set: { statusPeminjaman: 'tersedia' }
+              }
+            );
+          }
         }
       }
       
