@@ -1655,10 +1655,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className={`flex-1 ${sidebarCollapsed ? 'ml-20' : 'ml-64'} transition-all duration-300`}>
-        {/* Top Header */}
-        <div className="bg-white border-b sticky top-0 z-40">
+      {/* Main Content - Full width saat print */}
+      <div className={`flex-1 ${sidebarCollapsed ? 'ml-20' : 'ml-64'} transition-all duration-300 print:ml-0`}>
+        {/* Top Header - Hidden saat print */}
+        <div className="bg-white border-b sticky top-0 z-40 print:hidden">
           <div className="px-6 py-4 flex justify-between items-center">
             <div>
               <h2 className="text-xl font-bold text-gray-900 capitalize">{activeTab}</h2>
