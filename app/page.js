@@ -2360,7 +2360,13 @@ export default function App() {
                       <div className="text-sm text-gray-600 space-y-1">
                         <p>Kategori: {item.kategori || '-'}</p>
                         <p>Serial: {item.serial || '-'}</p>
-                        <p>Lokasi: {item.lokasi || '-'}</p>
+                        {item.lokasiNama ? (
+                          <p className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" /> {item.lokasiNama}
+                          </p>
+                        ) : (
+                          <p>Lokasi: -</p>
+                        )}
                         <p>Jumlah: {item.jumlah || 0} unit</p>
                       </div>
                       <div className="flex gap-2 mt-4" onClick={(e) => e.stopPropagation()}>
