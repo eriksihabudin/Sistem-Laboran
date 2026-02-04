@@ -183,6 +183,10 @@ export default function App() {
     if (user && token && activeTab === 'laporan') {
       loadLaporan(laporanType);
       loadKategori(); // Load kategori untuk filter di Inventaris Lengkap
+      if (laporanType === 'Lokasi Penyimpanan') {
+        loadLokasi();
+        loadBarang();
+      }
     }
   }, [laporanType]);
 
