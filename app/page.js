@@ -4203,8 +4203,8 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="bg-blue-50">
-                            {getBarangByLokasi(parentLoc._id).length} barang
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                            {getTotalUnitWithChildren(parentLoc._id)} unit
                           </Badge>
                           <Badge variant="outline" className="bg-gray-50">
                             {getChildLocations(parentLoc._id).length} sub-lokasi
