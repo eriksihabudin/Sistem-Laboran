@@ -3280,7 +3280,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Kategori</th>
                               <th className="text-left p-3 font-semibold">Serial</th>
                               <th className="text-left p-3 font-semibold">Kondisi</th>
-                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi Penyimpanan</th>
                               <th className="text-left p-3 font-semibold">Jumlah</th>
                               <th className="text-left p-3 font-semibold">Tahun</th>
                             </tr>
@@ -3376,7 +3376,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Kategori</th>
                               <th className="text-left p-3 font-semibold">Serial</th>
                               <th className="text-left p-3 font-semibold">Kondisi</th>
-                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi Penyimpanan</th>
                               <th className="text-left p-3 font-semibold">Jumlah</th>
                               <th className="text-left p-3 font-semibold">Tahun</th>
                               <th className="text-left p-3 font-semibold">Catatan Kerusakan</th>
@@ -3487,7 +3487,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Kategori</th>
                               <th className="text-left p-3 font-semibold">Serial</th>
                               <th className="text-left p-3 font-semibold">Kondisi</th>
-                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi Penyimpanan</th>
                               <th className="text-left p-3 font-semibold">Jumlah</th>
                               <th className="text-left p-3 font-semibold">Tahun</th>
                               <th className="text-left p-3 font-semibold">Catatan Kerusakan</th>
@@ -3855,7 +3855,7 @@ export default function App() {
                               <th className="text-left p-3 font-semibold">Kategori</th>
                               <th className="text-left p-3 font-semibold">Serial</th>
                               <th className="text-left p-3 font-semibold">Kondisi</th>
-                              <th className="text-left p-3 font-semibold">Lokasi</th>
+                              <th className="text-left p-3 font-semibold">Lokasi Penyimpanan</th>
                               <th className="text-left p-3 font-semibold">Jumlah</th>
                               <th className="text-left p-3 font-semibold">Tahun</th>
                             </tr>
