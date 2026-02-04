@@ -1599,6 +1599,7 @@ export default function App() {
                                     <span key={idx} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded text-xs">
                                       <Package className="h-3 w-3" />
                                       {b.nama}
+                                      {b.qtyPinjam > 1 && <span className="text-blue-600 font-medium">x{b.qtyPinjam}</span>}
                                     </span>
                                   ))}
                                 </div>
