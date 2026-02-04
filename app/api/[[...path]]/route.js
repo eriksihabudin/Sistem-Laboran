@@ -1159,6 +1159,22 @@ export async function DELETE(request) {
       return NextResponse.json({ message: 'Kategori berhasil dihapus' });
     }
 
+    // === LOKASI DELETE ===
+    if (pathname.startsWith('/lokasi/')) {
+      const id = pathname.split('/').pop();
+      
+      // Check if lokasi has children
+      const hasChildren = await db.collection('lokasi').findOne({ parentId: id });
+      if (hasChildren) {
+        return NextResponse.json({ 
+          error: 'Tidak dapat menghapus lokasi yang memiliki sub-lokasi' 
+        }, { status: 400 });
+      }
+      
+      await db.collection('lokasi').deleteOne({ _id: new ObjectId(id) });
+      return NextResponse.json({ message: 'Lokasi berhasil dihapus' });
+    }
+
     // === PEMINJAMAN DELETE ===
     if (pathname.startsWith('/peminjaman/')) {
       const id = pathname.split('/').pop();
