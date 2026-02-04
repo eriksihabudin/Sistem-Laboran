@@ -85,6 +85,13 @@ export default function App() {
   // Kategori state
   const [kategori, setKategori] = useState([]);
 
+  // Lokasi Penyimpanan state
+  const [lokasi, setLokasi] = useState([]);
+  const [showLokasiDialog, setShowLokasiDialog] = useState(false);
+  const [showLokasiEditDialog, setShowLokasiEditDialog] = useState(false);
+  const [selectedLokasi, setSelectedLokasi] = useState(null);
+  const [expandedLokasi, setExpandedLokasi] = useState({});
+
   // Users state
   const [users, setUsers] = useState([]);
 
