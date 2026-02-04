@@ -526,6 +526,91 @@ export default function App() {
     return false;
   };
 
+  // Mendapatkan sisa stok yang tersedia (dikurangi yang sudah dipilih)
+  const getAvailableStock = (barangId) => {
+    const item = barang.find(b => b._id === barangId);
+    if (!item) return 0;
+
+    // Hitung berapa yang sudah dipilih
+    const selectedItem = selectedBarangItems.find(s => s.barangId === barangId);
+    const alreadySelected = selectedItem ? selectedItem.qty : 0;
+
+    return item.jumlah - alreadySelected;
+  };
+
+  // Tambah barang ke daftar peminjaman
+  const addBarangToPeminjaman = (barangId, qty = 1) => {
+    const item = barang.find(b => b._id === barangId);
+    if (!item) return;
+
+    const existingIndex = selectedBarangItems.findIndex(s => s.barangId === barangId);
+    
+    if (existingIndex >= 0) {
+      // Update qty yang sudah ada
+      const updated = [...selectedBarangItems];
+      const newQty = updated[existingIndex].qty + qty;
+      if (newQty <= item.jumlah) {
+        updated[existingIndex].qty = newQty;
+        setSelectedBarangItems(updated);
+      }
+    } else {
+      // Tambah baru
+      setSelectedBarangItems([...selectedBarangItems, {
+        barangId: barangId,
+        qty: qty,
+        nama: item.nama
+      }]);
+    }
+  };
+
+  // Hapus atau kurangi barang dari daftar peminjaman
+  const removeBarangFromPeminjaman = (barangId, qty = 1) => {
+    const existingIndex = selectedBarangItems.findIndex(s => s.barangId === barangId);
+    if (existingIndex < 0) return;
+
+    const updated = [...selectedBarangItems];
+    const newQty = updated[existingIndex].qty - qty;
+
+    if (newQty <= 0) {
+      updated.splice(existingIndex, 1);
+    } else {
+      updated[existingIndex].qty = newQty;
+    }
+    setSelectedBarangItems(updated);
+  };
+
+  // Set qty langsung untuk barang tertentu
+  const setBarangQty = (barangId, qty) => {
+    const item = barang.find(b => b._id === barangId);
+    if (!item) return;
+
+    if (qty <= 0) {
+      // Hapus dari daftar
+      setSelectedBarangItems(selectedBarangItems.filter(s => s.barangId !== barangId));
+    } else {
+      const maxQty = Math.min(qty, item.jumlah);
+      const existingIndex = selectedBarangItems.findIndex(s => s.barangId === barangId);
+      
+      if (existingIndex >= 0) {
+        const updated = [...selectedBarangItems];
+        updated[existingIndex].qty = maxQty;
+        setSelectedBarangItems(updated);
+      } else {
+        setSelectedBarangItems([...selectedBarangItems, {
+          barangId: barangId,
+          qty: maxQty,
+          nama: item.nama
+        }]);
+      }
+    }
+  };
+
+  // Mendapatkan qty yang sudah dipilih untuk barang tertentu
+  const getSelectedQty = (barangId) => {
+    const selected = selectedBarangItems.find(s => s.barangId === barangId);
+    return selected ? selected.qty : 0;
+  };
+
   const getFilterInfo = () => {
     const info = [];
     
