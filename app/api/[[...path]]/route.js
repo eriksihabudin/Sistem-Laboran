@@ -717,6 +717,22 @@ export async function GET(request) {
         return NextResponse.json({ error: 'Barang tidak ditemukan' }, { status: 404 });
       }
       
+      // Get lokasi info if exists
+      if (barang.lokasiPenyimpanan) {
+        const lokasiCollection = await db.collection('lokasi').find().toArray();
+        const loc = lokasiCollection.find(l => l._id.toString() === barang.lokasiPenyimpanan);
+        if (loc) {
+          let lokasiNama = loc.nama;
+          if (loc.parentId) {
+            const parent = lokasiCollection.find(l => l._id.toString() === loc.parentId);
+            if (parent) {
+              lokasiNama = `${parent.nama} → ${loc.nama}`;
+            }
+          }
+          barang.lokasiNama = lokasiNama;
+        }
+      }
+      
       // Get riwayat peminjaman
       const peminjaman = await db.collection('peminjaman')
         .find({ barang: id })
