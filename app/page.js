@@ -1460,6 +1460,20 @@ export default function App() {
               {!sidebarCollapsed && <span className="font-medium">Users</span>}
             </button>
           )}
+
+          {/* Lokasi Penyimpanan Menu */}
+          <button
+            onClick={() => { setActiveTab('lokasi'); setError(''); setSuccess(''); }}
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-4'} py-3 rounded-lg text-left transition-colors ${
+              activeTab === 'lokasi' 
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+            title="Lokasi Penyimpanan"
+          >
+            <MapPin className="h-5 w-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Lokasi Penyimpanan</span>}
+          </button>
           
           <button
             onClick={() => { setActiveTab('setting'); setError(''); setSuccess(''); }}
