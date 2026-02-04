@@ -152,10 +152,21 @@ code {
     display: none !important;
   }
 
+  /* Reset margin-left for main content */
+  .print\:ml-0 {
+    margin-left: 0 !important;
+  }
+
   /* Show only the content */
   body {
     background: white !important;
     color: black !important;
+  }
+
+  /* Full width content */
+  .flex-1 {
+    margin-left: 0 !important;
+    width: 100% !important;
   }
 
   /* Optimize table for printing */
