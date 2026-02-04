@@ -2433,6 +2433,11 @@ export default function App() {
                       <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
                         <ClipboardList className="h-5 w-5" />
                         Daftar Barang yang Dipinjam
+                        {selectedPeminjamanDetail.barangData && selectedPeminjamanDetail.barangData.length > 0 && (
+                          <span className="text-sm font-normal text-gray-500">
+                            (Total: {selectedPeminjamanDetail.barangData.reduce((acc, b) => acc + (b.qtyPinjam || 1), 0)} unit)
+                          </span>
+                        )}
                       </h4>
                       {selectedPeminjamanDetail.barangData && selectedPeminjamanDetail.barangData.length > 0 ? (
                         <div className="space-y-3">
@@ -2447,7 +2452,15 @@ export default function App() {
                                 </div>
                               )}
                               <div className="flex-1">
-                                <p className="font-semibold text-lg">{b.nama}</p>
+                                <p className="font-semibold text-lg">
+                                  {b.nama}
+                                  {b.qtyPinjam > 1 && (
+                                    <span className="ml-2 text-base font-medium text-blue-600">x{b.qtyPinjam} unit</span>
+                                  )}
+                                  {b.qtyPinjam === 1 && (
+                                    <span className="ml-2 text-base font-medium text-gray-500">1 unit</span>
+                                  )}
+                                </p>
                                 <div className="flex flex-wrap gap-2 mt-1">
                                   {b.kategori && (
                                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">{b.kategori}</span>
