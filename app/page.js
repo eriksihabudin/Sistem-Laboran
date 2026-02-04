@@ -2758,7 +2758,7 @@ export default function App() {
                     {item.barangData && item.barangData.length > 0 && (
                       <div className="mt-4 pt-4 border-t">
                         <p className="text-sm font-medium text-gray-700 mb-2">
-                          Barang yang dipinjam ({item.barangData.length} item) - <span className="text-blue-600">Klik untuk detail</span>
+                          Barang yang dipinjam ({item.barangData.reduce((acc, b) => acc + (b.qtyPinjam || 1), 0)} unit) - <span className="text-blue-600">Klik untuk detail</span>
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {item.barangData.slice(0, 3).map((b) => (
@@ -2772,6 +2772,7 @@ export default function App() {
                               )}
                               <div>
                                 <span className="text-sm font-medium">{b.nama}</span>
+                                {b.qtyPinjam > 1 && <span className="ml-1 text-xs text-blue-600 font-medium">x{b.qtyPinjam}</span>}
                                 {b.kategori && <p className="text-xs text-gray-500">{b.kategori}</p>}
                               </div>
                             </div>
