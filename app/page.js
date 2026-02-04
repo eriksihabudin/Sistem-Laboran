@@ -715,6 +715,147 @@ export default function App() {
     setLoading(false);
   };
 
+  // === LOKASI HANDLERS ===
+  const handleAddLokasi = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const formData = new FormData(e.target);
+      const data = {
+        nama: formData.get('nama'),
+        deskripsi: formData.get('deskripsi') || '',
+        parentId: formData.get('parentId') || null
+      };
+
+      const response = await apiCall('/lokasi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Gagal menambah lokasi');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Lokasi penyimpanan berhasil ditambahkan!');
+      setTimeout(() => setSuccess(''), 3000);
+      setShowLokasiDialog(false);
+      loadLokasi();
+      e.target.reset();
+    } catch (err) {
+      setError('Terjadi kesalahan saat menambah lokasi');
+    }
+    setLoading(false);
+  };
+
+  const handleEditLokasi = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const formData = new FormData(e.target);
+      const data = {
+        nama: formData.get('nama'),
+        deskripsi: formData.get('deskripsi') || '',
+        parentId: formData.get('parentId') || null
+      };
+
+      const response = await apiCall(`/lokasi/${selectedLokasi._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Gagal update lokasi');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Lokasi berhasil diupdate!');
+      setTimeout(() => setSuccess(''), 3000);
+      setShowLokasiEditDialog(false);
+      setSelectedLokasi(null);
+      loadLokasi();
+    } catch (err) {
+      setError('Terjadi kesalahan saat update lokasi');
+    }
+    setLoading(false);
+  };
+
+  const handleDeleteLokasi = async (id) => {
+    // Check if lokasi has children
+    const hasChildren = lokasi.some(l => l.parentId === id);
+    if (hasChildren) {
+      setError('Tidak dapat menghapus lokasi yang memiliki sub-lokasi. Hapus sub-lokasi terlebih dahulu.');
+      setTimeout(() => setError(''), 5000);
+      return;
+    }
+
+    if (!confirm('Yakin ingin menghapus lokasi penyimpanan ini?')) return;
+
+    setLoading(true);
+    try {
+      const response = await apiCall(`/lokasi/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Gagal menghapus lokasi');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Lokasi berhasil dihapus!');
+      setTimeout(() => setSuccess(''), 3000);
+      loadLokasi();
+    } catch (err) {
+      setError('Terjadi kesalahan');
+    }
+    setLoading(false);
+  };
+
+  // Get lokasi hierarchy (parent locations only)
+  const getParentLocations = () => {
+    return lokasi.filter(l => !l.parentId);
+  };
+
+  // Get children of a location
+  const getChildLocations = (parentId) => {
+    return lokasi.filter(l => l.parentId === parentId);
+  };
+
+  // Toggle expand/collapse for a location
+  const toggleLokasiExpand = (id) => {
+    setExpandedLokasi(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  // Get full path of a location
+  const getLokasiPath = (lokasiId) => {
+    const loc = lokasi.find(l => l._id === lokasiId);
+    if (!loc) return '';
+    
+    if (loc.parentId) {
+      const parent = lokasi.find(l => l._id === loc.parentId);
+      return parent ? `${parent.nama} > ${loc.nama}` : loc.nama;
+    }
+    return loc.nama;
+  };
+
   const handleAddBarang = async (e) => {
     e.preventDefault();
     setLoading(true);
