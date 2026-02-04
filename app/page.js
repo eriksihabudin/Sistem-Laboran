@@ -861,6 +861,76 @@ export default function App() {
     return loc.nama;
   };
 
+  // Get barang by lokasi
+  const getBarangByLokasi = (lokasiId) => {
+    return barang.filter(b => b.lokasiPenyimpanan === lokasiId);
+  };
+
+  // Get barang without lokasi
+  const getBarangTanpaLokasi = () => {
+    return barang.filter(b => !b.lokasiPenyimpanan || b.lokasiPenyimpanan.trim() === '');
+  };
+
+  // Drag and Drop handlers
+  const handleDragStart = (e, item) => {
+    setDraggedBarang(item);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', item._id);
+  };
+
+  const handleDragOver = (e, lokasiId) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverLokasi(lokasiId);
+  };
+
+  const handleDragLeave = (e) => {
+    setDragOverLokasi(null);
+  };
+
+  const handleDrop = async (e, targetLokasiId) => {
+    e.preventDefault();
+    setDragOverLokasi(null);
+    
+    if (!draggedBarang) return;
+    
+    // Don't do anything if dropped on same location
+    if (draggedBarang.lokasiPenyimpanan === targetLokasiId) {
+      setDraggedBarang(null);
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('lokasiPenyimpanan', targetLokasiId === 'none' ? '' : targetLokasiId);
+      
+      const response = await apiCall(`/barang/${draggedBarang._id}`, {
+        method: 'PUT',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const targetLokasi = lokasi.find(l => l._id === targetLokasiId);
+        const lokasiName = targetLokasiId === 'none' ? 'Tanpa Lokasi' : getLokasiPath(targetLokasiId);
+        setSuccess(`${draggedBarang.nama} dipindahkan ke ${lokasiName}`);
+        setTimeout(() => setSuccess(''), 3000);
+        loadBarang();
+      } else {
+        setError('Gagal memindahkan barang');
+      }
+    } catch (err) {
+      setError('Terjadi kesalahan saat memindahkan barang');
+    }
+    setLoading(false);
+    setDraggedBarang(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedBarang(null);
+    setDragOverLokasi(null);
+  };
+
   const handleAddBarang = async (e) => {
     e.preventDefault();
     setLoading(true);
