@@ -685,11 +685,34 @@ export async function GET(request) {
       // Populate barang data
       for (let p of peminjaman) {
         const barangData = [];
-        if (p.barang && Array.isArray(p.barang) && p.barang.length > 0) {
+        
+        // Support format baru (barangItems dengan qty)
+        if (p.barangItems && Array.isArray(p.barangItems) && p.barangItems.length > 0) {
+          for (let item of p.barangItems) {
+            try {
+              const b = await db.collection('barang').findOne({ _id: new ObjectId(item.barangId) });
+              if (b) {
+                barangData.push({
+                  ...b,
+                  qtyPinjam: item.qty
+                });
+              }
+            } catch (e) {
+              console.error('Error fetching barang:', item.barangId, e);
+            }
+          }
+        }
+        // Support format lama (array of barangIds)
+        else if (p.barang && Array.isArray(p.barang) && p.barang.length > 0) {
           for (let barangId of p.barang) {
             try {
               const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
-              if (b) barangData.push(b);
+              if (b) {
+                barangData.push({
+                  ...b,
+                  qtyPinjam: 1 // Default qty 1 untuk data lama
+                });
+              }
             } catch (e) {
               console.error('Error fetching barang:', barangId, e);
             }
@@ -715,9 +738,38 @@ export async function GET(request) {
       
       // Populate barang data
       const barangData = [];
-      for (let barangId of peminjaman.barang) {
-        const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
-        if (b) barangData.push(b);
+      
+      // Support format baru (barangItems dengan qty)
+      if (peminjaman.barangItems && Array.isArray(peminjaman.barangItems) && peminjaman.barangItems.length > 0) {
+        for (let item of peminjaman.barangItems) {
+          try {
+            const b = await db.collection('barang').findOne({ _id: new ObjectId(item.barangId) });
+            if (b) {
+              barangData.push({
+                ...b,
+                qtyPinjam: item.qty
+              });
+            }
+          } catch (e) {
+            console.error('Error fetching barang:', item.barangId, e);
+          }
+        }
+      }
+      // Support format lama
+      else if (peminjaman.barang && Array.isArray(peminjaman.barang)) {
+        for (let barangId of peminjaman.barang) {
+          try {
+            const b = await db.collection('barang').findOne({ _id: new ObjectId(barangId) });
+            if (b) {
+              barangData.push({
+                ...b,
+                qtyPinjam: 1
+              });
+            }
+          } catch (e) {
+            console.error('Error fetching barang:', barangId, e);
+          }
+        }
       }
       peminjaman.barangData = barangData;
       
