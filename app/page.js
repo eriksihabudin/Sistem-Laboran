@@ -2572,57 +2572,73 @@ export default function App() {
                         onChange={(e) => setSearchBarangPeminjaman(e.target.value)}
                         className="mb-2"
                       />
-                      <ScrollArea className="h-48 border rounded p-2">
+                      <ScrollArea className="h-64 border rounded p-2">
                         {getAvailableBarang().length > 0 ? (
                           getAvailableBarang().map((item) => {
                             const disabled = isBarangDisabled(item._id);
+                            const selectedQty = getSelectedQty(item._id);
+                            const isSelected = selectedQty > 0;
                             return (
-                              <label 
+                              <div 
                                 key={item._id} 
-                                className={`flex items-center gap-2 p-2 rounded ${
+                                className={`flex items-center gap-2 p-2 rounded mb-1 ${
                                   disabled 
-                                    ? 'opacity-50 cursor-not-allowed bg-gray-100' 
-                                    : 'hover:bg-gray-50 cursor-pointer'
+                                    ? 'opacity-50 bg-gray-100' 
+                                    : isSelected 
+                                      ? 'bg-blue-50 border border-blue-200'
+                                      : 'hover:bg-gray-50'
                                 }`}
                               >
-                                <input
-                                  type="checkbox"
-                                  value={item._id}
-                                  disabled={disabled}
-                                  checked={selectedBarangIds.includes(item._id)}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setSelectedBarangIds([...selectedBarangIds, item._id]);
-                                    } else {
-                                      setSelectedBarangIds(selectedBarangIds.filter(id => id !== item._id));
-                                    }
-                                  }}
-                                />
-                                {item.foto && <img src={item.foto} className="w-8 h-8 object-cover rounded" />}
+                                {item.foto && <img src={item.foto} className="w-10 h-10 object-cover rounded" />}
                                 <div className="flex-1">
                                   <span className="text-sm font-medium">{item.nama}</span>
                                   <div className="flex gap-2 items-center text-xs text-gray-600">
                                     <span>{item.kategori}</span>
                                     <span>•</span>
-                                    <span>Stok: {item.jumlah}</span>
+                                    <span className="font-medium">Stok: {item.jumlah}</span>
                                     {item.kondisi === 'rusak_bisa_dipakai' && (
                                       <>
                                         <span>•</span>
                                         <Badge className="bg-yellow-500 h-4 text-xs">Rusak Bisa Dipakai</Badge>
                                       </>
                                     )}
-                                    {item.statusPeminjaman === 'dipinjam' && (
-                                      <>
-                                        <span>•</span>
-                                        <Badge className="bg-orange-500 h-4 text-xs">Sedang Dipinjam</Badge>
-                                      </>
-                                    )}
                                   </div>
                                 </div>
-                                {disabled && (
+                                {disabled ? (
                                   <span className="text-xs text-red-500 font-medium">Tidak Tersedia</span>
+                                ) : (
+                                  <div className="flex items-center gap-1">
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 w-7 p-0"
+                                      disabled={selectedQty <= 0}
+                                      onClick={() => removeBarangFromPeminjaman(item._id, 1)}
+                                    >
+                                      -
+                                    </Button>
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      max={item.jumlah}
+                                      value={selectedQty}
+                                      onChange={(e) => setBarangQty(item._id, parseInt(e.target.value) || 0)}
+                                      className="w-14 h-7 text-center text-sm"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 w-7 p-0"
+                                      disabled={selectedQty >= item.jumlah}
+                                      onClick={() => addBarangToPeminjaman(item._id, 1)}
+                                    >
+                                      +
+                                    </Button>
+                                  </div>
                                 )}
-                              </label>
+                              </div>
                             );
                           })
                         ) : (
@@ -2631,7 +2647,29 @@ export default function App() {
                           </div>
                         )}
                       </ScrollArea>
-                      <input type="hidden" id="barangIdsHidden" name="barangIds" defaultValue="[]" />
+                      
+                      {/* Ringkasan barang yang dipilih */}
+                      {selectedBarangItems.length > 0 && (
+                        <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded">
+                          <p className="font-semibold text-sm text-green-800 mb-2">Barang yang akan dipinjam:</p>
+                          <div className="space-y-1">
+                            {selectedBarangItems.map((sel) => {
+                              const itemData = barang.find(b => b._id === sel.barangId);
+                              return (
+                                <div key={sel.barangId} className="flex justify-between text-sm">
+                                  <span>{itemData?.nama || sel.nama}</span>
+                                  <span className="font-medium">{sel.qty} unit</span>
+                                </div>
+                              );
+                            })}
+                            <div className="border-t pt-1 mt-1 flex justify-between font-semibold text-sm">
+                              <span>Total</span>
+                              <span>{selectedBarangItems.reduce((acc, s) => acc + s.qty, 0)} unit</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
                       <p className="text-xs text-gray-600 mt-1">
                         Menampilkan {getAvailableBarang().filter(b => !isBarangDisabled(b._id)).length} barang tersedia
                       </p>
