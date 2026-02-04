@@ -165,7 +165,10 @@ export default function App() {
       }
       if (activeTab === 'users') loadUsers();
       if (activeTab === 'kategori') loadKategori();
-      if (activeTab === 'lokasi') loadLokasi();
+      if (activeTab === 'lokasi') {
+        loadLokasi();
+        loadBarang(); // Load barang untuk tampilkan di lokasi
+      }
       if (activeTab === 'setting') {
         loadSetting();
         loadKategori();
