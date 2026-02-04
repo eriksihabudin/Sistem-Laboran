@@ -2291,6 +2291,11 @@ export default function App() {
                   filteredBarang = filteredBarang.filter(item => item.kondisi === filterKondisi);
                 }
                 
+                // Filter berdasarkan lokasi penyimpanan
+                if (filterLokasi && filterLokasi.trim()) {
+                  filteredBarang = filteredBarang.filter(item => item.lokasiPenyimpanan === filterLokasi);
+                }
+                
                 // Sorting
                 filteredBarang.sort((a, b) => {
                   switch (sortBarang) {
