@@ -3892,6 +3892,234 @@ export default function App() {
             </TabsContent>
           )}
 
+          {/* Lokasi Penyimpanan Tab */}
+          <TabsContent value="lokasi" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">Lokasi Penyimpanan</h2>
+                <p className="text-gray-600">Kelola lokasi penyimpanan barang inventaris</p>
+              </div>
+              <Dialog open={showLokasiDialog} onOpenChange={setShowLokasiDialog}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Tambah Lokasi
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Tambah Lokasi Penyimpanan</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleAddLokasi} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="parentId">Parent Lokasi (Opsional)</Label>
+                      <Select name="parentId" defaultValue="">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih lokasi induk (kosongkan jika ini lokasi utama)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value=" ">-- Lokasi Utama (Tanpa Parent) --</SelectItem>
+                          {lokasi.filter(l => !l.parentId).map((l) => (
+                            <SelectItem key={l._id} value={l._id}>{l.nama}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-gray-500">Jika kosong, lokasi akan menjadi lokasi utama. Pilih parent untuk membuat sub-lokasi.</p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="nama">Nama Lokasi *</Label>
+                      <Input id="nama" name="nama" placeholder="Contoh: Lemari Kamera, Rak Nomor 1" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="deskripsi">Deskripsi (Opsional)</Label>
+                      <Textarea id="deskripsi" name="deskripsi" placeholder="Deskripsi lokasi penyimpanan" rows={2} />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <Button type="button" variant="outline" onClick={() => setShowLokasiDialog(false)}>Batal</Button>
+                      <Button type="submit" disabled={loading}>Simpan</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Info Box */}
+            <Alert className="bg-blue-50 border-blue-200">
+              <MapPin className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-700">
+                Buat struktur lokasi penyimpanan dengan hierarki. Contoh: <strong>Lemari Kamera</strong> → <strong>Rak 1, Rak 2</strong>. 
+                Klik pada lokasi utama untuk melihat sub-lokasi.
+              </AlertDescription>
+            </Alert>
+
+            {/* Lokasi List */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {getParentLocations().length > 0 ? (
+                getParentLocations().map((parentLoc) => (
+                  <Card key={parentLoc._id} className="overflow-hidden">
+                    <CardHeader 
+                      className="cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => toggleLokasiExpand(parentLoc._id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <FolderOpen className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{parentLoc.nama}</CardTitle>
+                            {parentLoc.deskripsi && (
+                              <p className="text-sm text-gray-500">{parentLoc.deskripsi}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="bg-gray-50">
+                            {getChildLocations(parentLoc._id).length} sub-lokasi
+                          </Badge>
+                          {expandedLokasi[parentLoc._id] ? (
+                            <ChevronUp className="h-5 w-5 text-gray-400" />
+                          ) : (
+                            <ChevronDown className="h-5 w-5 text-gray-400" />
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    
+                    {/* Actions for parent */}
+                    <div className="px-6 pb-3 flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedLokasi(parentLoc);
+                          setShowLokasiEditDialog(true);
+                        }}
+                      >
+                        <Edit className="h-4 w-4 mr-1" /> Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteLokasi(parentLoc._id);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" /> Hapus
+                      </Button>
+                    </div>
+
+                    {/* Child locations */}
+                    {expandedLokasi[parentLoc._id] && (
+                      <CardContent className="pt-0 border-t bg-gray-50">
+                        {getChildLocations(parentLoc._id).length > 0 ? (
+                          <div className="space-y-2 mt-3">
+                            {getChildLocations(parentLoc._id).map((childLoc) => (
+                              <div
+                                key={childLoc._id}
+                                className="flex items-center justify-between p-3 bg-white rounded-lg border"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded bg-green-100 flex items-center justify-center">
+                                    <Layers className="h-4 w-4 text-green-600" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium">{childLoc.nama}</p>
+                                    {childLoc.deskripsi && (
+                                      <p className="text-xs text-gray-500">{childLoc.deskripsi}</p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex gap-1">
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => {
+                                      setSelectedLokasi(childLoc);
+                                      setShowLokasiEditDialog(true);
+                                    }}
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                    onClick={() => handleDeleteLokasi(childLoc._id)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-6 text-gray-500">
+                            <Layers className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+                            <p className="text-sm">Belum ada sub-lokasi</p>
+                            <p className="text-xs">Tambah sub-lokasi dengan memilih lokasi ini sebagai parent</p>
+                          </div>
+                        )}
+                      </CardContent>
+                    )}
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-2 text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed">
+                  <MapPin className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <p className="text-gray-600 font-medium">Belum ada lokasi penyimpanan</p>
+                  <p className="text-sm text-gray-500 mb-4">Tambahkan lokasi penyimpanan untuk mengorganisir inventaris</p>
+                  <Button onClick={() => setShowLokasiDialog(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Tambah Lokasi Pertama
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Edit Lokasi Dialog */}
+            <Dialog open={showLokasiEditDialog} onOpenChange={setShowLokasiEditDialog}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit Lokasi Penyimpanan</DialogTitle>
+                </DialogHeader>
+                {selectedLokasi && (
+                  <form onSubmit={handleEditLokasi} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="editParentId">Parent Lokasi</Label>
+                      <Select name="parentId" defaultValue={selectedLokasi.parentId || " "}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih lokasi induk" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value=" ">-- Lokasi Utama (Tanpa Parent) --</SelectItem>
+                          {lokasi.filter(l => !l.parentId && l._id !== selectedLokasi._id).map((l) => (
+                            <SelectItem key={l._id} value={l._id}>{l.nama}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="editNama">Nama Lokasi *</Label>
+                      <Input id="editNama" name="nama" defaultValue={selectedLokasi.nama} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="editDeskripsi">Deskripsi</Label>
+                      <Textarea id="editDeskripsi" name="deskripsi" defaultValue={selectedLokasi.deskripsi || ''} rows={2} />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <Button type="button" variant="outline" onClick={() => setShowLokasiEditDialog(false)}>Batal</Button>
+                      <Button type="submit" disabled={loading}>Simpan</Button>
+                    </div>
+                  </form>
+                )}
+              </DialogContent>
+            </Dialog>
+          </TabsContent>
+
           {/* Setting Tab */}
           <TabsContent value="setting" className="space-y-4">
             <Card>
