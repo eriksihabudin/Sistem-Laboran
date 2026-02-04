@@ -144,7 +144,7 @@ export async function POST(request) {
       const kategori = formData.get('kategori');
       const serial = formData.get('serial');
       const kondisi = formData.get('kondisi');
-      const lokasi = formData.get('lokasi');
+      const lokasiPenyimpanan = formData.get('lokasiPenyimpanan');
       const jumlah = parseInt(formData.get('jumlah'));
       const spesifikasi = formData.get('spesifikasi');
       const tahunPembelian = formData.get('tahunPembelian');
@@ -164,7 +164,7 @@ export async function POST(request) {
         kategori,
         serial,
         kondisi: kondisi || 'normal',
-        lokasi,
+        lokasiPenyimpanan: lokasiPenyimpanan && lokasiPenyimpanan.trim() ? lokasiPenyimpanan.trim() : null,
         jumlah,
         spesifikasi,
         tahunPembelian,
