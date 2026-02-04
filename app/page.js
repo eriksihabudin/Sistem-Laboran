@@ -389,6 +389,16 @@ export default function App() {
     }
   };
 
+  const loadLokasi = async () => {
+    try {
+      const response = await apiCall('/lokasi');
+      const data = await response.json();
+      setLokasi(data);
+    } catch (err) {
+      console.error('Error loading lokasi:', err);
+    }
+  };
+
   const loadLaporan = async (type) => {
     setLaporanType(type);
     setLoading(true);
