@@ -3173,6 +3173,7 @@ export default function App() {
                 <TabsTrigger value="Barang Rusak Bisa Dipakai">Rusak Bisa Dipakai</TabsTrigger>
                 <TabsTrigger value="Peminjaman Bulanan">Peminjaman</TabsTrigger>
                 <TabsTrigger value="Inventaris Lengkap">Inventaris Lengkap</TabsTrigger>
+                <TabsTrigger value="Lokasi Penyimpanan">Lokasi Penyimpanan</TabsTrigger>
               </TabsList>
 
               {/* Barang Normal */}
