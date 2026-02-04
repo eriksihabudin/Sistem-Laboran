@@ -1890,8 +1890,24 @@ export default function App() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="lokasi">Lokasi Penyimpanan</Label>
-                        <Input id="lokasi" name="lokasi" />
+                        <Label htmlFor="lokasiPenyimpanan">Lokasi Penyimpanan</Label>
+                        <Select name="lokasiPenyimpanan">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih lokasi penyimpanan" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value=" ">-- Tidak ditentukan --</SelectItem>
+                            {lokasi.map((loc) => {
+                              const isChild = loc.parentId;
+                              const parentName = isChild ? lokasi.find(l => l._id === loc.parentId)?.nama : null;
+                              return (
+                                <SelectItem key={loc._id} value={loc._id}>
+                                  {isChild ? `${parentName} → ${loc.nama}` : loc.nama}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="jumlah">Jumlah Unit *</Label>
