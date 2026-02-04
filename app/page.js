@@ -3302,7 +3302,7 @@ export default function App() {
                                 <td className="p-3">{item.kategori || '-'}</td>
                                 <td className="p-3">{item.serial || '-'}</td>
                                 <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.lokasiNama || '-'}</td>
                                 <td className="p-3 font-semibold">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
                               </tr>
@@ -3399,7 +3399,7 @@ export default function App() {
                                 <td className="p-3">{item.kategori || '-'}</td>
                                 <td className="p-3">{item.serial || '-'}</td>
                                 <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.lokasiNama || '-'}</td>
                                 <td className="p-3 font-semibold">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
                                 <td className="p-3">
@@ -3510,7 +3510,7 @@ export default function App() {
                                 <td className="p-3">{item.kategori || '-'}</td>
                                 <td className="p-3">{item.serial || '-'}</td>
                                 <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.lokasiNama || '-'}</td>
                                 <td className="p-3 font-semibold">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
                                 <td className="p-3">
@@ -3877,7 +3877,7 @@ export default function App() {
                                 <td className="p-3">{item.kategori || '-'}</td>
                                 <td className="p-3">{item.serial || '-'}</td>
                                 <td className="p-3">{getKondisiBadge(item.kondisi)}</td>
-                                <td className="p-3">{item.lokasi || '-'}</td>
+                                <td className="p-3">{item.lokasiNama || '-'}</td>
                                 <td className="p-3 font-semibold">{item.jumlah || 0}</td>
                                 <td className="p-3">{item.tahunPembelian || '-'}</td>
                               </tr>
