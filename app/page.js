@@ -463,7 +463,7 @@ export default function App() {
           item.nama?.toLowerCase().includes(searchLower) ||
           item.kategori?.toLowerCase().includes(searchLower) ||
           item.serial?.toLowerCase().includes(searchLower) ||
-          item.lokasi?.toLowerCase().includes(searchLower)
+          item.lokasiNama?.toLowerCase().includes(searchLower)
         );
       }
     }
